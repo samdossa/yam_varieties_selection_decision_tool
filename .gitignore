@@ -1,0 +1,15 @@
+# Secrets
+mapbox_token.txt
+
+# Environnement Python
+.venv/
+__pycache__/
+*.pyc
+
+# Sources & sorties de données (volumineux / non-code)
+data/sources/
+data/*.sql
+data/_*.png
+data/_*.pdf
+data/_*.json
+data/recouvrement_*mois/

@@ -1,0 +1,13 @@
+streamlit>=1.43
+pandas>=2.0
+fpdf2>=2.7
+plotly>=5.18
+Pillow>=10.0
+requests>=2.31
+openpyxl>=3.1
+matplotlib>=3.7
+numpy>=1.24
+weasyprint>=60
+pdf2image>=1.17
+pydeck>=0.9
+streamlit-cropper

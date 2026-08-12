@@ -1,0 +1,17 @@
+code,libelle_fr,libelle_en,groupe,type,unite,sens,classes,taux_completude
+YIELD,Rendement,Yield,Agronomie,numeric,t/ha (?),max,,28%
+TW,Poids des tubercules,Tuber weight,Agronomie,numeric,kg (?),max,,28%
+TN,Nombre de tubercules,Tuber number,Agronomie,numeric,nb (?),max,,28%
+TDM,Matière sèche du tubercule,Tuber dry matter,Qualité,numeric,proportion (?),max,,30%
+LA,Surface foliaire,Leaf area,Agronomie,numeric,? ,neutre,,34%
+FT,Date de tubérisation,Tuberisation time,Phénologie,numeric,jours (?),neutre,,15%
+SEN,Sénescence,Senescence,Phénologie,numeric,jours (?),neutre,,25%
+EMERGENCE,Levée,Emergence,Phénologie,numeric,jours (?),neutre,,25%
+BOILED_Q,Qualité culinaire (bouilli),Boiled quality,Qualité,ordinal,,max,Low < Medium < High,59%
+FARMER_A,Acceptation paysanne,Farmer acceptance,Qualité,ordinal,,max,Low < Medium < High,65%
+ANTHRACNOSE,Résistance à l'anthracnose,Anthracnose resistance,Sanitaire,ordinal,,max,Sensitive < Moderately sensitive < Resistant,62%
+RUST,Résistance à la rouille,Rust resistance,Sanitaire,ordinal,,max,Sensitive < Moderately sensitive < Resistant,62%
+TUBER_COLOR,Couleur de la chair,Tuber flesh color,Morphologie,categorical,,neutre,,67%
+TUBER_SHAPE,Forme du tubercule,Tuber shape,Morphologie,categorical,,neutre,,68%
+FLOWERING,Floraison,Flowering,Biologie,binary,,neutre,no < yes,21%
+SEX,Sexe,Sex,Biologie,categorical,,neutre,,32%

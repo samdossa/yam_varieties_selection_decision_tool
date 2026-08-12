@@ -1,0 +1,7 @@
+# Thème aux couleurs de YamHub (vert #66bb6a sur fond blanc)
+[theme]
+primaryColor = "#66bb6a"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#eef5ee"
+textColor = "#222222"
+font = "sans serif"

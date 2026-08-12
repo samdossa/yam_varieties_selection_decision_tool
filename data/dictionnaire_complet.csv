@@ -1,0 +1,213 @@
+colonne,categorie,trait_base,site,annee,blup,libelle,completude
+code_cirad,identité,code_cirad,,,,code_cirad,87%
+nom,identité,nom,,,,nom,87%
+espece,identité,espece,,,,espece,86%
+pays_origine,identité,pays_origine,,,,pays_origine,83%
+polyploidie,identité,polyploidie,,,,polyploidie,72%
+sexe,identité,sexe,,,,sexe,29%
+annee_creation,identité,annee_creation,,,,annee_creation,86%
+centre_origine,identité,centre_origine,,,,centre_origine,87%
+F_ROU_23_24,quantitatif (multi-env),F,ROU,23_24,,Floraison,11%
+D1G_23_24,quantitatif (multi-env),D1G,,23_24,,Durée de la 1ère germination BLUP,49%
+D5G_23_24,quantitatif (multi-env),D5G,,23_24,,Durée 50% de germination BLUP,48%
+TMS_23_24,quantitatif (multi-env),TMS,,23_24,,Taux matière sèche BLUP,47%
+RE_23_24,quantitatif (multi-env),RE,,23_24,,Rendement épluchage (%) BLUP,47%
+CM_SPAD_23_24,quantitatif (multi-env),CM_SPAD,,23_24,,Chlorophylle SPAD moyenne BLUP,51%
+SFM_23_24,quantitatif (multi-env),SFM,,23_24,,Surface foliaire moyenne BLUP,45%
+LPM_23_24,quantitatif (multi-env),LPM,,23_24,,Longueur pétiole moyenne BLUP,44%
+A_AUDPC_ROU_23_24,quantitatif (multi-env),A_AUDPC,ROU,23_24,,Anthracnose AUDPC BLUP,51%
+LMTC_ROU,quantitatif (multi-env),LMTC,ROU,,,Longueur moyenne tige cm BLUP,58%
+NMI_ROU,quantitatif (multi-env),NMI,ROU,,,NMI,59%
+DE_A_ROU_24_25,quantitatif (multi-env),DE_A,ROU,24_25,,DE_A,44%
+TG_A_ROU_24_25,quantitatif (multi-env),TG_A,ROU,24_25,,TG_A,44%
+S_A_ROU_24_25,quantitatif (multi-env),S_A,ROU,24_25,,S_A,44%
+DE_D_ROU_24_25,quantitatif (multi-env),DE_D,ROU,24_25,,DE_D,55%
+TG_D_ROU_24_25,quantitatif (multi-env),TG_D,ROU,24_25,,TG_D,56%
+S_D_ROU_24_25,quantitatif (multi-env),S_D,ROU,24_25,,S_D,54%
+F_ROU_24_25,quantitatif (multi-env),F,ROU,24_25,,Floraison,26%
+F_GOD_24_25,quantitatif (multi-env),F,GOD,24_25,,Floraison,17%
+D1G_24_25,quantitatif (multi-env),D1G,,24_25,,Durée de la 1ère germination BLUP,51%
+D5G_24_25,quantitatif (multi-env),D5G,,24_25,,Durée 50% de germination BLUP,8%
+TMS_24_25,quantitatif (multi-env),TMS,,24_25,,Taux matière sèche BLUP,51%
+RE_24_25,quantitatif (multi-env),RE,,24_25,,Rendement épluchage (%) BLUP,51%
+SEM_ROU_24_25,quantitatif (multi-env),SEM,ROU,24_25,,SEM,56%
+STM_ROU_24_25,quantitatif (multi-env),STM,ROU,24_25,,Score tubérisation moyen BLUP,56%
+SGM_ROU_24_25,quantitatif (multi-env),SGM,ROU,24_25,,Score gustatif moyen BLUP,51%
+SPR_ROU_24_25,quantitatif (multi-env),SPR,ROU,24_25,,Score producteur récolte BLUP,56%
+SEM_GOD_24_25,quantitatif (multi-env),SEM,GOD,24_25,,SEM,46%
+STM_GOD_24_25,quantitatif (multi-env),STM,GOD,24_25,,Score tubérisation moyen BLUP,46%
+SPR_GOD_24_25,quantitatif (multi-env),SPR,GOD,24_25,,Score producteur récolte BLUP,46%
+CM_SPAD_ROU_24_25,quantitatif (multi-env),CM_SPAD,ROU,24_25,,Chlorophylle SPAD moyenne BLUP,59%
+EFM_ROU_24_25,quantitatif (multi-env),EFM,ROU,24_25,,Épaisseur foliaire moyenne BLUP,59%
+PHG6F_ROU_24_25,quantitatif (multi-env),PHG6F,ROU,24_25,,Poids humide (g) 6 feuilles BLUP,59%
+PSG6F_ROU_24_25,quantitatif (multi-env),PSG6F,ROU,24_25,,Poids sec (g) 6 feuilles BLUP,59%
+TMSF_ROU_24_25,quantitatif (multi-env),TMSF,ROU,24_25,,TMSF,59%
+SFM_ROU_24_25,quantitatif (multi-env),SFM,ROU,24_25,,Surface foliaire moyenne BLUP,59%
+LPM_ROU_24_25,quantitatif (multi-env),LPM,ROU,24_25,,Longueur pétiole moyenne BLUP,59%
+CM_SPAD_GOD_24_25,quantitatif (multi-env),CM_SPAD,GOD,24_25,,Chlorophylle SPAD moyenne BLUP,45%
+EFM_GOD_24_25,quantitatif (multi-env),EFM,GOD,24_25,,Épaisseur foliaire moyenne BLUP,45%
+PHG6F_GOD_24_25,quantitatif (multi-env),PHG6F,GOD,24_25,,Poids humide (g) 6 feuilles BLUP,45%
+PSG6F_GOD_24_25,quantitatif (multi-env),PSG6F,GOD,24_25,,Poids sec (g) 6 feuilles BLUP,45%
+TMSF_GOD_24_25,quantitatif (multi-env),TMSF,GOD,24_25,,TMSF,45%
+SFM_GOD_24_25,quantitatif (multi-env),SFM,GOD,24_25,,Surface foliaire moyenne BLUP,44%
+LPM_GOD_24_25,quantitatif (multi-env),LPM,GOD,24_25,,Longueur pétiole moyenne BLUP,44%
+A_AUDPC_ROU_24_25,quantitatif (multi-env),A_AUDPC,ROU,24_25,,Anthracnose AUDPC BLUP,55%
+A_AUDPC_GOD_24_25,quantitatif (multi-env),A_AUDPC,GOD,24_25,,Anthracnose AUDPC BLUP,46%
+LMTC_GOD,quantitatif (multi-env),LMTC,GOD,,,Longueur moyenne tige cm BLUP,44%
+NMI_GOD,quantitatif (multi-env),NMI,GOD,,,NMI,44%
+DE_RP1_GOD_24_25,quantitatif (multi-env),DE_RP1,GOD,24_25,,DE_RP1,46%
+TG_RP1_GOD_24_25,quantitatif (multi-env),TG_RP1,GOD,24_25,,TG_RP1,46%
+S_RP1_GOD_24_25,quantitatif (multi-env),S_RP1,GOD,24_25,,S_RP1,47%
+DE_RP2_GOD_24_25,quantitatif (multi-env),DE_RP2,GOD,24_25,,DE_RP2,36%
+TG_RP2_GOD_24_25,quantitatif (multi-env),TG_RP2,GOD,24_25,,TG_RP2,36%
+S_RP2_GOD_24_25,quantitatif (multi-env),S_RP2,GOD,24_25,,S_RP2,36%
+F_GOD_25_26,quantitatif (multi-env),F,GOD,25_26,,Floraison,33%
+SGM_GOD_25_26,quantitatif (multi-env),SGM,GOD,25_26,,Score gustatif moyen BLUP,59%
+SPR_GOD_25_26,quantitatif (multi-env),SPR,GOD,25_26,,Score producteur récolte BLUP,65%
+TMS_25_26,quantitatif (multi-env),TMS,,25_26,,Taux matière sèche BLUP,59%
+RE_25_26,quantitatif (multi-env),RE,,25_26,,Rendement épluchage (%) BLUP,59%
+R_AUDPC_GOD_25_26,quantitatif (multi-env),R_AUDPC,GOD,25_26,,R_AUDPC,62%
+A_AUDPC_GOD_25_26,quantitatif (multi-env),A_AUDPC,GOD,25_26,,Anthracnose AUDPC BLUP,62%
+SB_25_26,quantitatif (multi-env),SB,,25_26,,Score bulbilles BLUP,60%
+SB_23_24,quantitatif (multi-env),SB,,23_24,,Score bulbilles BLUP,53%
+A_AUDPC_BLUP,quantitatif (multi-env),A_AUDPC,,,oui,Anthracnose AUDPC BLUP,68%
+CM_SPAD_BLUP,quantitatif (multi-env),CM_SPAD,,,oui,Chlorophylle SPAD moyenne BLUP,64%
+D5G_BLUP,quantitatif (multi-env),D5G,,,oui,Durée 50% de germination BLUP,48%
+DE_BLUP,quantitatif (multi-env),DE,,,oui,Durée d'émergence BLUP,61%
+D1G_BLUP,quantitatif (multi-env),D1G,,,oui,Durée de la 1ère germination BLUP,59%
+EFM_BLUP,quantitatif (multi-env),EFM,,,oui,Épaisseur foliaire moyenne BLUP,61%
+F_BLUP,quantitatif (multi-env),F,,,oui,Floraison,44%
+LMTC_BLUP,quantitatif (multi-env),LMTC,,,oui,Longueur moyenne tige cm BLUP,60%
+LPM_BLUP,quantitatif (multi-env),LPM,,,oui,Longueur pétiole moyenne BLUP,63%
+PHG6F_BLUP,quantitatif (multi-env),PHG6F,,,oui,Poids humide (g) 6 feuilles BLUP,61%
+PSG6F_BLUP,quantitatif (multi-env),PSG6F,,,oui,Poids sec (g) 6 feuilles BLUP,61%
+RE_BLUP,quantitatif (multi-env),RE,,,oui,Rendement épluchage (%) BLUP,67%
+SB_BLUP,quantitatif (multi-env),SB,,,oui,Score bulbilles BLUP,66%
+SGM_BLUP,quantitatif (multi-env),SGM,,,oui,Score gustatif moyen BLUP,64%
+SPR_BLUP,quantitatif (multi-env),SPR,,,oui,Score producteur récolte BLUP,67%
+STM_BLUP,quantitatif (multi-env),STM,,,oui,Score tubérisation moyen BLUP,57%
+S_BLUP,quantitatif (multi-env),S,,,oui,Sénescence BLUP,61%
+SFM_BLUP,quantitatif (multi-env),SFM,,,oui,Surface foliaire moyenne BLUP,63%
+TG_BLUP,quantitatif (multi-env),TG,,,oui,Taux de germination (%) BLUP,61%
+TMS_BLUP,quantitatif (multi-env),TMS,,,oui,Taux matière sèche BLUP,67%
+NTMP_A_ROU_24_25,quantitatif (multi-env),NTMP_A,ROU,24_25,,NTMP_A,40%
+NTMP_D_ROU_24_25,quantitatif (multi-env),NTMP_D,ROU,24_25,,NTMP_D,54%
+NTMP_ROU_23_24,quantitatif (multi-env),NTMP,ROU,23_24,,Nombre de tubercules moyen par plant BLUP,48%
+NTMP_RP1_GOD_24_25,quantitatif (multi-env),NTMP_RP1,GOD,24_25,,NTMP_RP1,45%
+NTMP_RP1_GOD_25_26,quantitatif (multi-env),NTMP_RP1,GOD,25_26,,NTMP_RP1,60%
+NTMP_RP2_GOD_24_25,quantitatif (multi-env),NTMP_RP2,GOD,24_25,,NTMP_RP2,36%
+NTMP_RP2_GOD_25_26,quantitatif (multi-env),NTMP_RP2,GOD,25_26,,NTMP_RP2,58%
+NTMP_BLUP,quantitatif (multi-env),NTMP,,,oui,Nombre de tubercules moyen par plant BLUP,70%
+PMTPG_A_ROU_24_25,quantitatif (multi-env),PMTPG_A,ROU,24_25,,PMTPG_A,40%
+PMTPG_D_ROU_24_25,quantitatif (multi-env),PMTPG_D,ROU,24_25,,PMTPG_D,54%
+PMTPG_ROU_23_24,quantitatif (multi-env),PMTPG,ROU,23_24,,Poids moyen tubercule par plant (g) BLUP,48%
+PMTPG_RP1_GOD_24_25,quantitatif (multi-env),PMTPG_RP1,GOD,24_25,,PMTPG_RP1,45%
+PMTPG_RP1_GOD_25_26,quantitatif (multi-env),PMTPG_RP1,GOD,25_26,,PMTPG_RP1,60%
+PMTPG_RP2_GOD_24_25,quantitatif (multi-env),PMTPG_RP2,GOD,24_25,,PMTPG_RP2,36%
+PMTPG_RP2_GOD_25_26,quantitatif (multi-env),PMTPG_RP2,GOD,25_26,,PMTPG_RP2,60%
+PMTPG_BLUP,quantitatif (multi-env),PMTPG,,,oui,Poids moyen tubercule par plant (g) BLUP,70%
+PMTG_A_ROU_24_25,quantitatif (multi-env),PMTG_A,ROU,24_25,,PMTG_A,40%
+PMTG_D_ROU_24_25,quantitatif (multi-env),PMTG_D,ROU,24_25,,PMTG_D,54%
+PMTG_ROU_23_24,quantitatif (multi-env),PMTG,ROU,23_24,,Poids moyen tubercule (g) BLUP,48%
+PMTG_RP1_GOD_24_25,quantitatif (multi-env),PMTG_RP1,GOD,24_25,,PMTG_RP1,45%
+PMTG_RP1_GOD_25_26,quantitatif (multi-env),PMTG_RP1,GOD,25_26,,PMTG_RP1,60%
+PMTG_RP2_GOD_24_25,quantitatif (multi-env),PMTG_RP2,GOD,24_25,,PMTG_RP2,36%
+PMTG_RP2_GOD_25_26,quantitatif (multi-env),PMTG_RP2,GOD,25_26,,PMTG_RP2,58%
+PMTG_BLUP,quantitatif (multi-env),PMTG,,,oui,Poids moyen tubercule (g) BLUP,70%
+RT_A_ROU_24_25,quantitatif (multi-env),RT_A,ROU,24_25,,RT_A,40%
+RT_D_ROU_24_25,quantitatif (multi-env),RT_D,ROU,24_25,,RT_D,54%
+RT_ROU_23_24,quantitatif (multi-env),RT,ROU,23_24,,Rendement t/ha BLUP,48%
+RT_RP1_GOD_24_25,quantitatif (multi-env),RT_RP1,GOD,24_25,,RT_RP1,45%
+RT_RP1_GOD_25_26,quantitatif (multi-env),RT_RP1,GOD,25_26,,RT_RP1,60%
+RT_RP2_GOD_24_25,quantitatif (multi-env),RT_RP2,GOD,24_25,,RT_RP2,36%
+RT_RP2_GOD_25_26,quantitatif (multi-env),RT_RP2,GOD,25_26,,RT_RP2,60%
+RT_BLUP,quantitatif (multi-env),RT,,,oui,Rendement t/ha BLUP,70%
+ME_PDM,quantitatif (multi-env),ME_PDM,,,,Panel des descripteurs morphologiques blue,68%
+ME_PMB,quantitatif (multi-env),ME_PMB,,,,Panel de morphologie des bulbilles red,68%
+ME_PCQ,quantitatif (multi-env),ME_PCQ,,,,Panel de couleur et de qualité de chair green,68%
+ME_PPH,quantitatif (multi-env),ME_PPH,,,,Panel de physiologie yellow,68%
+ME_PPR,quantitatif (multi-env),ME_PPR,,,,Panel de phénologie et de rendement brown,68%
+ME_PCR,quantitatif (multi-env),ME_PCR,,,,Panel de croissance et de rendement turquoise,68%
+ME_PGP,quantitatif (multi-env),ME_PGP,,,,Panel global de phénotypage grey,68%
+SGM_ROU_24_25_CLS,quantitatif (multi-env),SGM_CLS,ROU,24_25,,SGM_CLS,51%
+SGM_GOD_25_26_CLS,quantitatif (multi-env),SGM_CLS,GOD,25_26,,SGM_CLS,59%
+SGM_BLUP_CLS,quantitatif (multi-env),SGM_CLS,,,oui,SGM_CLS,64%
+IP_Score_Roujol_2025,quantitatif (multi-env),IP_Score_Roujol_2025,,,,Indice de Performance — Score global continu — Roujol 2025,50%
+IP_Class_Roujol_2025,quantitatif (multi-env),IP_Class_Roujol_2025,,,,Indice de Performance Classe discrete (1/2/3),50%
+CSR_C_ROU_24_25,quantitatif (multi-env),CSR_C,ROU,24_25,,CSR competitive BLUP,59%
+CSR_S_ROU_24_25,quantitatif (multi-env),CSR_S,ROU,24_25,,CSR stress-tolerant BLUP,59%
+CSR_R_ROU_24_25,quantitatif (multi-env),CSR_R,ROU,24_25,,CSR ruderal BLUP,59%
+CSR_C_GOD_24_25,quantitatif (multi-env),CSR_C,GOD,24_25,,CSR competitive BLUP,44%
+CSR_S_GOD_24_25,quantitatif (multi-env),CSR_S,GOD,24_25,,CSR stress-tolerant BLUP,44%
+CSR_R_GOD_24_25,quantitatif (multi-env),CSR_R,GOD,24_25,,CSR ruderal BLUP,44%
+CSR_C_BLUP,quantitatif (multi-env),CSR_C,,,oui,CSR competitive BLUP,60%
+CSR_S_BLUP,quantitatif (multi-env),CSR_S,,,oui,CSR stress-tolerant BLUP,60%
+CSR_R_BLUP,quantitatif (multi-env),CSR_R,,,oui,CSR ruderal BLUP,60%
+CFM,qualitatif,CFM,,,,Couleur des feuilles matures,61%
+CNFS,qualitatif,CNFS,,,,Couleur des nervures de la face supérieure,61%
+CNFI,qualitatif,CNFI,,,,Couleur des nervures de la face inférieure,61%
+CMF,qualitatif,CMF,,,,Couleur marge foliaire,61%
+MF,qualitatif,MF,,,,Marge foliaire,61%
+FF,qualitatif,FF,,,,Forme feuilles,61%
+FEF,qualitatif,FEF,,,,Forme extrémité feuille,61%
+TF,qualitatif,TF,,,,Texture feuille,61%
+OF,qualitatif,OF,,,,Ondulation feuilles,61%
+PFSI_1,qualitatif,PFSI_1,,,,Pubescence faces supérieure inférieure,61%
+PF,qualitatif,PF,,,,Position feuilles,61%
+PFSI_2,qualitatif,PFSI_2,,,,Pruine faces supérieure inférieure,61%
+CP,qualitatif,CP,,,,Couleur petiole,61%
+SP,qualitatif,SP,,,,Spinescence petiole,61%
+PP_1,qualitatif,PP_1,,,,Pubescence petiole,61%
+CTP,qualitatif,CTP,,,,Couleur de la tige principale,60%
+P,qualitatif,P,,,,Pubescence,60%
+CJT,qualitatif,CJT,,,,Couleur jeune tige,60%
+PP_2,qualitatif,PP_2,,,,Presence pruine,60%
+S_1,qualitatif,S_1,,,,Spinescence,60%
+TCBE,qualitatif,TCBE,,,,Tache coloree base epine,60%
+FE,qualitatif,FE,,,,Forme epine,60%
+LE,qualitatif,LE,,,,Longueur epine,60%
+CFI,qualitatif,CFI,,,,Couleur feuille imma,60%
+CPI,qualitatif,CPI,,,,Couleur petiole imma,60%
+CNFSI,qualitatif,CNFSI,,,,Couleur nervure face sup imma,60%
+CNFII,qualitatif,CNFII,,,,Couleur nervure face inf imma,60%
+S_2,qualitatif,S_2,,,,Sexe,47%
+F,qualitatif,F,,,,Floraison,65%
+APB,qualitatif,APB,,,,Absence présence bulbilles,61%
+FB,qualitatif,FB,,,,Forme bulbille,61%
+DB,qualitatif,DB,,,,Diamètre bulbille,61%
+QB,qualitatif,QB,,,,Quantité de bulbilles,53%
+RB,qualitatif,RB,,,,Rendement bulbille,54%
+CPB_1,qualitatif,CPB_1,,,,Couleur de la peau bulbille,61%
+TSB,qualitatif,TSB,,,,Texture de la surface bulbille,61%
+EPB,qualitatif,EPB,,,,Epaisseur de la peau bulbille,61%
+CCB,qualitatif,CCB,,,,Couleur de la chair bulbille,61%
+CPB_2,qualitatif,CPB_2,,,,Couleur pheloderme bulbille,62%
+PRT,qualitatif,PRT,,,,Présence de racines tuberculaire,68%
+DRT_1,qualitatif,DRT_1,,,,Densité des racines tuberculaires,68%
+LRT,qualitatif,LRT,,,,Localisation des racines sur les tubercules,68%
+FT,qualitatif,FT,,,,Forme des tubercules,68%
+TTR,qualitatif,TTR,,,,Tendance des tubercules à la ramification,68%
+DRT_2,qualitatif,DRT_2,,,,Départ des ramifications tubercule,68%
+CCCTCT,qualitatif,CCCTCT,,,,Couleur de la chair coupe transversale centre tubercule,68%
+UCCCTT,qualitatif,UCCCTT,,,,Uniformité de la couleur de la chair en coupe transversale tubercule,68%
+POT,qualitatif,POT,,,,Présence oxydation tubercule,66%
+CCAOT,qualitatif,CCAOT,,,,Absence présence bulbilles,66%
+CPT,qualitatif,CPT,,,,Couleur pheloderme des tubercules,68%
+ACT,qualitatif,ACT,,,,Aspect de la chair des tubercules,68%
+QMLTC,qualitatif,QMLTC,,,,Quantité de mucilage libéré par le tubercule coupé,68%
+EPT,qualitatif,EPT,,,,Epaisseur de la peau des tubercules,68%
+PTS1M,qualitatif,PTS1M,,,,Pourritures tubercule en stockage 1 mois,62%
+AFM,qualitatif,AFM,,,,Attaque fourmi manioc,61%
+sl_a_mean,analyse d'image,sl_a_mean,,,,sl_a_mean,65%
+tu_area_px,analyse d'image,tu_area_px,,,,tu_area_px,66%
+tu_major_axis_px,analyse d'image,tu_major_axis_px,,,,tu_major_axis_px,66%
+sl_H_mean,analyse d'image,sl_H_mean,,,,sl_H_mean,65%
+sl_b_mean,analyse d'image,sl_b_mean,,,,sl_b_mean,65%
+sl_chroma_mean,analyse d'image,sl_chroma_mean,,,,sl_chroma_mean,65%
+sl_b_sd,analyse d'image,sl_b_sd,,,,sl_b_sd,65%
+sl_a_sd,analyse d'image,sl_a_sd,,,,sl_a_sd,65%
+sl_hue_angle_mean,analyse d'image,sl_hue_angle_mean,,,,sl_hue_angle_mean,65%
+tu_roundness,analyse d'image,tu_roundness,,,,tu_roundness,66%
+sl_G_mean,analyse d'image,sl_G_mean,,,,sl_G_mean,65%
+tu_solidity,analyse d'image,tu_solidity,,,,tu_solidity,66%
+tu_fractal_dim,analyse d'image,tu_fractal_dim,,,,tu_fractal_dim,66%
