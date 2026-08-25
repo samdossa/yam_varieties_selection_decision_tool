@@ -48,6 +48,58 @@ la page `aide-decision.php` (iframe) + une entrée de menu.
    - les pages sécurisées : `login.php`, `forgot-password.php`, `reset-password.php`
    - `migrations/001_create_lot.sql` (et l'exécuter en prod si pas déjà fait)
 
+## B bis. Publier les photos (feuilles + recouvrement)
+
+Les tubercules et anciennes feuilles viennent déjà de `yamhub.fr/adminPanel/uploads/`
+(via `data/varietes_photos.csv`) : rien à faire pour elles.
+
+En revanche `data/feuilles/` et `data/recouvrement_*mois/` sont **exclus de git**
+(volumineux). Ils n'arrivent donc jamais sur Streamlit Cloud. `fiche_html.py` prévoit
+un repli par URL : on héberge ces photos sur yamhub.fr et on déclare les adresses.
+
+**1. Arborescence serveur** (sous `public_html/`) :
+
+```
+photos/
+├── feuilles/            CIRADn.jpg
+└── recouvrement/
+    ├── 1mois/           CIRADn_1mois.jpg
+    └── 3mois/           CIRADn_3mois.jpg
+```
+
+> Attention : le stade est un **sous-dossier** distant (`recouvrement/1mois/`), alors
+> qu'en local c'est un préfixe (`data/recouvrement_1mois/`). `sync_photos.py` fait
+> la conversion tout seul.
+
+**2. Identifiants** : copier `ftp_credentials.txt.example` en `ftp_credentials.txt`
+et le remplir (valeurs du profil FileZilla). Le fichier est gitignoré.
+
+**3. Envoi** — incrémental, seuls les fichiers nouveaux ou modifiés partent :
+
+```bash
+python sync_photos.py --dry-run     # vérifier ce qui partirait
+python sync_photos.py               # envoyer
+python sync_photos.py --only 3mois  # une seule campagne
+```
+
+**4. Secrets Streamlit Cloud** (Settings -> Secrets), à ajouter à `MAPBOX_TOKEN` :
+
+```toml
+LEAF_URL = "https://yamhub.fr/photos/feuilles"
+RECOUV_URL = "https://yamhub.fr/photos/recouvrement"
+```
+
+### Chaîne complète pour une nouvelle campagne drone
+
+1. Décharger les photos drone (nommées par numéro : `174.JPG`, `213(1).JPG`…).
+2. Recadrer — au choix :
+   - `streamlit run crop_tool.py` (manuel, une variété à la fois). Coche
+     **« Publier sur yamhub.fr à l'enregistrement »** : chaque photo validée part
+     en ligne immédiatement, plus rien à faire ensuite.
+   - `python crop_drone.py --src <dossier> --out data/recouvrement_3mois --stage 3mois`
+     (automatique, par lot), puis `python sync_photos.py`.
+3. Rien à redéployer côté Streamlit : les fiches vont chercher les images à l'URL.
+
 ## C. Sécurité (à faire absolument)
 
 1. **Régénérer le mot de passe MySQL** de `defidb` dans Hostinger (il a circulé au

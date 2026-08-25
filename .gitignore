@@ -14,3 +14,6 @@ data/_*.pdf
 data/_*.json
 data/recouvrement_*mois/
 data/feuilles/
+
+# Identifiants FTP (publication des photos)
+ftp_credentials.txt

@@ -21,6 +21,8 @@ import streamlit as st
 from PIL import Image, ImageOps
 from streamlit_cropper import st_cropper
 
+import sync_photos
+
 Image.MAX_IMAGE_PIXELS = None
 
 st.set_page_config(page_title="Recadrage recouvrement", layout="wide")
@@ -78,6 +80,19 @@ stage = st.sidebar.text_input("Stade", "1mois")
 free = st.sidebar.checkbox("Proportions libres", value=False,
                            help="Décoché = format portrait fixe (recommandé pour la fiche).")
 aspect = None if free else (3, 4)
+
+# Publication directe sur yamhub.fr : évite d'avoir à relancer sync_photos.py.
+_can_publish = sync_photos.credentials_available()
+publish = st.sidebar.checkbox(
+    "Publier sur yamhub.fr à l'enregistrement", value=_can_publish,
+    disabled=not _can_publish,
+    help=("Envoie la photo recadrée dans photos/recouvrement/<stade>/ dès "
+          "l'enregistrement." if _can_publish else
+          "Crée ftp_credentials.txt (modèle : ftp_credentials.txt.example) "
+          "pour activer la publication directe."))
+if not _can_publish:
+    st.sidebar.caption("Publication hors ligne — les photos restent en local. "
+                       "`python sync_photos.py` les enverra plus tard.")
 
 if not os.path.isdir(src):
     st.error(f"Dossier introuvable : {src}")
@@ -176,8 +191,16 @@ with colR:
         if long > OUT_SIZE:
             s = OUT_SIZE / long
             oc = oc.resize((round(oc.size[0] * s), round(oc.size[1] * s)))
-        oc.save(os.path.join(out, f"{code}_{stage}.jpg"), quality=90)
+        dest = os.path.join(out, f"{code}_{stage}.jpg")
+        oc.save(dest, quality=90)
         st.success(f"Enregistré : {code}_{stage}.jpg")
+        if publish:
+            with st.spinner("Publication sur yamhub.fr…"):
+                ok, info = sync_photos.publish_file(dest, stage)
+            # Un échec d'envoi ne fait pas perdre le recadrage : le fichier est
+            # déjà sur le disque, sync_photos.py le rattrapera.
+            st.success(f"En ligne : {info}") if ok else st.warning(
+                f"{info}\nLa photo reste en local ; relance `python sync_photos.py`.")
         if st.session_state.idx < len(view) - 1:
             st.session_state.idx += 1
         st.rerun()
