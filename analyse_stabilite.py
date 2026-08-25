@@ -69,7 +69,7 @@ def main():
     sub = cont[[KEY] + rc].copy()
     for c in rc:
         sub[c] = num(sub[c])
-    env_index = sub[rc].mean().values          # indice environnemental (moy. des génotypes)
+    env_index = sub[rc].mean().values          
     fw = {}
     for _, r in sub.iterrows():
         y = r[rc].values.astype(float)

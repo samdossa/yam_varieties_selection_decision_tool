@@ -1,16 +1,16 @@
-# YamHub — Outil d'aide à la décision (prototype)
+# YamHub — Decision support tool (prototype)
 
-Prototype de l'outil d'aide au choix variétal de l'igname, à partir des données
-phénotypiques de YamHub (base `defidb`). Stage DEFI/AGAP/CIRAD.
+Prototype of the yam variety selection support tool, using the phenotypic data from
+YamHub (database `defidb`). DEFI/AGAP/CIRAD internship.
 
-## Contenu
+## Contents
 
-| Fichier | Rôle |
+| File | Role |
 |---|---|
-| `variables.py` | Dictionnaire des variables (types, sens, classes, pondérations par profil) — **source unique de métadonnées** |
-| `build_dataset.py` | Extrait + nettoie les données du dump SQL → `data/varietes_clean.csv` + `data/dictionnaire_variables.csv` |
-| `app.py` | Interface Streamlit : profils, filtres, score, classement, fiche PDF |
-| `data/` | Jeu de données propre + dictionnaire (générés) |
+| `variables.py` | Variable dictionary (types, directions, classes, profile weights) — **single source of metadata** |
+| `build_dataset.py` | Extracts + cleans the SQL dump data → `data/varietes_clean.csv` + `data/dictionnaire_variables.csv` |
+| `app.py` | Streamlit interface: profiles, filters, score, ranking, PDF sheet |
+| `data/` | Cleaned dataset + dictionary (generated) |
 
 ## Installation
 
@@ -20,47 +20,47 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 1. Générer le jeu de données propre
+## 1. Generate the clean dataset
 
 ```bash
 python build_dataset.py
 ```
 
-Lit le dump `../public_html/docker/initdb/defidb.sql`, produit :
+Reads the dump `../public_html/docker/initdb/defidb.sql` and produces:
 
-- `data/varietes_clean.csv` — 303 variétés, valeurs typées (décimales corrigées,
-  `na` → vide, ordinaux → score 0..1)
-- `data/dictionnaire_variables.csv` — métadonnées + **taux de complétude** par trait
+- `data/varietes_clean.csv` — 303 varieties, typed values (corrected decimals,
+  `na` → empty, ordinal → score 0..1)
+- `data/dictionnaire_variables.csv` — metadata + **completeness rate** per trait
 
-## 2. Lancer l'outil
+## 2. Launch the tool
 
 ```bash
 streamlit run app.py
 ```
 
-Ouvre http://localhost:8501 (utilisable sur smartphone).
+Opens http://localhost:8501 (usable on smartphone).
 
-## Fonctionnement du score
+## How the score works
 
-Chaque profil (producteur / consommateur-transformateur / technicien) pondère un
-sous-ensemble de traits (voir `PROFILS` dans `variables.py`). Pour chaque variété :
-les traits sont normalisés 0..1 (numériques min-max selon le sens ; ordinaux via
-leur score de classe), puis moyennés par les poids du profil. Les traits manquants
-sont exclus et le score est renormalisé — la colonne **Couverture** indique la part
-des critères réellement disponibles (un score sur peu de données est moins fiable).
+Each profile (producer / processor-consumer / technician) assigns weights to a
+subset of traits (see `PROFILS` in `variables.py`). For each variety:
+traits are normalized to 0..1 (numeric min-max according to direction; ordinal via
+their class score), then averaged using the profile weights. Missing traits are
+excluded and the score is renormalized — the **Coverage** column indicates the share
+of criteria that are actually available (a score based on little data is less reliable).
 
-## Limites connues / à traiter (étapes suivantes)
+## Known limitations / to be addressed (next steps)
 
-- **Complétude faible** : rendement 28 %, résistances ~62 %, qualité culinaire ~59 %.
-- **Pas de dimension multi-environnements** dans la base : les valeurs sont déjà
-  agrégées par variété (pas d'analyse de stabilité GxE possible en l'état).
-  → localiser le jeu multi-env complet auprès de l'équipe DEFI.
-- Unités de plusieurs variables numériques à confirmer (marquées `?`).
+- **Low completeness**: yield 28%, resistance ~62%, culinary quality ~59%.
+- **No multi-environment dimension** in the database: values are already aggregated by
+  variety (no GxE stability analysis is possible in the current state).
+  → locate the complete multi-environment dataset with the DEFI team.
+- Units for several numerical variables still need confirmation (marked `?`).
 
-## Déjà intégré depuis la base existante
+## Already integrated from the existing database
 
-- **Photos de tubercules** dans la fiche (table `photosvariete`), chargées depuis
-  le site en ligne (`yamhub.fr/adminPanel/uploads/`) — pas besoin des 4 Go en local.
-- **Pays d'origine + carte** des origines (table `pays_partenaire`, 291/303 variétés).
-- **Profil visuel** de chaque variété (critères du profil normalisés sur 100).
-- **Tri par score puis couverture** pour départager les ex æquo.
+- **Tuber photos** in the sheet (table `photosvariete`), loaded from the online
+  site (`yamhub.fr/adminPanel/uploads/`) — no need for the 4 GB locally.
+- **Country of origin + map** of origins (table `pays_partenaire`, 291/303 varieties).
+- **Visual profile** of each variety (profile criteria normalized to 100).
+- **Sort by score then coverage** to break ties.

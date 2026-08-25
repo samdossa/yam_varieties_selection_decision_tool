@@ -1,5 +1,5 @@
 """
-fiche_html.py — Fiche variétale au format RITA Guadeloupe, rendue en PDF.
+fiche_html.py — Fiche variétale au format  Guadeloupe, rendue en PDF.
 
 Reproduit le modèle officiel (2 pages : DESCRIPTION / QUALITE puis PERFORMANCES)
 via HTML+CSS rendu par WeasyPrint. Chaque variété se remplit à partir de tool_data,
@@ -63,15 +63,52 @@ def _photo_url(photos, acc, desc):
 
 
 def _points_forts(row):
+    """Points forts déduits des données mesurées (min 2, max 5)."""
     pts = []
-    cls = row.get("classe_rendement")
-    if pd.notna(cls) and "performante" in str(cls):
-        pts.append("Rendement")
-    if row.get("BOILED_Q") == "High":
-        pts.append("Goût")
-    if pd.notna(cls) and "stable" in str(cls):
-        pts.append("Régularité")
-    return pts or ["À confirmer"]
+    cls = str(row.get("classe_rendement")).lower() if pd.notna(row.get("classe_rendement")) else ""
+    rp = row.get("rendement_perf")
+    if pd.notna(rp) and float(rp) >= 35:
+        pts.append("Rendement élevé")
+    elif pd.notna(rp) and float(rp) >= 25:
+        pts.append("Bon rendement")
+    elif "performante" in cls:
+        pts.append("Bon rendement")
+    if "stable" in cls:
+        pts.append("Rendement stable")
+    au, rv = row.get("anthracnose_perf"), row.get("R_AUDPC_GOD_25_26")
+    res = []
+    if pd.notna(au) and float(au) < 35:
+        res.append("à l'anthracnose")
+    if pd.notna(rv) and float(rv) < 35:
+        res.append("à la rouille")
+    if res:
+        pts.append("Tolérance " + " et ".join(res))
+    bq = row.get("BOILED_Q")
+    if bq == "High":
+        pts.append("Bonne qualité à la cuisson")
+    elif bq == "Medium":
+        pts.append("Qualité à la cuisson correcte")
+    pt = row.get("PTS1M")
+    if pt == "Absent":
+        pts.append("Pas de pourriture au stockage (1 mois)")
+    elif pt == "Faible":
+        pts.append("Faible pourriture au stockage (1 mois)")
+    if row.get("FARMER_A") == "High":
+        pts.append("Appréciée des agriculteurs")
+    tms = row.get("TMS_BLUP")
+    if pd.notna(tms):
+        v = float(tms); v = v * 100 if v <= 1 else v
+        if v >= 32:
+            pts.append("Matière sèche élevée")
+    pm = row.get("poids_moyen_g")
+    if pd.notna(pm) and float(pm) >= 1500:
+        pts.append("Gros tubercules")
+    for extra in ["Adaptée aux conditions de la Guadeloupe",
+                  "Évaluée en stations expérimentales (Roujol, Godet)"]:
+        if len(pts) >= 2:
+            break
+        pts.append(extra)
+    return pts[:4]
 
 
 def _chart_sites(row):
@@ -142,6 +179,89 @@ def _missing(row, mapping):
     return [label for label, code in mapping if pd.isna(row.get(code))]
 
 
+def _img_uri(path, max_px=160, fmt="PNG"):
+    """Image locale -> data-URI base64 (embarquée, robuste sur tous les WeasyPrint,
+    aucune dépendance file://). Redimensionne pour limiter le poids."""
+    import base64
+    import io
+    from PIL import Image, ImageOps
+    try:
+        im = ImageOps.exif_transpose(Image.open(path))
+        if im.mode in ("RGBA", "LA", "P"):
+            im = im.convert("RGBA")
+            bg = Image.new("RGB", im.size, (255, 255, 255))
+            bg.paste(im, mask=im.split()[-1])
+            im = bg
+        else:
+            im = im.convert("RGB")
+        if max(im.size) > max_px:
+            im.thumbnail((max_px, max_px))
+        buf = io.BytesIO()
+        if fmt.upper() == "JPEG":
+            im.save(buf, format="JPEG", quality=85)
+            mime = "jpeg"
+        else:
+            im.save(buf, format="PNG")
+            mime = "png"
+        return f"data:image/{mime};base64," + base64.b64encode(buf.getvalue()).decode()
+    except Exception:
+        return ""
+
+
+def _leaf_local(code):
+    """Photo de feuille (nouveau jeu 2024/2023) : data/feuilles/CIRADn.jpg.
+    Recherche insensible à la casse. Vide si la variété n'en a pas."""
+    if not code or str(code) in ("nan", ""):
+        return ""
+    d = os.path.join(os.path.dirname(__file__), "data", "feuilles")
+    for name in (f"{code}.jpg", f"{str(code).upper()}.jpg", f"{str(code).lower()}.jpg"):
+        pth = os.path.join(d, name)
+        if os.path.exists(pth):
+            return _img_uri(pth, 560, "JPEG")
+    url = os.environ.get("LEAF_URL")
+    if url:
+        return f"{url.rstrip('/')}/{str(code).upper()}.jpg"
+    return ""
+
+
+_PANDA2 = {}
+
+def _panda2(row, field):
+    """Champ de la feuille Panda2 (data/panda2.csv) : fournisseur, centre_code, doi.
+    Clé = code_plantation (insensible à la casse). '' si absent."""
+    p = os.path.join(os.path.dirname(__file__), "data", "panda2.csv")
+    if not _PANDA2 and os.path.exists(p):
+        import csv
+        with open(p, newline="") as f:
+            for r in csv.DictReader(f):
+                cp = str(r.get("code_plantation", "")).strip().lower()
+                if cp:
+                    _PANDA2[cp] = r
+    rec = _PANDA2.get(str(row.get("code_plantation", "")).strip().lower())
+    return (rec.get(field, "").strip() if rec else "")
+
+
+_DOI_MAP = {}
+
+
+def _doi_of(row):
+    """DOI de la variété (depuis data/doi.csv, issu de defidb). None si absent."""
+    if not _DOI_MAP and os.path.exists(os.path.join(os.path.dirname(__file__), "data", "doi.csv")):
+        import csv
+        with open(os.path.join(os.path.dirname(__file__), "data", "doi.csv"), newline="") as f:
+            for r in csv.DictReader(f):
+                d = (r.get("doi") or "").strip()
+                if not d:
+                    continue
+                for k in (r.get("nom_accession"), r.get("code_plantation_id")):
+                    if k:
+                        _DOI_MAP[str(k).strip().lower()] = d
+    for k in (row.get("nom_accession"), row.get("code_plantation")):
+        if k and str(k).strip().lower() in _DOI_MAP:
+            return _DOI_MAP[str(k).strip().lower()]
+    return None
+
+
 def _recouv_tag(code, stage, h=150):
     """Image de recouvrement pour une variété à un stade (1mois, 3mois...).
     Cherche data/recouvrement_<stage>/CIRADn_<stage>.jpg en local, sinon RECOUV_URL."""
@@ -151,7 +271,7 @@ def _recouv_tag(code, stage, h=150):
     local = os.path.join(os.path.dirname(__file__), "data", f"recouvrement_{stage}", fn)
     style = f"height:{h}px;border-radius:5px;box-shadow:0 0 3px #999"
     if os.path.exists(local):
-        return f'<img src="file://{local}" style="{style}">'
+        return f'<img src="{_img_uri(local, 620, "JPEG")}" style="{style}">'
     url = os.environ.get("RECOUV_URL")
     if url:
         return f'<img src="{url.rstrip("/")}/{stage}/{fn}" style="{style}">'
@@ -164,7 +284,7 @@ def _recouv_block(code):
              if _recouv_tag(code, s)]
     if not avail:
         return '<div class="expl">Photo de recouvrement à venir.</div>'
-    h = 240 if len(avail) == 1 else 175    # grande si seule, réduite si deux
+    h = 205 if len(avail) == 1 else 150    # grande si seule, réduite si deux
     parts = []
     for stage, label in avail:
         parts.append(
@@ -209,6 +329,7 @@ def _comparison(row, all_df, n=5):
         return "", ""
     d = d.sort_values("rendement_perf", ascending=False).reset_index(drop=True)
     tgt_cp = row.get("code_plantation")
+    
 
     # Positionnement de la variété (rang par rendement)
     phrase = ""
@@ -258,7 +379,10 @@ def build_html(row, photos, all_df=None):
     _cp = str(row.get("code_plantation", "")).strip()
     _nm = row.get("nom") if pd.notna(row.get("nom")) else (acc if pd.notna(acc) else "")
     titre = f"{_cp} ({_nm})" if (_cp and str(_nm).strip()) else (_cp or str(nom))
-    leaf = _photo_url(photos, acc, "Feuille adaxiale")
+    # Nouvelle feuille (2024/2023) en priorité ; sinon repli sur l'ancienne photo
+    leaf = (_leaf_local(row.get("code_plantation"))
+            or _photo_url(photos, acc, "Feuille adaxiale")
+            or _photo_url(photos, acc, "Feuille abaxiale"))
     tuber = _photo_url(photos, acc, "Tubercule forme")
     flesh = _photo_url(photos, acc, "Tubercule chair")
     chart = _chart_sites(row)
@@ -299,9 +423,13 @@ def build_html(row, photos, all_df=None):
         cycle_txt = f"{_m:.1f} mois - {_c}"
     else:
         cycle_txt = ND
-    pts = row.get("PTS1M")    # pourritures en stockage -> conservation
-    conserv = ({"Absent": "Bonne", "Faible": "Moyenne", "Fort": "Faible"}.get(pts, ND)
+    pts = row.get("PTS1M")    # pourriture tubercule au stockage, test à 1 mois
+    conserv = ({"Absent": "Absente", "Faible": "Faible", "Fort": "Forte"}.get(pts, ND)
                if pd.notna(pts) else ND)
+    # Profil de régularité -> cases Stable / Non stable
+    _clr = str(row.get("classe_rendement")).lower() if pd.notna(row.get("classe_rendement")) else ""
+    stable_oui = "stable" in _clr
+    nonstable_oui = ("spécialis" in _clr) or ("specialis" in _clr)
     bq = row.get("BOILED_Q")  # qualité bouillie -> français
     qbouillie = QUAL_FR.get(bq, ND) if pd.notna(bq) else ND
     de = row.get("DE_BLUP")   # durée d'émergence -> jours (arrondi au supérieur)
@@ -312,14 +440,15 @@ def build_html(row, photos, all_df=None):
     carte_local = os.path.join(ASSETS, "carte_guadeloupe.png")
     if tok:
         markers = "pin-l+c0392b(-61.585,16.19),pin-l+2e7d32(-61.44,16.36)"
+        bbox = "[-61.85,15.90,-61.15,16.55]"   # toute l'île principale (Basse-Terre + Grande-Terre)
         carte_src = (f"https://api.mapbox.com/styles/v1/mapbox/outdoors-v12/static/"
-                     f"{markers}/auto/900x520?padding=60&access_token={tok}")
+                     f"{markers}/{bbox}/660x580?padding=25&access_token={tok}")
     elif os.path.exists(carte_local):
-        carte_src = f"file://{carte_local}"
+        carte_src = _img_uri(carte_local, 900, "PNG")
     else:
         carte_src = ""
-    carte_tag = (f'<img src="{carte_src}" style="width:74%;border-radius:8px;'
-                 f'box-shadow:0 0 4px #999">' if carte_src else "")
+    carte_tag = (f'<img src="{carte_src}" style="max-width:100%;max-height:185px;'
+                 f'border-radius:8px;box-shadow:0 0 4px #999">' if carte_src else "")
 
     css = f"""
     @page {{ size: A4; margin: 0; }}
@@ -327,9 +456,9 @@ def build_html(row, photos, all_df=None):
     body {{ margin:0; color:#222; }}
     .page {{ position: relative; width:210mm; height:297mm; page-break-after: always;
              padding: 8mm 8mm 8mm 20mm; }}
-    .sidebar {{ position:absolute; left:0; top:0; width:14mm; height:100%; background:{PURPLE}; }}
-    .sidebar span {{ position:absolute; transform: rotate(-90deg); transform-origin:left top;
-                     left:4mm; bottom:6mm; white-space:nowrap; color:#fff; font-weight:bold;
+    .sidebar {{ position:absolute; left:0; top:0; width:14mm; height:100%; background:{PURPLE};
+                display:flex; align-items:center; justify-content:center; overflow:hidden; }}
+    .sidebar span {{ transform: rotate(-90deg); white-space:nowrap; color:#fff; font-weight:bold;
                      font-size:12pt; letter-spacing:.5px; }}
     .banner {{ background:{PURPLE}; color:#fff; padding:6px 14px; font-size:30pt;
                font-weight:bold; text-align:center; letter-spacing:1px; }}
@@ -352,30 +481,79 @@ def build_html(row, photos, all_df=None):
                  border-radius:2px; }}
     .grid2 {{ display:flex; gap:10px; }}
     .col {{ flex:1; }}
-    .miss {{ font-size:8pt; color:{GREY}; border-top:1px dashed #bbb; margin-top:6px; padding-top:3px; }}
+    .logo-row {{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        min-height: 55px;
+        overflow: visible;
+    }}
+    .logo-row img {{
+        display: block;
+        width: auto !important;
+        height: auto !important;
+        max-width: 23%;
+        max-height: 52px;
+        object-fit: contain;
+        flex: 0 1 auto;
+    }}
+    .bottom-logos {{
+        margin-top: 14px;
+        justify-content: flex-start;
+    }}
+    /* NB : PAS de display:flex ici — WeasyPrint ne calcule pas la largeur
+       intrinsèque des <img width:auto> en flex et les fait disparaître.
+       inline-block + margin (gap inopérant en inline-block) => tous les logos s'affichent. */
+    .partner-row {{ margin-top:12px; }}
+    .partner-row img {{ height:38px; width:auto; display:inline-block; vertical-align:middle; margin-right:16px; }}
+    .header-logos {{ }}
+    .header-logos img {{ height:30px; width:auto; display:inline-block; vertical-align:middle; margin-right:12px; }}
+
     table.cmp {{ width:100%; border-collapse:collapse; font-size:9.5pt; margin-top:4px; }}
     table.cmp th {{ background:{GREEN}; color:#fff; padding:5px 8px; text-align:left; }}
     table.cmp td {{ padding:5px 8px; border-bottom:1px solid #ddd; }}
     """
 
-    # ---------- Débouchés / usages (déduits des traits, indicatifs) ----------
-    deb_phrase = _deb.phrase(row)
-    deb_items = "".join(f"<li>{u}</li>" for u in _deb.usages(row))
+    # ---------- Logo CIRAD (en-tête haut-gauche) + QR code YamHub ----------
+    from pathlib import Path
 
-    # ---------- Logo CIRAD (en-tête haut-gauche) ----------
+    def local_img(path):
+        return Path(path).resolve().as_uri()
+
     cirad_path = os.path.join(ASSETS, "cirad_logo.png")
-    cirad_tag = (f'<img src="file://{cirad_path}" style="height:40px">'
-                 if os.path.exists(cirad_path) else "CIRAD")
+    cirad_tag = (
+        f'<img src="{_img_uri(cirad_path, 200, "PNG")}" alt="CIRAD">'
+        if os.path.exists(cirad_path) else ""
+    )
+
+    qr_path = os.path.join(ASSETS, "qr_yamhub.png")
+    qr_tag = (
+        f'<img src="{_img_uri(qr_path, 320, "PNG")}" style="width:110px" alt="YamHub">'
+        if os.path.exists(qr_path) else ""
+    )
+
+    # Tous les logos depuis assets/logos_entete/ — affichés en HAUT (en-tête) et en BAS (page 2)
+    logos_dir = os.path.join(ASSETS, "logos_entete")
+    all_logos = ""
+    if os.path.isdir(logos_dir):
+        for fn in sorted(os.listdir(logos_dir)):
+            if fn.lower().endswith((".png", ".jpg", ".jpeg", ".gif")):
+                uri = _img_uri(os.path.join(logos_dir, fn), 200, "PNG")
+                if uri:
+                    all_logos += f'<img src="{uri}" alt="">'
+    logos_tag = f'<div class="header-logos">{all_logos}</div>'
+    partner_row = f'<div class="partner-row">{all_logos}</div>' if all_logos else ""
 
     # ---------- PAGE 1 ----------
     p1 = f"""
     <div class="page">
-      <div class="sidebar"><span>Plateforme d'Évaluation Variétale : Ignames</span></div>
+      <div class="sidebar"><span>Plateforme d'Évaluation Variétale d'Ignames</span></div>
       <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-        <div class="brand">{cirad_tag}</div>
+        <div class="brand">{logos_tag}</div>
       </div>
       <div class="banner">{cell(titre)}</div>
-      <div style="text-align:right; font-size:8pt; color:{GREY}; margin-top:2px;">Édition : 2025</div>
+      <div style="text-align:right; font-size:8pt; color:{GREY}; margin-top:2px;">Édition : 2026</div>
 
       <div class="sec">CARTE D'IDENTITÉ</div>
       <div class="grid2">
@@ -383,8 +561,10 @@ def build_html(row, photos, all_df=None):
           <table class="fields">
             <tr><td class="attr">Espèce</td><td class="val"><i>{cell(_v(row,'espece'))}</i></td></tr>
             <tr><td class="attr">Origine</td><td class="val">{cell(_v(row,'pays_origine'))}</td></tr>
-            <tr><td class="attr">Sélectionneur</td><td class="val">Cirad</td></tr>
+            <tr><td class="attr">Centre d'origine</td><td class="val">{cell(_panda2(row,'centre_code') or _v(row,'centre_origine'))}</td></tr>
+            <tr><td class="attr">Fournisseur</td><td class="val">{cell(_panda2(row,'fournisseur'))}</td></tr>
             <tr><td class="attr">Code CIRAD</td><td class="val">{cell(_v(row,'code_cirad'))}</td></tr>
+            <tr><td class="attr">DOI</td><td class="val" style="font-size:8.5pt">{cell(_panda2(row,'doi') or _doi_of(row))}</td></tr>
             <tr><td class="attr" style="padding-top:8px">Année d'introduction</td><td class="val" style="padding-top:8px">{cell(_v(row,'annee_creation'))}</td></tr>
             <tr><td class="attr">Période d'évaluation</td><td class="val">2022-2025</td></tr>
           </table>
@@ -428,33 +608,32 @@ def build_html(row, photos, all_df=None):
       <div class="grid2">
         <div class="col">
           <table class="fields">
-            <tr><td class="attr">Durée du cycle</td><td class="val">{cycle_txt}</td></tr>
-            <tr><td class="attr">Récolte</td><td class="val">Sénescence feuillage</td></tr>
-            <tr><td class="attr">Conservation</td><td class="val">{conserv}</td></tr>
+            <tr><td class="attr">Pourriture au stockage (1 mois)</td><td class="val">{conserv}</td></tr>
             <tr><td class="attr" style="padding-top:6px">Couleur de la chair</td><td class="val" style="padding-top:6px">{cell(_v(row,'CCCTCT'))}</td></tr>
             <tr><td class="attr">Oxydation à la cuisson</td><td class="val">{cell(_v(row,'POT'))}</td></tr>
             <tr><td class="attr">Qualité bouillie</td><td class="val">{qbouillie}</td></tr>
           </table>
         </div>
-        <div class="col">{'<img class="photo" src="'+flesh+'">' if flesh else ''}</div>
+        <div class="col" style="text-align:center">
+          <div style="color:#7d2e78; font-style:italic; font-size:9pt; margin-bottom:3px">Sites d'évaluation en Guadeloupe</div>
+          {carte_tag if carte_tag else '<div class="expl">Carte indisponible.</div>'}
+          <div style="margin-top:5px; font-size:9pt;">
+            <span style="color:#c0392b; font-weight:bold;">●</span> Roujol (Petit-Bourg) &nbsp;&nbsp;
+            <span style="color:#2e7d32; font-weight:bold;">●</span> Godet (Petit-Canal)
+          </div>
+        </div>
       </div>
-
-      <div class="sec">USAGES / DÉBOUCHÉS</div>
-      <div style="font-size:9.5pt; font-style:italic; margin-bottom:3px;">{deb_phrase}</div>
-      <ul style="margin:2px 0 0 16px; font-size:9pt;">{deb_items}</ul>
-      <div class="expl" style="margin-top:3px; font-size:7.5pt;">Usages indicatifs, déduits
-        des caractéristiques mesurées (matière sèche, qualité à la cuisson, calibre).</div>
     </div>
     """
 
     # ---------- PAGE 2 ----------
     p2 = f"""
     <div class="page">
-      <div class="sidebar"><span>Évaluation Variétale GUADELOUPE</span></div>
+      <div class="sidebar"><span>Plateforme d'Évaluation Variétale d'Ignames</span></div>
       <div class="sec">PERFORMANCES</div>
-      <div class="note">NOTE : à l'exception du rendement, les données présentées ci-après ont été
-        obtenues en stations expérimentales (Roujol, Godet). Elles traduisent les performances
-        de la variété dans les conditions de culture des stations.</div>
+      <div class="note">NOTE : Toutes les données présentées ci-après ont été obtenues en stations
+        expérimentales (Roujol, Godet). Elles traduisent les performances de la variété dans les
+        conditions de culture des stations.</div>
 
       <div class="sub">MALADIES</div>
       <div class="grid2">
@@ -474,6 +653,7 @@ def build_html(row, photos, all_df=None):
             <table class="fields">
               <tr><td class="attr">Taux de germination</td><td class="val">{germ}</td></tr>
               <tr><td class="attr">Durée d'émergence</td><td class="val">{emergence}</td></tr>
+              <tr><td class="attr">Durée du cycle</td><td class="val">{cycle_txt}</td></tr>
             </table>
           </div>
         </div>
@@ -485,52 +665,33 @@ def build_html(row, photos, all_df=None):
         <table class="fields">
           <tr><td class="attr">Rendement potentiel</td><td class="val">{cell(_v(row,'rendement_perf',' t/ha'))}</td></tr>
           <tr><td class="attr">Nb moyen de tubercules/plant</td><td class="val">{cell(_v(row,'NTMP_BLUP'))}</td></tr>
-          <tr><td class="attr">Profil de régularité</td><td class="val">{cell(row.get('classe_rendement'))}</td></tr>
-          <tr><td class="attr">Note standard de performance</td><td class="val">à définir</td></tr>
+          <tr><td class="attr">Profil de régularité</td><td class="val">
+            <span style="border:1px solid #333;padding:0 5px">{'X' if stable_oui else '&nbsp;'}</span> Stable
+            &nbsp; <span style="border:1px solid #333;padding:0 5px">{'X' if nonstable_oui else '&nbsp;'}</span> Non stable
+          </td></tr>
         </table>
       </div>
 
       <div style="margin-top:8px; text-align:center;">
-        {'<img src="'+chart+'" style="width:70%">' if chart else '<div class="expl">Rendement par site indisponible.</div>'}
+        {'<img src="'+chart+'" style="width:60%">' if chart else '<div class="expl">Rendement par site indisponible.</div>'}
       </div>
 
       <div class="sub">CALIBRE</div>
       <div class="grid2">
         <div class="col" style="text-align:center">
-          {'<img src="'+calibre_pie+'" style="width:82%">' if calibre_pie else '<div class="expl">Calibre indisponible.</div>'}
+          {'<img src="'+calibre_pie+'" style="width:74%">' if calibre_pie else '<div class="expl">Calibre indisponible.</div>'}
         </div>
-        <div class="col" style="padding-top:20px">
-          <table class="fields">
+        <div class="col" style="text-align:center; padding-top:10px">
+          <table class="fields" style="margin-bottom:10px">
             <tr><td class="attr">Poids moyen par tubercule</td><td class="val">{poids_moyen}</td></tr>
           </table>
+          {('<div style="margin-top:60px"><div style="font-size:8pt;color:'+GREY+';margin-bottom:3px">Fiche en ligne sur YamHub</div>'+qr_tag+'</div>') if qr_tag else ''}
         </div>
       </div>
+      {partner_row}
     </div>
     """
-
-    # ---------- PAGE 3 : SYNTHÈSE ----------
-    cmp_phrase, cmp_tbl = _comparison(row, all_df)
-    p3 = f"""
-    <div class="page">
-      <div class="sidebar"><span>Évaluation Variétale GUADELOUPE</span></div>
-
-      <div class="sec">COMPARAISON AVEC LES MEILLEURES VARIÉTÉS</div>
-      <div style="font-size:10pt; margin-bottom:4px;">{cmp_phrase}</div>
-      <div class="expl" style="margin-bottom:4px">« Meilleures » = variétés au rendement
-        le plus élevé (◀ = variété de cette fiche, ligne surlignée).</div>
-      {cmp_tbl if cmp_tbl else '<div class="expl">Comparaison indisponible.</div>'}
-
-      <div class="sec">SITES D'ÉVALUATION</div>
-      <div style="text-align:center; margin-top:6px">
-        {carte_tag if carte_tag else '<div class="expl">Carte indisponible.</div>'}
-        <div style="margin-top:6px; font-size:9pt;">
-          <span style="color:#c0392b; font-weight:bold;">●</span> Roujol (Petit-Bourg) &nbsp;&nbsp;
-          <span style="color:#2e7d32; font-weight:bold;">●</span> Godet (Le Moule)
-        </div>
-      </div>
-    </div>
-    """
-    return f"<html><head><meta charset='utf-8'><style>{css}</style></head><body>{p1}{p2}{p3}</body></html>"
+    return f"<html><head><meta charset='utf-8'><style>{css}</style></head><body>{p1}{p2}</body></html>"
 
 def generate(row, photos, all_df=None):
     from weasyprint import HTML
