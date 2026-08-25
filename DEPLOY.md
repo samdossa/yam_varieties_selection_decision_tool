@@ -105,6 +105,21 @@ RECOUV_URL = "https://yamhub.fr/photos/recouvrement"
 1. **Régénérer le mot de passe MySQL** de `defidb` dans Hostinger (il a circulé au
    début). Déposer le nouveau dans un `config.local.php` sur le serveur (modèle :
    `config.local.php.example`), non versionné.
+
+   > **`config.local.php` n'est PAS optionnel en production.** Dans
+   > `includes/db_credentials.php`, toutes les clés ont un défaut sensé sauf le mot
+   > de passe, dont le repli est une chaîne vide (volontairement : aucun secret dans
+   > le dépôt). Sans ce fichier — ni variable d'environnement `DB_PASS` — toute page
+   > passant par `includes/db.php` se connecte avec un mot de passe vide et renvoie
+   > **503 « Service temporairement indisponible »**. C'est le cas de
+   > `api/varietes.php`, donc de tout l'outil d'aide à la décision.
+   >
+   > Le fichier peut se limiter au mot de passe, chaque clé ayant son propre repli :
+   >
+   > ```php
+   > <?php
+   > return ['pass' => 'LE_MOT_DE_PASSE_DE_defidb'];
+   > ```
 2. **Restreindre le token Mapbox** par URL dans ton compte Mapbox (ton app + yamhub.fr).
 3. Vérifier login admin / upload en prod (requêtes préparées déjà en place).
 
