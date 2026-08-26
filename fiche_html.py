@@ -561,7 +561,7 @@ def build_html(row, photos, all_df=None):
           <table class="fields">
             <tr><td class="attr">Espèce</td><td class="val"><i>{cell(_v(row,'espece'))}</i></td></tr>
             <tr><td class="attr">Origine</td><td class="val">{cell(_v(row,'pays_origine'))}</td></tr>
-            <tr><td class="attr">Centre d'origine</td><td class="val">{cell(_panda2(row,'centre_code') or _v(row,'centre_origine'))}</td></tr>
+            <tr><td class="attr">Code du centre d'origine</td><td class="val">{cell(_panda2(row,'centre_code') or _v(row,'centre_origine'))}</td></tr>
             <tr><td class="attr">Fournisseur</td><td class="val">{cell(_panda2(row,'fournisseur'))}</td></tr>
             <tr><td class="attr">Code CIRAD</td><td class="val">{cell(_v(row,'code_cirad'))}</td></tr>
             <tr><td class="attr">DOI</td><td class="val" style="font-size:8.5pt">{cell(_panda2(row,'doi') or _doi_of(row))}</td></tr>
