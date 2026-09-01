@@ -105,6 +105,18 @@ def scan_sources(src):
     return {c: fp for c, (s, fp) in sorted(cand.items(), key=lambda kv: int(kv[0].replace("CIRAD", "")))}
 
 
+def _dialogue_possible():
+    """Un sélecteur de fichiers natif exige un environnement graphique.
+
+    Sur un serveur Linux sans écran — le cas d'un déploiement réseau où chacun
+    se connecte par le navigateur — tkinter ne peut pas s'ouvrir. On bascule
+    alors sur la navigation par liste, qui, elle, marche à distance.
+    """
+    if sys.platform == "darwin":
+        return True
+    return bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"))
+
+
 def _dialogue_dossier(titre, depart):
     """Ouvre le sélecteur de dossiers du système (Finder sur macOS).
 
@@ -126,22 +138,51 @@ def _dialogue_dossier(titre, depart):
         return ""
 
 
-def dossier_picker(label, cle, defaut):
-    """Choix d'un dossier via le Finder, avec saisie manuelle en secours.
+def _navigation_liste(cle, cur):
+    """Navigation par liste : remonter d'un cran, ou entrer dans un sous-dossier.
 
-    Le dialogue natif sait déjà naviguer et créer un dossier : inutile de
-    réimplémenter tout ça dans la barre latérale. Retourne le chemin retenu.
+    Les clés des widgets incluent le chemin courant : elles changent à chaque
+    déplacement, ce qui réinitialise la liste au lieu de garder l'ancien choix.
+    """
+    try:
+        subs = sorted(d for d in os.listdir(cur)
+                      if os.path.isdir(os.path.join(cur, d)) and not d.startswith("."))
+    except OSError:
+        subs = []
+
+    c1, c2 = st.sidebar.columns([1, 4])
+    if c1.button("⬆", key=f"{cle}_up_{cur}", help="Dossier parent"):
+        st.session_state[cle] = os.path.dirname(cur.rstrip(os.sep)) or os.sep
+        st.rerun()
+    sel = c2.selectbox("Sous-dossiers", ["— entrer dans…"] + subs,
+                       key=f"{cle}_sub_{cur}", label_visibility="collapsed",
+                       disabled=not subs)
+    if sel != "— entrer dans…":
+        st.session_state[cle] = os.path.join(cur, sel)
+        st.rerun()
+
+
+def dossier_picker(label, cle, defaut):
+    """Choix d'un dossier, adapté à l'endroit où l'outil tourne.
+
+    En local : le Finder, qui sait déjà naviguer et créer un dossier.
+    Sur un serveur sans écran : navigation par liste, utilisable à distance.
+    Dans les deux cas, une saisie manuelle reste disponible en secours.
     """
     st.session_state.setdefault(cle, defaut)
     cur = st.session_state[cle]
 
     st.sidebar.markdown(f"**{label}**")
     st.sidebar.caption(cur.replace(HOME, "~"))
-    if st.sidebar.button("📁 Parcourir…", key=f"{cle}_browse", width="stretch"):
-        choisi = _dialogue_dossier(label, cur if os.path.isdir(cur) else HOME)
-        if choisi:
-            st.session_state[cle] = choisi
-            st.rerun()
+
+    if _dialogue_possible():
+        if st.sidebar.button("📁 Parcourir…", key=f"{cle}_browse", width="stretch"):
+            choisi = _dialogue_dossier(label, cur if os.path.isdir(cur) else HOME)
+            if choisi:
+                st.session_state[cle] = choisi
+                st.rerun()
+    else:
+        _navigation_liste(cle, cur)
 
     with st.sidebar.expander("…ou coller un chemin", expanded=False):
         saisi = st.text_input("Chemin", value="", key=f"{cle}_txt_{cur}",
