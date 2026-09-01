@@ -137,7 +137,7 @@ def dossier_picker(label, cle, defaut, creer=False):
 st.sidebar.header("Réglages")
 src = dossier_picker("📂 Photos drone (entrée)", "src_dir", DEF_SRC)
 out = dossier_picker("💾 Dossier de sortie", "out_dir", DEF_OUT, creer=True)
-stage = st.sidebar.text_input("Stade", "1mois")
+stage = st.sidebar.text_input("Stade", "1mois", "3mois")
 
 # Le stade sert au nom du fichier ET au dossier distant à la publication ; un
 # dossier de sortie d'un autre stade enverrait les photos au mauvais endroit.
