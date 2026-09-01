@@ -11,13 +11,17 @@ Lancer :
   cd ~/YamHub/yamhub.fr/decision-tool
   streamlit run crop_tool.py
 
-Réglages en haut de la barre latérale : les dossiers d'entrée et de sortie se
-choisissent par navigation (remonter, entrer dans un sous-dossier, coller un
-chemin), le dossier de sortie pouvant être créé à la volée.
+Barre latérale : le stade (1 mois / 3 mois), puis les dossiers d'entrée et de
+sortie, choisis via le Finder (bouton « Parcourir »). Le dossier de sortie suit
+le stade automatiquement.
+
+À lancer EN LOCAL uniquement : l'outil lit et écrit des dossiers de ta machine.
 """
 import os
 import re
 import glob
+import subprocess
+import sys
 
 import streamlit as st
 from PIL import Image, ImageOps
@@ -29,14 +33,38 @@ Image.MAX_IMAGE_PIXELS = None
 
 st.set_page_config(page_title="Recadrage recouvrement", layout="wide")
 
+# Cet outil lit et ecrit des dossiers de TA machine. Sur Streamlit Cloud le
+# script tourne dans un conteneur Linux distant : les photos drone n'y sont pas,
+# et tout fichier ecrit disparait au redemarrage. Autant le dire franchement
+# plutot que d'afficher un selecteur de dossiers qui ne trouvera jamais rien.
+SUR_LE_CLOUD = os.path.isdir("/mount/src")
+if SUR_LE_CLOUD:
+    st.error(
+        "**Cet outil doit tourner en local, pas sur Streamlit Cloud.**\n\n"
+        "Il recadre des photos qui sont sur ton ordinateur et ecrit le resultat "
+        "dans un dossier local. Ici le script s'execute sur un serveur distant : "
+        "il n'a acces ni a tes photos, ni a tes dossiers, et ce qu'il ecrirait "
+        "serait efface au prochain redemarrage.\n\n"
+        "Lance-le depuis ton Mac :\n"
+        "```\ncd ~/YamHub/yamhub.fr/decision-tool\nstreamlit run crop_tool.py\n```\n"
+        "Tu peux supprimer cette app dans Streamlit Cloud — seule celle qui "
+        "pointe sur `app.py` (l'outil d'aide au choix) doit y rester."
+    )
+    st.stop()
+
 # --- Chemins par défaut (modifiables dans la barre latérale) ---
 HOME = os.path.expanduser("~")
 # abspath : lancé via « streamlit run crop_tool.py », dirname(__file__) est vide.
 # Un chemin relatif casserait la navigation vers le dossier parent.
 ICI = os.path.dirname(os.path.abspath(__file__))
 DEF_SRC = os.path.join(HOME, "Downloads", "recouvrement_1mois")
-DEF_OUT = os.path.join(ICI, "data", "recouvrement_1mois")
 OUT_SIZE = 2048
+STADES = ["1mois", "3mois"]
+
+
+def defaut_sortie(stade):
+    """Dossier de sortie attendu pour un stade — celui que lit sync_photos.py."""
+    return os.path.join(ICI, "data", f"recouvrement_{stade}")
 
 
 def code_of(fn):
@@ -77,71 +105,79 @@ def scan_sources(src):
     return {c: fp for c, (s, fp) in sorted(cand.items(), key=lambda kv: int(kv[0].replace("CIRAD", "")))}
 
 
-def dossier_picker(label, cle, defaut, creer=False):
-    """Sélecteur de dossier navigable dans la barre latérale.
+def _dialogue_dossier(titre, depart):
+    """Ouvre le sélecteur de dossiers du système (Finder sur macOS).
 
-    Trois façons d'arriver au bon dossier, sans jamais taper un chemin complet :
-    remonter d'un cran, descendre dans un sous-dossier, ou coller un chemin.
-    Les clés des widgets incluent le chemin courant : elles changent à chaque
-    navigation, ce qui réinitialise la liste au lieu de garder l'ancien choix.
+    Passe par un sous-processus : tkinter exige le thread principal, or
+    Streamlit exécute le script dans un thread de travail — l'appeler
+    directement fige l'app sur macOS. Renvoie "" si l'utilisateur annule.
+    """
+    bout = (
+        "import tkinter as tk\n"
+        "from tkinter import filedialog\n"
+        "r = tk.Tk(); r.withdraw(); r.attributes('-topmost', True)\n"
+        f"print(filedialog.askdirectory(title={titre!r}, initialdir={depart!r}) or '')\n"
+    )
+    try:
+        res = subprocess.run([sys.executable, "-c", bout],
+                             capture_output=True, text=True, timeout=300)
+        return res.stdout.strip()
+    except Exception:
+        return ""
 
-    creer=True autorise un dossier qui n'existe pas encore (créé à la volée).
-    Retourne le chemin retenu.
+
+def dossier_picker(label, cle, defaut):
+    """Choix d'un dossier via le Finder, avec saisie manuelle en secours.
+
+    Le dialogue natif sait déjà naviguer et créer un dossier : inutile de
+    réimplémenter tout ça dans la barre latérale. Retourne le chemin retenu.
     """
     st.session_state.setdefault(cle, defaut)
     cur = st.session_state[cle]
 
-    with st.sidebar.expander(label, expanded=False):
-        st.caption(cur.replace(HOME, "~"))
-
-        try:
-            subs = sorted(d for d in os.listdir(cur)
-                          if os.path.isdir(os.path.join(cur, d)) and not d.startswith("."))
-        except OSError:
-            subs = []
-
-        c1, c2 = st.columns([1, 4])
-        if c1.button("⬆", key=f"{cle}_up_{cur}", help="Dossier parent"):
-            st.session_state[cle] = os.path.dirname(cur.rstrip(os.sep)) or os.sep
-            st.rerun()
-        sel = c2.selectbox("Sous-dossiers", ["— entrer dans…"] + subs,
-                           key=f"{cle}_sub_{cur}", label_visibility="collapsed",
-                           disabled=not subs)
-        if sel != "— entrer dans…":
-            st.session_state[cle] = os.path.join(cur, sel)
+    st.sidebar.markdown(f"**{label}**")
+    st.sidebar.caption(cur.replace(HOME, "~"))
+    if st.sidebar.button("📁 Parcourir…", key=f"{cle}_browse", width="stretch"):
+        choisi = _dialogue_dossier(label, cur if os.path.isdir(cur) else HOME)
+        if choisi:
+            st.session_state[cle] = choisi
             st.rerun()
 
-        saisi = st.text_input("ou coller un chemin", value="", key=f"{cle}_txt_{cur}",
+    with st.sidebar.expander("…ou coller un chemin", expanded=False):
+        saisi = st.text_input("Chemin", value="", key=f"{cle}_txt_{cur}",
                               placeholder=cur, label_visibility="collapsed")
         if saisi:
             cible = os.path.abspath(os.path.expanduser(saisi.strip()))
-            if os.path.isdir(cible) or (creer and os.path.isdir(os.path.dirname(cible))):
+            # dossier inexistant accepté si son parent existe : il sera créé.
+            if os.path.isdir(cible) or os.path.isdir(os.path.dirname(cible)):
                 st.session_state[cle] = cible
                 st.rerun()
             else:
                 st.warning("Dossier introuvable.")
-
-        if creer:
-            nouveau = st.text_input("Créer un sous-dossier ici", value="",
-                                    key=f"{cle}_new_{cur}", placeholder="nom du dossier")
-            if nouveau:
-                cible = os.path.join(cur, nouveau.strip())
-                os.makedirs(cible, exist_ok=True)
-                st.session_state[cle] = cible
-                st.rerun()
 
     return st.session_state[cle]
 
 
 # ----------------------------- Barre latérale -----------------------------
 st.sidebar.header("Réglages")
-src = dossier_picker("📂 Photos drone (entrée)", "src_dir", DEF_SRC)
-out = dossier_picker("💾 Dossier de sortie", "out_dir", DEF_OUT, creer=True)
-stage = st.sidebar.text_input("Stade", "1mois", "3mois")
 
-# Le stade sert au nom du fichier ET au dossier distant à la publication ; un
-# dossier de sortie d'un autre stade enverrait les photos au mauvais endroit.
-if stage and stage not in os.path.basename(out):
+stage = st.sidebar.radio(
+    "Stade", STADES, horizontal=True,
+    help="Sert au nom du fichier (CIRADn_<stade>.jpg) et au dossier de "
+         "publication sur yamhub.fr.")
+
+# Le dossier de sortie suit le stade tant que tu n'en as pas choisi un toi-même :
+# sans ça, passer en 3 mois écrirait dans le dossier des 1 mois sans rien dire.
+_prec = st.session_state.get("_stade_precedent")
+if _prec != stage:
+    if _prec is None or st.session_state.get("out_dir") == defaut_sortie(_prec):
+        st.session_state["out_dir"] = defaut_sortie(stage)
+    st.session_state["_stade_precedent"] = stage
+
+src = dossier_picker("📂 Photos drone (entrée)", "src_dir", DEF_SRC)
+out = dossier_picker("💾 Dossier de sortie", "out_dir", defaut_sortie(stage))
+
+if stage not in os.path.basename(out):
     st.sidebar.caption(f"⚠️ Le dossier de sortie ne mentionne pas « {stage} » — "
                        "vérifie qu'il correspond bien au stade.")
 free = st.sidebar.checkbox("Proportions libres", value=False,
