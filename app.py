@@ -13,7 +13,9 @@ Lancer :  streamlit run app.py
 
 import os
 import pandas as pd
+import plotly.express as px
 import streamlit as st
+import streamlit.components.v1 as components
 
 import fiche_html
 import i18n
@@ -475,42 +477,182 @@ if not mode_detaille:
 # MODE DÉTAILLÉ                                                                #
 # =========================================================================== #
 else:
+    # ===================== MODE TECHNICIEN =====================
+    # Filtres groupés par thème, nuage interactif (survol + clic), tableau
+    # configurable, export CSV et fiche téléchargeable.
+
+    def _plage(col, label, pas=1.0, unite=""):
+        """Curseur min/max sur une colonne numérique. None si la colonne manque."""
+        if col not in df.columns or df[col].dropna().empty:
+            return None
+        lo, hi = float(df[col].min()), float(df[col].max())
+        if lo == hi:
+            return None
+        return st.slider(label, lo, hi, (lo, hi), pas)
+
     with st.sidebar:
         st.header(i18n.t("filtres", LANG))
-        f_esp = st.multiselect(i18n.t("espece", LANG), sorted(df["espece"].dropna().unique()))
-        f_cls = st.multiselect(i18n.t("profil_gxe", LANG),
-                               sorted(df["classe_rendement"].dropna().unique()),
-                               format_func=lambda c: i18n.badge(c, LANG))
-        f_col = st.multiselect(i18n.t("couleur_chair", LANG),
-                               sorted(df["CCCTCT"].dropna().unique()),
-                               format_func=lambda c: i18n.val(c, LANG))
+        recherche = st.text_input(i18n.t("recherche", LANG), "",
+                                  placeholder="CIRAD244, NERON…")
 
+        with st.expander(i18n.t("filtres_identite", LANG), expanded=True):
+            f_esp = st.multiselect(i18n.t("espece", LANG),
+                                   sorted(df["espece"].dropna().unique()))
+            f_pays = st.multiselect(
+                i18n.t("pays_origine", LANG),
+                sorted(df["pays_origine"].dropna().unique())
+                if "pays_origine" in df.columns else [])
+
+        with st.expander(i18n.t("filtres_rendement", LANG), expanded=True):
+            f_cls = st.multiselect(i18n.t("profil_gxe", LANG),
+                                   sorted(df["classe_rendement"].dropna().unique()),
+                                   format_func=lambda c: i18n.badge(c, LANG))
+            p_rdt = _plage("rendement_perf", i18n.t("rendement_plage", LANG))
+            p_cv = _plage("rendement_cv", i18n.t("cv_plage", LANG))
+            n_min = 0
+            if "rendement_n_env" in df.columns and df["rendement_n_env"].notna().any():
+                n_min = st.slider(i18n.t("n_env_min", LANG), 0,
+                                  int(df["rendement_n_env"].max()), 0)
+
+        with st.expander(i18n.t("filtres_sanitaire", LANG), expanded=False):
+            p_anthr = _plage("anthracnose_perf", i18n.t("anthracnose_max", LANG))
+            f_afm = st.multiselect("AFM", sorted(df["AFM"].dropna().unique())
+                                   if "AFM" in df.columns else [],
+                                   format_func=lambda v: i18n.val(v, LANG))
+
+        with st.expander(i18n.t("filtres_qualite", LANG), expanded=False):
+            f_col = st.multiselect(i18n.t("couleur_chair", LANG),
+                                   sorted(df["CCCTCT"].dropna().unique()),
+                                   format_func=lambda c: i18n.val(c, LANG))
+            f_forme = st.multiselect(i18n.t("forme_tubercule", LANG),
+                                     sorted(df["FT"].dropna().unique())
+                                     if "FT" in df.columns else [],
+                                     format_func=lambda c: i18n.val(c, LANG))
+            f_tf = st.multiselect(i18n.t("texture_feuille", LANG),
+                                  sorted(df["TF"].dropna().unique())
+                                  if "TF" in df.columns else [],
+                                  format_func=lambda c: i18n.val(c, LANG))
+            f_bq = st.multiselect(i18n.t("qualite_bouillie_f", LANG),
+                                  [v for v in ["High", "Medium", "Low"]
+                                   if "BOILED_Q" in df.columns
+                                   and v in set(df["BOILED_Q"].dropna())],
+                                  format_func=lambda c: i18n.val(c, LANG))
+            p_ms = _plage("TMS_BLUP", i18n.t("ms_min", LANG))
+
+    # ---------------------------- filtrage ----------------------------
     res = df.copy()
-    if f_esp:
-        res = res[res["espece"].isin(f_esp)]
-    if f_cls:
-        res = res[res["classe_rendement"].isin(f_cls)]
-    if f_col:
-        res = res[res["CCCTCT"].isin(f_col)]
+    if recherche.strip():
+        q = recherche.strip().lower()
+        champs = [c for c in ("nom", "nom_accession", "code_plantation", "code_cirad")
+                  if c in res.columns]
+        masque = False
+        for c in champs:
+            masque = masque | res[c].astype(str).str.lower().str.contains(q, na=False)
+        res = res[masque]
+    for col, sel in (("espece", f_esp), ("pays_origine", f_pays),
+                     ("classe_rendement", f_cls), ("CCCTCT", f_col),
+                     ("FT", f_forme), ("TF", f_tf), ("BOILED_Q", f_bq),
+                     ("AFM", f_afm)):
+        if sel and col in res.columns:
+            res = res[res[col].isin(sel)]
+    for col, plage in (("rendement_perf", p_rdt), ("rendement_cv", p_cv),
+                       ("anthracnose_perf", p_anthr), ("TMS_BLUP", p_ms)):
+        if plage and col in res.columns:
+            lo, hi = plage
+            res = res[res[col].isna() | res[col].between(lo, hi)]
+    if n_min and "rendement_n_env" in res.columns:
+        res = res[res["rendement_n_env"].fillna(0) >= n_min]
 
+    st.caption(f"{len(res)} {i18n.t('resultats', LANG)} / {len(df)}")
+
+    # ------------------------- nuage interactif -------------------------
     st.subheader(i18n.t("analyse_stabilite", LANG))
-    _stab = stab_png(LANG)
-    if os.path.exists(_stab):
-        st.image(_stab, width="stretch")
+    st.caption(i18n.t("nuage_aide", LANG))
+    nuage = res.dropna(subset=["rendement_perf", "rendement_cv"]).copy()
+    if len(nuage):
+        nuage["variete"] = nuage.apply(vname, axis=1)
+        nuage["profil"] = nuage["classe_rendement"].map(
+            lambda c: i18n.badge(c, LANG) if pd.notna(c) else "—")
+        fig = px.scatter(
+            nuage, x="rendement_perf", y="rendement_cv", color="profil",
+            custom_data=["code_plantation"],
+            color_discrete_map={i18n.badge(k, LANG): v
+                                for k, v in BADGE_COULEUR.items()},
+            hover_name="variete",
+            hover_data={"rendement_perf": ":.1f", "rendement_cv": ":.0f",
+                        "rendement_n_env": True, "profil": False},
+            labels={"rendement_perf": i18n.t("axe_rendement", LANG),
+                    "rendement_cv": i18n.t("axe_cv", LANG),
+                    "rendement_n_env": i18n.t("essais_col", LANG),
+                    "profil": i18n.t("profil_gxe", LANG)})
+        # CV faible en haut : un point haut = une variété plus régulière.
+        fig.update_yaxes(autorange="reversed")
+        fig.update_traces(marker=dict(size=9, opacity=0.75))
+        fig.update_layout(height=520, legend_title_text="",
+                          margin=dict(l=10, r=10, t=10, b=10))
+        # use_container_width, pas width= : cette version transmet les kwargs
+        # inconnus à la config Plotly et affiche un avertissement.
+        evt = st.plotly_chart(fig, use_container_width=True, key="nuage",
+                              on_select="rerun", selection_mode="points")
+        pts = (evt.get("selection", {}) or {}).get("points", []) if evt else []
+        if pts:
+            # On ne réécrit qu'au changement : sinon le clic reprendrait la main
+            # sur le menu déroulant à chaque réexécution.
+            choisi = pts[0]["customdata"][0]
+            if choisi != st.session_state.get("tech_sel"):
+                st.session_state["tech_sel"] = choisi
+                st.session_state["_aller_au_detail"] = True
+    else:
+        st.info(i18n.t("aucune_variete_filtres", LANG))
 
-    st.subheader(f'{i18n.t("varietes", LANG)} ({len(res)})')
-    cols_show = [c for c in ["nom", "nom_accession", "espece", "rendement_perf",
-                             "rendement_cv", "classe_rendement", "anthracnose_perf",
-                             "BOILED_Q", "CCCTCT", "FF", "TF"] if c in res.columns]
-    st.dataframe(res[cols_show].reset_index(drop=True), width="stretch", height=380)
+    # ----------------------------- tableau -----------------------------
+    st.subheader(i18n.t("tableau", LANG))
+    dispo = [c for c in ["code_plantation", "nom", "nom_accession", "espece",
+                         "pays_origine", "rendement_perf", "rendement_cv",
+                         "rendement_n_env", "classe_rendement", "anthracnose_perf",
+                         "TMS_BLUP", "BOILED_Q", "CCCTCT", "FT", "FF", "TF"]
+             if c in res.columns]
+    cols_show = st.multiselect(i18n.t("colonnes", LANG), dispo,
+                               default=dispo[:10])
+    if cols_show:
+        st.dataframe(res[cols_show].reset_index(drop=True),
+                     width="stretch", height=340)
+        st.download_button(i18n.t("exporter_csv", LANG),
+                           data=res[cols_show].to_csv(index=False).encode("utf-8"),
+                           file_name="varietes_selection.csv", mime="text/csv")
 
+    # ------------------------ détail + fiche ------------------------
     st.divider()
-    st.subheader(i18n.t("fiche_variétale", LANG))
+    st.markdown('<div id="detail-variete"></div>', unsafe_allow_html=True)
+    st.subheader(i18n.t("detail_variete", LANG))
+    if st.session_state.pop("_aller_au_detail", False):
+        # Le composant vit dans une iframe : on remonte au document parent pour
+        # faire défiler la page jusqu'à l'ancre posée juste au-dessus.
+        components.html(
+            "<script>const a = window.parent.document.getElementById"
+            "('detail-variete'); if (a) a.scrollIntoView({behavior:'smooth',"
+            "block:'start'});</script>", height=0)
     if len(res):
         options = res["code_plantation"].tolist()
-        choix = st.selectbox(i18n.t("choisir_variete", LANG), options,
-                             format_func=lambda cp: vname(res[res["code_plantation"] == cp].iloc[0]))
+        prec = st.session_state.get("tech_sel")
+        idx = options.index(prec) if prec in options else 0
+        choix = st.selectbox(
+            i18n.t("choisir_variete", LANG), options, index=idx,
+            format_func=lambda cp: vname(res[res["code_plantation"] == cp].iloc[0]))
+        st.session_state["tech_sel"] = choix
         row = res[res["code_plantation"] == choix].iloc[0]
+
+        c1, c2 = st.columns([2, 3])
+        with c1:
+            st.markdown(f"### {vname(row)}")
+            st.caption(f"_{row['espece']}_" +
+                       (f" · {row['pays_origine']}"
+                        if pd.notna(row.get("pays_origine")) else ""))
+            badge(row)
+        with c2:
+            for k in CRIT:
+                st.write(f"{i18n.crit(k, LANG)} : {stars(None, k, row['_idx'])}")
+
         nacc = row.get("nom_accession")
         subph = photos[photos["variete_name"] == nacc] if pd.notna(nacc) else photos.iloc[0:0]
         if len(subph):
@@ -518,10 +660,12 @@ else:
             for i, (_, pr) in enumerate(subph.head(4).iterrows()):
                 with pcols[i]:
                     st.image(UPLOADS_URL + str(pr["photo_bytea"]),
-                             caption=pr["description"], width="stretch")
+                             caption=i18n.val(pr["description"], LANG),
+                             width="stretch")
         elif tuber_photo(row.get("code_plantation")):
             st.image(tuber_photo(row.get("code_plantation")),
                      caption=i18n.t("tubercule", LANG), width=320)
+
         fiche_btn(choix, i18n.t("telecharger_fiche_off", LANG))
     else:
         st.info(i18n.t("aucune_variete_filtres", LANG))

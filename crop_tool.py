@@ -7,15 +7,6 @@ Pour chaque variété : affiche la photo drone, tu ajustes la boîte de recadrag
 Le résultat est écrit CIRAD{n}_<stade>.jpg dans le dossier de sortie, prêt pour
 la fiche variétale.
 
-Lancer :
-  cd ~/YamHub/yamhub.fr/decision-tool
-  streamlit run crop_tool.py
-
-Barre latérale : le stade (1 mois / 3 mois), puis les dossiers d'entrée et de
-sortie, choisis via le Finder (bouton « Parcourir »). Le dossier de sortie suit
-le stade automatiquement.
-
-À lancer EN LOCAL uniquement : l'outil lit et écrit des dossiers de ta machine.
 """
 import os
 import re
