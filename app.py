@@ -16,6 +16,7 @@ import pandas as pd
 import streamlit as st
 
 import fiche_html
+import i18n
 import debouches as _deb
 
 
@@ -38,7 +39,14 @@ if _MB:
 
 DATA = os.path.join(os.path.dirname(__file__), "data", "tool_data.csv")
 PHOTOS = os.path.join(os.path.dirname(__file__), "data", "varietes_photos.csv")
-STAB_PNG = os.path.join(os.path.dirname(__file__), "data", "stabilite_rendement.png")
+def stab_png(lang_code):
+    """Graphique de stabilité dans la langue voulue ; repli sur le français si
+    la version anglaise n'a pas encore été générée (analyse_stabilite.py)."""
+    base = os.path.join(os.path.dirname(__file__), "data", "stabilite_rendement")
+    p_en = f"{base}_en.png"
+    if lang_code == "en" and os.path.exists(p_en):
+        return p_en
+    return f"{base}.png"
 UPLOADS_URL = "https://yamhub.fr/adminPanel/uploads/"
 
 st.set_page_config(page_title="YamHub — Choix variétal",
@@ -61,10 +69,18 @@ df = load()
 photos = load_photos()
 
 
-@st.cache_data(show_spinner="Génération de la fiche…")
-def make_fiche(code_plantation):
+def lang():
+    """Langue courante. Lue dans la session : les fonctions ci-dessous sont
+    définies avant que le sélecteur ne soit affiché."""
+    return st.session_state.get("lang", i18n.DEFAUT)
+
+
+@st.cache_data(show_spinner="…")
+def make_fiche(code_plantation, lang_code):
+    """lang_code fait partie de la signature : sans lui, le cache renverrait la
+    fiche française après un passage en anglais."""
     r = df[df["code_plantation"] == code_plantation].iloc[0]
-    return fiche_html.generate(r, photos, df)
+    return fiche_html.generate(r, photos, df, lang=lang_code)
 
 
 # --------------------------------------------------------------------------- #
@@ -131,12 +147,12 @@ CARTE_CRIT = {
     "Technicien": ["Récolte", "Résistance", "Goût"],
 }
 
-# Profil GxE -> libellé court + couleur (badge)
-BADGE = {
-    "performante & stable": ("Productive et régulière", "#278a3c"),
-    "performante & spécialisée": ("Productive mais variable", "#e0a200"),
-    "modeste & stable": ("Régulière, rendement modéré", "#6fa8dc"),
-    "modeste & spécialisée": ("Rendement modéré et variable", "#cc4125"),
+# Profil GxE -> couleur du badge ; le libellé, lui, vient de i18n.badge().
+BADGE_COULEUR = {
+    "performante & stable": "#278a3c",
+    "performante & spécialisée": "#e0a200",
+    "modeste & stable": "#6fa8dc",
+    "modeste & spécialisée": "#cc4125",
 }
 
 
@@ -201,57 +217,75 @@ def first_photo(row):
 
 def badge(row):
     cl = row.get("classe_rendement")
-    if pd.notna(cl) and cl in BADGE:
-        label, color = BADGE[cl]
+    if pd.notna(cl) and cl in BADGE_COULEUR:
+        label, color = i18n.badge(cl, lang()), BADGE_COULEUR[cl]
         st.markdown(f"<span style='background:{color};color:#fff;padding:2px 8px;"
                     f"border-radius:10px;font-size:0.8em'>{label}</span>",
                     unsafe_allow_html=True)
 
 
-def fiche_btn(code_plantation, label="Télécharger la fiche"):
+def fiche_btn(code_plantation, label=None):
+    lg = lang()
     try:
-        st.download_button(label, data=make_fiche(code_plantation),
-                           file_name=f"fiche_{code_plantation}.pdf",
+        st.download_button(label or i18n.t("telecharger_fiche", lg),
+                           data=make_fiche(code_plantation, lg),
+                           file_name=f"fiche_{code_plantation}_{lg}.pdf",
                            mime="application/pdf", key=f"dl_{code_plantation}")
     except Exception as e:
-        st.error(f"Erreur génération de la fiche : {e}")
+        st.error(f'{i18n.t("erreur_fiche", lg)} {e}')
 
 
 # =========================================================================== #
-st.title("Quelle variété d'igname choisir ?")
-mode_detaille = st.toggle("Mode détaillé (pour techniciens)", value=False)
+# Langue : bouton visible en haut à droite, mémorisé pour toute la session.
+st.session_state.setdefault("lang", i18n.DEFAUT)
+_ct, _cl = st.columns([5, 1])
+with _cl:
+    st.session_state["lang"] = st.segmented_control(
+        i18n.t("langue", st.session_state["lang"]),
+        list(i18n.LANGUES), format_func=lambda c: i18n.LANGUES[c],
+        default=st.session_state["lang"], label_visibility="collapsed") or st.session_state["lang"]
+LANG = st.session_state["lang"]
+
+with _ct:
+    st.title(i18n.t("titre_app", LANG))
+mode_detaille = st.toggle(i18n.t("mode_detaille", LANG), value=False)
 st.divider()
 
 # =========================================================================== #
 # MODE SIMPLE                                                                  #
 # =========================================================================== #
 if not mode_detaille:
-    st.subheader("1. Vous êtes :")
-    profil = st.radio("Vous êtes :", list(PROFILS.keys()),
-                      horizontal=True, label_visibility="collapsed")
+    st.subheader(i18n.t("etape1", LANG))
+    # Les clés restent en français : elles indexent PROFILS et CARTE_CRIT.
+    profil = st.radio("profil", list(PROFILS.keys()), horizontal=True,
+                      format_func=lambda k: i18n.profil(k, LANG),
+                      label_visibility="collapsed")
     weights = PROFILS[profil]
 
-    with st.expander("Sites d'évaluation en Guadeloupe (Roujol, Godet)", expanded=False):
+    with st.expander(i18n.t("sites_carte", LANG), expanded=False):
         _sites = pd.DataFrame({"lat": [16.19, 16.36], "lon": [-61.585, -61.44]})
         st.map(_sites, latitude="lat", longitude="lon", size=500, color="#c0392b", zoom=9.3)
 
-    st.subheader("2. Ce que vous cherchez (facultatif) :")
+    st.subheader(i18n.t("etape2", LANG))
     data = df.copy()
     c1, c2 = st.columns(2)
 
     if profil == "Producteur":
         with c1:
             rmax = float(df["rendement_perf"].max())
-            rmin = st.slider("Rendement minimum (t/ha)", 0.0, round(rmax, 0), 0.0, 1.0)
-            anthr_only = st.toggle("Résistante à l'anthracnose")
-            rouille_only = st.toggle("Résistante à la rouille")
-            fourmi_only = st.toggle("Pas d'attaque de fourmis")
+            rmin = st.slider(i18n.t("rendement_min", LANG), 0.0, round(rmax, 0), 0.0, 1.0)
+            anthr_only = st.toggle(i18n.t("res_anthracnose", LANG))
+            rouille_only = st.toggle(i18n.t("res_rouille", LANG))
+            fourmi_only = st.toggle(i18n.t("pas_fourmis", LANG))
         with c2:
-            cycle_choix = st.selectbox("Durée du cycle (levée → sénescence)",
-                ["Peu importe", "Court (< 6 mois)", "Long (6-9 mois)", "Très long (> 9 mois)"])
+            # Clés stables : le test plus bas ne doit pas dépendre de la langue.
+            cycle_choix = st.selectbox(
+                i18n.t("duree_cycle", LANG),
+                ["peu_importe", "cycle_court", "cycle_long", "cycle_tres_long"],
+                format_func=lambda k: i18n.t(k, LANG))
             formes = sorted(df["FT"].dropna().unique()) if "FT" in df.columns else []
-            f_forme = st.multiselect("Forme du tubercule", formes)
-            conserv_only = st.toggle("Bonne conservation")
+            f_forme = st.multiselect(i18n.t("forme_tubercule", LANG), formes)
+            conserv_only = st.toggle(i18n.t("bonne_conservation", LANG))
         if rmin > 0:
             data = data[data["rendement_perf"].fillna(-1) >= rmin]
         if anthr_only:
@@ -260,11 +294,11 @@ if not mode_detaille:
             data = data[data[ROU_COL] <= df[ROU_COL].median()]
         if fourmi_only:                              # pas d'attaque = AFM absent
             data = data[data["AFM"].isin(["Absent", "Absence"])]
-        if cycle_choix != "Peu importe" and "S_BLUP" in data.columns:
+        if cycle_choix != "peu_importe" and "S_BLUP" in data.columns:
             _m = data["S_BLUP"] / 30            # sénescence BLUP -> mois
-            if cycle_choix.startswith("Court"):
+            if cycle_choix == "cycle_court":
                 data = data[_m < 6]
-            elif cycle_choix.startswith("Long"):
+            elif cycle_choix == "cycle_long":
                 data = data[(_m >= 6) & (_m <= 9)]
             else:
                 data = data[_m > 9]
@@ -275,16 +309,19 @@ if not mode_detaille:
 
     elif profil == "Agrotransformateur":
         with c1:
-            couleurs = ["Peu importe"] + [c for c in sorted(df["CCCTCT"].dropna().unique())
-                                          if not str(c).replace(".", "").isdigit()]
-            col = st.selectbox("Couleur de la chair", couleurs)
-            gout_only = st.toggle("Bonne qualité bouillie")
+            # None = « peu importe » : une valeur neutre, jamais traduite.
+            couleurs = [None] + [c for c in sorted(df["CCCTCT"].dropna().unique())
+                                 if not str(c).replace(".", "").isdigit()]
+            col = st.selectbox(i18n.t("couleur_chair", LANG), couleurs,
+                               format_func=lambda c: i18n.t("peu_importe", LANG)
+                               if c is None else i18n.val(c, LANG))
+            gout_only = st.toggle(i18n.t("bonne_qualite_bouillie", LANG))
         with c2:
-            ms_only = st.toggle("Matière sèche élevée")
-            gros_only = st.toggle("Gros calibre (>2 kg fréquent)")
+            ms_only = st.toggle(i18n.t("ms_elevee", LANG))
+            gros_only = st.toggle(i18n.t("gros_calibre", LANG))
             formes = sorted(df["FT"].dropna().unique()) if "FT" in df.columns else []
-            f_forme = st.multiselect("Forme du tubercule", formes, key="forme_agro")
-        if col != "Peu importe":
+            f_forme = st.multiselect(i18n.t("forme_tubercule", LANG), formes, key="forme_agro")
+        if col is not None:
             data = data[data["CCCTCT"] == col]
         if gout_only:
             data = data[data["BOILED_Q"].isin(["High", "Medium"])]
@@ -298,14 +335,13 @@ if not mode_detaille:
     else:  # Technicien : accès à tous les critères
         with c1:
             rmax = float(df["rendement_perf"].max())
-            rmin = st.slider("Rendement minimum (t/ha)", 0.0, round(rmax, 0), 0.0, 1.0)
-            resist_only = st.toggle("Résistante aux maladies")
-            gout_only = st.toggle("Bon goût")
+            rmin = st.slider(i18n.t("rendement_min", LANG), 0.0, round(rmax, 0), 0.0, 1.0)
+            resist_only = st.toggle(i18n.t("res_maladies", LANG))
+            gout_only = st.toggle(i18n.t("bon_gout", LANG))
         with c2:
-            ms_only = st.toggle("Matière sèche élevée")
-            conserv_only = st.toggle("Bonne conservation")
-        st.caption("Pour l'analyse complète (tous les traits, tableau, graphe de "
-                   "stabilité), utilise le **mode détaillé** en haut de page.")
+            ms_only = st.toggle(i18n.t("ms_elevee", LANG))
+            conserv_only = st.toggle(i18n.t("bonne_conservation", LANG))
+        st.caption(i18n.t("astuce_detaille", LANG))
         if rmin > 0:
             data = data[data["rendement_perf"].fillna(-1) >= rmin]
         if resist_only:
@@ -323,10 +359,10 @@ if not mode_detaille:
     data = data[data["_score"].notna() & (data["_cov"] >= 0.5)]
     data = data.sort_values(["_score", "_cov"], ascending=False)
 
-    st.subheader("3. Variétés conseillées pour vous :")
-    nshow = st.slider("Nombre de variétés à afficher", 4, 40, 12, 2)
+    st.subheader(i18n.t("etape3", LANG))
+    nshow = st.slider(i18n.t("nb_varietes", LANG), 4, 40, 12, 2)
     if not len(data):
-        st.info("Aucune variété ne correspond. Essayez d'enlever un filtre.")
+        st.info(i18n.t("aucune_variete", LANG))
     else:
         crit_cartes = CARTE_CRIT[profil]
         top = data.head(nshow).reset_index(drop=True)
@@ -350,26 +386,30 @@ if not mode_detaille:
                                    (f" · {r['pays_origine']}" if pd.notna(r.get("pays_origine")) else ""))
                         badge(r)
                         for k in crit_cartes:
-                            st.write(f"{k} : {stars(CRIT[k](r))}")
-                        if st.button("Voir la fiche", key=f"f_{i + j}",
+                            st.write(f"{i18n.crit(k, LANG)} : {stars(CRIT[k](r))}")
+                        if st.button(i18n.t("voir_fiche", LANG), key=f"f_{i + j}",
                                      width="stretch"):
                             st.session_state["fiche_sel"] = r["code_plantation"]
                         if st.session_state.get("fiche_sel") == r["code_plantation"]:
-                            fiche_btn(r["code_plantation"], "Télécharger la fiche")
+                            fiche_btn(r["code_plantation"],
+                                      i18n.t("telecharger_fiche", LANG))
 
     st.divider()
-    st.caption("★ = plus il y a d'étoiles, mieux c'est. Le badge coloré indique la "
-               "régularité de la variété d'un milieu/année à l'autre (analyse Roujol/Godet).")
+    st.caption(i18n.t("legende_etoiles", LANG))
 
 # =========================================================================== #
 # MODE DÉTAILLÉ                                                                #
 # =========================================================================== #
 else:
     with st.sidebar:
-        st.header("Filtres")
-        f_esp = st.multiselect("Espèce", sorted(df["espece"].dropna().unique()))
-        f_cls = st.multiselect("Profil GxE", sorted(df["classe_rendement"].dropna().unique()))
-        f_col = st.multiselect("Couleur de la chair", sorted(df["CCCTCT"].dropna().unique()))
+        st.header(i18n.t("filtres", LANG))
+        f_esp = st.multiselect(i18n.t("espece", LANG), sorted(df["espece"].dropna().unique()))
+        f_cls = st.multiselect(i18n.t("profil_gxe", LANG),
+                               sorted(df["classe_rendement"].dropna().unique()),
+                               format_func=lambda c: i18n.badge(c, LANG))
+        f_col = st.multiselect(i18n.t("couleur_chair", LANG),
+                               sorted(df["CCCTCT"].dropna().unique()),
+                               format_func=lambda c: i18n.val(c, LANG))
 
     res = df.copy()
     if f_esp:
@@ -379,21 +419,22 @@ else:
     if f_col:
         res = res[res["CCCTCT"].isin(f_col)]
 
-    st.subheader("Analyse de stabilité (rendement, Roujol × Godet × années)")
-    if os.path.exists(STAB_PNG):
-        st.image(STAB_PNG, width="stretch")
+    st.subheader(i18n.t("analyse_stabilite", LANG))
+    _stab = stab_png(LANG)
+    if os.path.exists(_stab):
+        st.image(_stab, width="stretch")
 
-    st.subheader(f"Variétés ({len(res)})")
+    st.subheader(f'{i18n.t("varietes", LANG)} ({len(res)})')
     cols_show = [c for c in ["nom", "nom_accession", "espece", "rendement_perf",
                              "rendement_cv", "classe_rendement", "anthracnose_perf",
                              "BOILED_Q", "CCCTCT", "FF", "TF"] if c in res.columns]
     st.dataframe(res[cols_show].reset_index(drop=True), width="stretch", height=380)
 
     st.divider()
-    st.subheader("Fiche variétale")
+    st.subheader(i18n.t("fiche_variétale", LANG))
     if len(res):
         options = res["code_plantation"].tolist()
-        choix = st.selectbox("Choisir une variété", options,
+        choix = st.selectbox(i18n.t("choisir_variete", LANG), options,
                              format_func=lambda cp: vname(res[res["code_plantation"] == cp].iloc[0]))
         row = res[res["code_plantation"] == choix].iloc[0]
         nacc = row.get("nom_accession")
@@ -406,7 +447,7 @@ else:
                              caption=pr["description"], width="stretch")
         elif tuber_local(row.get("code_plantation")):
             st.image(tuber_local(row.get("code_plantation")),
-                     caption="Tubercule", width=320)
-        fiche_btn(choix, "Télécharger la fiche variétale (format officiel)")
+                     caption=i18n.t("tubercule", LANG), width=320)
+        fiche_btn(choix, i18n.t("telecharger_fiche_off", LANG))
     else:
-        st.info("Aucune variété ne correspond aux filtres.")
+        st.info(i18n.t("aucune_variete_filtres", LANG))

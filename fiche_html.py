@@ -15,6 +15,8 @@ import os
 
 import pandas as pd
 
+import i18n
+
 import debouches as _deb
 
 try:
@@ -46,13 +48,19 @@ def _mapbox_token():
     return os.environ.get("MAPBOX_TOKEN", "")
 
 
-def _v(row, code, suffix=""):
+def _v(row, code, suffix="", lang=i18n.DEFAUT):
+    """Valeur formatée d'un descripteur, traduite si c'est du texte.
+
+    Les valeurs de la base sont saisies en français (« Granuleux », « Violet
+    clair »…) : sans ce passage par i18n.val, la fiche anglaise afficherait des
+    libellés anglais avec des valeurs françaises.
+    """
     v = row.get(code)
     if pd.isna(v):
         return ND
     if isinstance(v, float):
         return f"{round(v, 1):g}{suffix}"
-    return f"{v}{suffix}"
+    return f"{i18n.val(str(v), lang)}{suffix}"
 
 
 def _photo_url(photos, acc, desc):
@@ -62,56 +70,56 @@ def _photo_url(photos, acc, desc):
     return UPLOADS_URL + str(r.iloc[0]["photo_bytea"]) if len(r) else None
 
 
-def _points_forts(row):
+def _points_forts(row, lang=i18n.DEFAUT):
     """Points forts déduits des données mesurées (min 2, max 5)."""
+    T = lambda k: i18n.t(k, lang)
     pts = []
     cls = str(row.get("classe_rendement")).lower() if pd.notna(row.get("classe_rendement")) else ""
     rp = row.get("rendement_perf")
     if pd.notna(rp) and float(rp) >= 35:
-        pts.append("Rendement élevé")
+        pts.append(T("pf_rendement_eleve"))
     elif pd.notna(rp) and float(rp) >= 25:
-        pts.append("Bon rendement")
+        pts.append(T("pf_bon_rendement"))
     elif "performante" in cls:
-        pts.append("Bon rendement")
+        pts.append(T("pf_bon_rendement"))
     if "stable" in cls:
-        pts.append("Rendement stable")
+        pts.append(T("pf_rendement_stable"))
     au, rv = row.get("anthracnose_perf"), row.get("R_AUDPC_GOD_25_26")
     res = []
     if pd.notna(au) and float(au) < 35:
-        res.append("à l'anthracnose")
+        res.append(T("a_anthracnose"))
     if pd.notna(rv) and float(rv) < 35:
-        res.append("à la rouille")
+        res.append(T("a_rouille"))
     if res:
-        pts.append("Tolérance " + " et ".join(res))
+        pts.append(T("tolerance") + f' {T("et")} '.join(res))
     bq = row.get("BOILED_Q")
     if bq == "High":
-        pts.append("Bonne qualité à la cuisson")
+        pts.append(T("pf_bonne_cuisson"))
     elif bq == "Medium":
-        pts.append("Qualité à la cuisson correcte")
+        pts.append(T("pf_cuisson_correcte"))
     pt = row.get("PTS1M")
     if pt == "Absent":
-        pts.append("Pas de pourriture au stockage (1 mois)")
+        pts.append(T("pf_pas_pourriture"))
     elif pt == "Faible":
-        pts.append("Faible pourriture au stockage (1 mois)")
+        pts.append(T("pf_faible_pourriture"))
     if row.get("FARMER_A") == "High":
-        pts.append("Appréciée des agriculteurs")
+        pts.append(T("pf_appreciee"))
     tms = row.get("TMS_BLUP")
     if pd.notna(tms):
         v = float(tms); v = v * 100 if v <= 1 else v
         if v >= 32:
-            pts.append("Matière sèche élevée")
+            pts.append(T("pf_ms_elevee"))
     pm = row.get("poids_moyen_g")
     if pd.notna(pm) and float(pm) >= 1500:
-        pts.append("Gros tubercules")
-    for extra in ["Adaptée aux conditions de la Guadeloupe",
-                  "Évaluée en stations expérimentales (Roujol, Godet)"]:
+        pts.append(T("pf_gros_tubercules"))
+    for extra in [T("pf_adaptee"), T("evaluee_stations")]:
         if len(pts) >= 2:
             break
         pts.append(extra)
     return pts[:4]
 
 
-def _chart_sites(row):
+def _chart_sites(row, lang=i18n.DEFAUT):
     """Barres du rendement par site x année (les données ne couvrent que Roujol/Godet)."""
     if not HAS_MPL:
         return None
@@ -136,7 +144,7 @@ def _chart_sites(row):
     fig, ax = plt.subplots(figsize=(6, 2.6))
     ax.bar(labels, vals, color=colors, width=0.6)
     ax.set_ylabel("t/ha", fontsize=9)
-    ax.set_title("Rendement potentiel par site et année", fontsize=10, color=PURPLE)
+    ax.set_title(i18n.t("graph_titre", lang), fontsize=10, color=PURPLE)
     for i, v in enumerate(vals):
         ax.text(i, v + 0.5, f"{v:.0f}", ha="center", fontsize=9)
     ax.spines[["top", "right"]].set_visible(False)
@@ -296,18 +304,20 @@ def _recouv_tag(code, stage, h=150):
     return ""
 
 
-def _recouv_block(code):
+def _recouv_block(code, lang=i18n.DEFAUT):
     """Bloc HTML des photos de recouvrement disponibles (1 mois, 3 mois)."""
-    avail = [(s, l) for s, l in [("1mois", "1 mois"), ("3mois", "3 mois")]
+    avail = [(s, l) for s, l in [("1mois", i18n.t("mois_1", lang)),
+                                 ("3mois", i18n.t("mois_3", lang))]
              if _recouv_tag(code, s)]
     if not avail:
-        return '<div class="expl">Photo de recouvrement à venir.</div>'
+        return f'<div class="expl">{i18n.t("recouvrement_a_venir", lang)}</div>'
     h = 205 if len(avail) == 1 else 150    # grande si seule, réduite si deux
     parts = []
     for stage, label in avail:
         parts.append(
             f'<div style="display:inline-block;text-align:center;margin:0 8px;vertical-align:top">'
-            f'<div style="font-size:9pt;color:{GREY};margin-bottom:3px">Recouvrement à {label}</div>'
+            f'<div style="font-size:9pt;color:{GREY};margin-bottom:3px">'
+            f'{i18n.t("recouvrement_a", lang)} {label}</div>'
             f'{_recouv_tag(code, stage, h)}</div>')
     return "".join(parts)
 
@@ -391,7 +401,8 @@ def _comparison(row, all_df, n=5):
     return phrase, table
 
 
-def build_html(row, photos, all_df=None):
+def build_html(row, photos, all_df=None, lang=i18n.DEFAUT):
+    T = lambda k: i18n.t(k, lang)          # libellé traduit, clé si non traduit
     acc = row.get("nom_accession")
     nom = row.get("nom") if pd.notna(row.get("nom")) else (acc if pd.notna(acc) else row.get("code_plantation"))
     _cp = str(row.get("code_plantation", "")).strip()
@@ -404,17 +415,17 @@ def build_html(row, photos, all_df=None):
     tuber = (_photo_url(photos, acc, "Tubercule forme")
              or _tuber_local(row.get("code_plantation")))
     flesh = _photo_url(photos, acc, "Tubercule chair")
-    chart = _chart_sites(row)
+    chart = _chart_sites(row, lang)
     calibre_pie = _chart_calibre(row)
     pm = row.get("poids_moyen_g")
     poids_moyen = f"{pm / 1000:.1f} kg" if pd.notna(pm) else ND
 
-    pf = "".join(f"<li>{p}</li>" for p in _points_forts(row))
+    pf = "".join(f"<li>{p}</li>" for p in _points_forts(row, lang))
 
     # Champs suivis pour la liste "données manquantes"
     suivi = [("Couleur de la chair", "CCCTCT"), ("Texture feuille", "TF"),
              ("Couleur pétiole", "CP"), ("Bulbilles", "APB"),
-             ("Épaisseur peau", "EPT"), ("Rendement (t/ha)", "rendement_perf"),
+             ("Épaisseur peau", "EPT"), (i18n.t("rendement_unite", lang), "rendement_perf"),
              ("Nb tubercules/plant", "NTMP_BLUP"), ("Taux de germination", "TG_BLUP"),
              ("Qualité bouillie", "BOILED_Q")]
     manquantes = _missing(row, suivi)
@@ -426,10 +437,12 @@ def build_html(row, photos, all_df=None):
 
     # anthracnose : indice AUDPC -> niveau
     au = row.get("anthracnose_perf")
-    anthra = (("Sensible" if au >= 50 else "Modérément sensible" if au >= 35 else "Tolérante")
+    anthra = (i18n.val("Sensible" if au >= 50 else
+                       "Modérément sensible" if au >= 35 else "Tolérante", lang)
               if pd.notna(au) else ND)
     rv = row.get("R_AUDPC_GOD_25_26")
-    rouille = (("Sensible" if rv >= 50 else "Modérément sensible" if rv >= 35 else "Tolérante")
+    rouille = (i18n.val("Sensible" if rv >= 50 else
+                        "Modérément sensible" if rv >= 35 else "Tolérante", lang)
                if pd.notna(rv) else ND)
     afm = row.get("AFM")
     afm_oui = pd.notna(afm) and str(afm) not in ("Absent", "Absence")
@@ -438,21 +451,23 @@ def build_html(row, photos, all_df=None):
     sen = row.get("S_BLUP")   # sénescence (BLUP) -> durée du cycle levée->sénescence
     if pd.notna(sen):
         _m = sen / 30.0
-        _c = "court (<6 mois)" if _m < 6 else "long (6-9 mois)" if _m <= 9 else "très long (>9 mois)"
-        cycle_txt = f"{_m:.1f} mois - {_c}"
+        _c = T("cycle_court_txt") if _m < 6 else T("cycle_long_txt") if _m <= 9 else T("cycle_tres_long_txt")
+        cycle_txt = f'{_m:.1f} {T("mois")} - {_c}'
     else:
         cycle_txt = ND
     pts = row.get("PTS1M")    # pourriture tubercule au stockage, test à 1 mois
-    conserv = ({"Absent": "Absente", "Faible": "Faible", "Fort": "Forte"}.get(pts, ND)
+    # PTS1M mesure la pourriture ; on l'exprime en niveau de conservation.
+    conserv = (i18n.val({"Absent": "Absente", "Faible": "Faible",
+                         "Fort": "Forte"}.get(pts, ND), lang)
                if pd.notna(pts) else ND)
     # Profil de régularité -> cases Stable / Non stable
     _clr = str(row.get("classe_rendement")).lower() if pd.notna(row.get("classe_rendement")) else ""
     stable_oui = "stable" in _clr
     nonstable_oui = ("spécialis" in _clr) or ("specialis" in _clr)
     bq = row.get("BOILED_Q")  # qualité bouillie -> français
-    qbouillie = QUAL_FR.get(bq, ND) if pd.notna(bq) else ND
+    qbouillie = i18n.val(bq, lang) if pd.notna(bq) else ND
     de = row.get("DE_BLUP")   # durée d'émergence -> jours (arrondi au supérieur)
-    emergence = f"{math.ceil(de)} jours" if pd.notna(de) else ND
+    emergence = f'{math.ceil(de)} {T("jours")}' if pd.notna(de) else ND
     tg = row.get("TG_BLUP")
     germ = f"{round(tg)} %" if pd.notna(tg) else ND
     tok = _mapbox_token()
@@ -567,40 +582,40 @@ def build_html(row, photos, all_df=None):
     # ---------- PAGE 1 ----------
     p1 = f"""
     <div class="page">
-      <div class="sidebar"><span>Plateforme d'Évaluation Variétale d'Ignames</span></div>
+      <div class="sidebar"><span>{T("plateforme")}</span></div>
       <div style="display:flex; justify-content:space-between; align-items:flex-start;">
         <div class="brand">{logos_tag}</div>
       </div>
       <div class="banner">{cell(titre)}</div>
-      <div style="text-align:right; font-size:8pt; color:{GREY}; margin-top:2px;">Édition : 2026</div>
+      <div style="text-align:right; font-size:8pt; color:{GREY}; margin-top:2px;">{T("edition")}</div>
 
-      <div class="sec">CARTE D'IDENTITÉ</div>
+      <div class="sec">{T("carte_identite")}</div>
       <div class="grid2">
         <div class="col">
           <table class="fields">
-            <tr><td class="attr">Espèce</td><td class="val"><i>{cell(_v(row,'espece'))}</i></td></tr>
-            <tr><td class="attr">Origine</td><td class="val">{cell(_v(row,'pays_origine'))}</td></tr>
-            <tr><td class="attr">Code du centre d'origine</td><td class="val">{cell(_panda2(row,'centre_code') or _v(row,'centre_origine'))}</td></tr>
-            <tr><td class="attr">Fournisseur</td><td class="val">{cell(_panda2(row,'fournisseur'))}</td></tr>
-            <tr><td class="attr">Code CIRAD</td><td class="val">{cell(_v(row,'code_cirad'))}</td></tr>
+            <tr><td class="attr">{T("espece")}</td><td class="val"><i>{cell(_v(row,'espece',lang=lang))}</i></td></tr>
+            <tr><td class="attr">{T("origine")}</td><td class="val">{cell(_v(row,'pays_origine',lang=lang))}</td></tr>
+            <tr><td class="attr">{T("code_centre")}</td><td class="val">{cell(_panda2(row,'centre_code') or _v(row,'centre_origine',lang=lang))}</td></tr>
+            <tr><td class="attr">{T("fournisseur")}</td><td class="val">{cell(_panda2(row,'fournisseur'))}</td></tr>
+            <tr><td class="attr">{T("code_cirad")}</td><td class="val">{cell(_v(row,'code_cirad',lang=lang))}</td></tr>
             <tr><td class="attr">DOI</td><td class="val" style="font-size:8.5pt">{cell(_panda2(row,'doi') or _doi_of(row))}</td></tr>
-            <tr><td class="attr" style="padding-top:8px">Année d'introduction</td><td class="val" style="padding-top:8px">{cell(_v(row,'annee_creation'))}</td></tr>
-            <tr><td class="attr">Période d'évaluation</td><td class="val">2022-2025</td></tr>
+            <tr><td class="attr" style="padding-top:8px">{T("annee_introduction")}</td><td class="val" style="padding-top:8px">{cell(_v(row,'annee_creation',lang=lang))}</td></tr>
+            <tr><td class="attr">{T("periode_evaluation")}</td><td class="val">2022-2025</td></tr>
           </table>
         </div>
-        <div class="col pf"><b>Points forts de la variété :</b><ul>{pf}</ul></div>
+        <div class="col pf"><b>{T("points_forts")}</b><ul>{pf}</ul></div>
       </div>
 
-      <div class="sec">DESCRIPTION</div>
+      <div class="sec">{T("description")}</div>
       <div class="grid2">
         <div class="col">
-          <div class="sub">PARTIE AÉRIENNE</div>
+          <div class="sub">{T("partie_aerienne")}</div>
           <table class="fields">
-            <tr><td class="org">Tige</td><td class="attr">Bulbilles</td><td class="val">{cell(_v(row,'APB'))}</td></tr>
-            <tr><td></td><td class="attr">Couleur</td><td class="val">{cell(_v(row,'CTP'))}</td></tr>
-            <tr><td class="org">Feuille</td><td class="attr">Forme</td><td class="val">{cell(_v(row,'FF'))}</td></tr>
-            <tr><td></td><td class="attr">Texture</td><td class="val">{cell(_v(row,'TF'))}</td></tr>
-            <tr><td class="org">Pétiole</td><td class="attr">Couleur</td><td class="val">{cell(_v(row,'CP'))}</td></tr>
+            <tr><td class="org">{T("tige")}</td><td class="attr">{T("bulbilles")}</td><td class="val">{cell(_v(row,'APB',lang=lang))}</td></tr>
+            <tr><td></td><td class="attr">{T("couleur")}</td><td class="val">{cell(_v(row,'CTP',lang=lang))}</td></tr>
+            <tr><td class="org">{T("feuille")}</td><td class="attr">{T("forme")}</td><td class="val">{cell(_v(row,'FF',lang=lang))}</td></tr>
+            <tr><td></td><td class="attr">{T("texture")}</td><td class="val">{cell(_v(row,'TF',lang=lang))}</td></tr>
+            <tr><td class="org">{T("petiole")}</td><td class="attr">{T("couleur")}</td><td class="val">{cell(_v(row,'CP',lang=lang))}</td></tr>
           </table>
         </div>
         <div class="col" style="text-align:center">
@@ -612,30 +627,30 @@ def build_html(row, photos, all_df=None):
           {'<img class="photo" src="'+tuber+'">' if tuber else ''}
         </div>
         <div class="col">
-          <div class="sub">PARTIE SOUTERRAINE</div>
+          <div class="sub">{T("partie_souterraine")}</div>
           <table class="fields">
-            <tr><td class="org">Tubercule</td><td class="attr">Aspect chair</td><td class="val">{cell(_v(row,'ACT'))}</td></tr>
-            <tr><td></td><td class="attr">Couleur chair</td><td class="val">{cell(_v(row,'CCCTCT'))}</td></tr>
-            <tr><td></td><td class="attr">Racines</td><td class="val">{cell(_v(row,'PRT'))}</td></tr>
-            <tr><td class="org">Peau</td><td class="attr">Épaisseur</td><td class="val">{cell(_v(row,'EPT'))}</td></tr>
-            <tr><td></td><td class="attr">Phelloderme</td><td class="val">{cell(_v(row,'CPT'))}</td></tr>
+            <tr><td class="org">{T("tubercule")}</td><td class="attr">{T("aspect_chair")}</td><td class="val">{cell(_v(row,'ACT',lang=lang))}</td></tr>
+            <tr><td></td><td class="attr">{T("couleur_chair")}</td><td class="val">{cell(_v(row,'CCCTCT',lang=lang))}</td></tr>
+            <tr><td></td><td class="attr">{T("racines")}</td><td class="val">{cell(_v(row,'PRT',lang=lang))}</td></tr>
+            <tr><td class="org">{T("peau")}</td><td class="attr">{T("epaisseur")}</td><td class="val">{cell(_v(row,'EPT',lang=lang))}</td></tr>
+            <tr><td></td><td class="attr">{T("phelloderme")}</td><td class="val">{cell(_v(row,'CPT',lang=lang))}</td></tr>
           </table>
         </div>
       </div>
 
-      <div class="sec">QUALITÉ</div>
+      <div class="sec">{T("qualite")}</div>
       <div class="grid2">
         <div class="col">
           <table class="fields">
-            <tr><td class="attr">Pourriture au stockage (1 mois)</td><td class="val">{conserv}</td></tr>
-            <tr><td class="attr" style="padding-top:6px">Couleur de la chair</td><td class="val" style="padding-top:6px">{cell(_v(row,'CCCTCT'))}</td></tr>
-            <tr><td class="attr">Oxydation à la cuisson</td><td class="val">{cell(_v(row,'POT'))}</td></tr>
-            <tr><td class="attr">Qualité bouillie</td><td class="val">{qbouillie}</td></tr>
+            <tr><td class="attr">{T("pourriture_stockage")}</td><td class="val">{conserv}</td></tr>
+            <tr><td class="attr" style="padding-top:6px">{T("couleur_chair_l")}</td><td class="val" style="padding-top:6px">{cell(_v(row,'CCCTCT',lang=lang))}</td></tr>
+            <tr><td class="attr">{T("oxydation_cuisson")}</td><td class="val">{cell(_v(row,'POT',lang=lang))}</td></tr>
+            <tr><td class="attr">{T("qualite_bouillie")}</td><td class="val">{qbouillie}</td></tr>
           </table>
         </div>
         <div class="col" style="text-align:center">
-          <div style="color:#7d2e78; font-style:italic; font-size:9pt; margin-bottom:3px">Sites d'évaluation en Guadeloupe</div>
-          {carte_tag if carte_tag else '<div class="expl">Carte indisponible.</div>'}
+          <div style="color:#7d2e78; font-style:italic; font-size:9pt; margin-bottom:3px">{T("sites_guadeloupe")}</div>
+          {carte_tag if carte_tag else '<div class="expl">{T("carte_indispo")}</div>'}
           <div style="margin-top:5px; font-size:9pt;">
             <span style="color:#c0392b; font-weight:bold;">●</span> Roujol (Petit-Bourg) &nbsp;&nbsp;
             <span style="color:#2e7d32; font-weight:bold;">●</span> Godet (Petit-Canal)
@@ -648,63 +663,61 @@ def build_html(row, photos, all_df=None):
     # ---------- PAGE 2 ----------
     p2 = f"""
     <div class="page">
-      <div class="sidebar"><span>Plateforme d'Évaluation Variétale d'Ignames</span></div>
-      <div class="sec">PERFORMANCES</div>
-      <div class="note">NOTE : Toutes les données présentées ci-après ont été obtenues en stations
-        expérimentales (Roujol, Godet). Elles traduisent les performances de la variété dans les
-        conditions de culture des stations.</div>
+      <div class="sidebar"><span>{T("plateforme")}</span></div>
+      <div class="sec">{T("performances")}</div>
+      <div class="note">{T("note_stations")}</div>
 
-      <div class="sub">MALADIES</div>
+      <div class="sub">{T("maladies")}</div>
       <div class="grid2">
-        <div class="col box"><b>Anthracnose</b>
-          <table class="fields"><tr><td class="attr">Niveau</td><td class="val">{anthra}</td></tr></table></div>
-        <div class="col box"><b>Rouille</b>
-          <table class="fields"><tr><td class="attr">Niveau</td><td class="val">{rouille}</td></tr></table></div>
+        <div class="col box"><b>{T("anthracnose")}</b>
+          <table class="fields"><tr><td class="attr">{T("niveau")}</td><td class="val">{anthra}</td></tr></table></div>
+        <div class="col box"><b>{T("rouille")}</b>
+          <table class="fields"><tr><td class="attr">{T("niveau")}</td><td class="val">{rouille}</td></tr></table></div>
       </div>
-      <div style="margin-top:6px; font-size:9.5pt;">Attaque fourmi manioc dangereuse pour cette variété ?
-        &nbsp; <span style="border:1px solid #333;padding:0 5px">{'X' if afm_oui else '&nbsp;'}</span> Oui
-        &nbsp; <span style="border:1px solid #333;padding:0 5px">{'X' if (pd.notna(afm) and not afm_oui) else '&nbsp;'}</span> Non</div>
+      <div style="margin-top:6px; font-size:9.5pt;">{T("attaque_fourmi")}
+        &nbsp; <span style="border:1px solid #333;padding:0 5px">{'X' if afm_oui else '&nbsp;'}</span> {T("oui")}
+        &nbsp; <span style="border:1px solid #333;padding:0 5px">{'X' if (pd.notna(afm) and not afm_oui) else '&nbsp;'}</span> {T("non")}</div>
 
-      <div class="sub">LEVÉE ET RECOUVREMENT</div>
+      <div class="sub">{T("levee_recouvrement")}</div>
       <div class="grid2">
         <div class="col">
           <div class="box">
             <table class="fields">
-              <tr><td class="attr">Taux de germination</td><td class="val">{germ}</td></tr>
-              <tr><td class="attr">Durée d'émergence</td><td class="val">{emergence}</td></tr>
-              <tr><td class="attr">Durée du cycle</td><td class="val">{cycle_txt}</td></tr>
+              <tr><td class="attr">{T("taux_germination")}</td><td class="val">{germ}</td></tr>
+              <tr><td class="attr">{T("duree_emergence")}</td><td class="val">{emergence}</td></tr>
+              <tr><td class="attr">{T("duree_cycle")}</td><td class="val">{cycle_txt}</td></tr>
             </table>
           </div>
         </div>
-        <div class="col" style="text-align:center">{_recouv_block(row.get('code_plantation'))}</div>
+        <div class="col" style="text-align:center">{_recouv_block(row.get('code_plantation'), lang)}</div>
       </div>
 
-      <div class="sub">RENDEMENT</div>
+      <div class="sub">{T("rendement_maj")}</div>
       <div class="box" style="width:62%">
         <table class="fields">
-          <tr><td class="attr">Rendement potentiel</td><td class="val">{cell(_v(row,'rendement_perf',' t/ha'))}</td></tr>
-          <tr><td class="attr">Nb moyen de tubercules/plant</td><td class="val">{cell(_v(row,'NTMP_BLUP'))}</td></tr>
-          <tr><td class="attr">Profil de régularité</td><td class="val">
-            <span style="border:1px solid #333;padding:0 5px">{'X' if stable_oui else '&nbsp;'}</span> Stable
-            &nbsp; <span style="border:1px solid #333;padding:0 5px">{'X' if nonstable_oui else '&nbsp;'}</span> Non stable
+          <tr><td class="attr">{T("rendement_potentiel")}</td><td class="val">{cell(_v(row,'rendement_perf',' t/ha',lang=lang))}</td></tr>
+          <tr><td class="attr">{T("nb_tubercules")}</td><td class="val">{cell(_v(row,'NTMP_BLUP',lang=lang))}</td></tr>
+          <tr><td class="attr">{T("profil_regularite")}</td><td class="val">
+            <span style="border:1px solid #333;padding:0 5px">{'X' if stable_oui else '&nbsp;'}</span> {T("stable")}
+            &nbsp; <span style="border:1px solid #333;padding:0 5px">{'X' if nonstable_oui else '&nbsp;'}</span> {T("non_stable")}
           </td></tr>
         </table>
       </div>
 
       <div style="margin-top:8px; text-align:center;">
-        {'<img src="'+chart+'" style="width:60%">' if chart else '<div class="expl">Rendement par site indisponible.</div>'}
+        {'<img src="'+chart+'" style="width:60%">' if chart else '<div class="expl">{T("rendement_site_indispo")}</div>'}
       </div>
 
-      <div class="sub">CALIBRE</div>
+      <div class="sub">{T("calibre_maj")}</div>
       <div class="grid2">
         <div class="col" style="text-align:center">
-          {'<img src="'+calibre_pie+'" style="width:74%">' if calibre_pie else '<div class="expl">Calibre indisponible.</div>'}
+          {'<img src="'+calibre_pie+'" style="width:74%">' if calibre_pie else '<div class="expl">{T("calibre_indispo")}</div>'}
         </div>
         <div class="col" style="text-align:center; padding-top:10px">
           <table class="fields" style="margin-bottom:10px">
-            <tr><td class="attr">Poids moyen par tubercule</td><td class="val">{poids_moyen}</td></tr>
+            <tr><td class="attr">{T("poids_moyen")}</td><td class="val">{poids_moyen}</td></tr>
           </table>
-          {('<div style="margin-top:60px"><div style="font-size:8pt;color:'+GREY+';margin-bottom:3px">Fiche en ligne sur YamHub</div>'+qr_tag+'</div>') if qr_tag else ''}
+          {('<div style="margin-top:60px"><div style="font-size:8pt;color:'+GREY+';margin-bottom:3px">'+T("fiche_en_ligne")+'</div>'+qr_tag+'</div>') if qr_tag else ''}
         </div>
       </div>
       {partner_row}
@@ -712,7 +725,7 @@ def build_html(row, photos, all_df=None):
     """
     return f"<html><head><meta charset='utf-8'><style>{css}</style></head><body>{p1}{p2}</body></html>"
 
-def generate(row, photos, all_df=None):
+def generate(row, photos, all_df=None, lang=i18n.DEFAUT):
     from weasyprint import HTML
-    html = build_html(row, photos, all_df)
+    html = build_html(row, photos, all_df, lang)
     return HTML(string=html).write_pdf()

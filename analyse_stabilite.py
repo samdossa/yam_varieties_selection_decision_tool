@@ -127,14 +127,17 @@ def main():
             plt.scatter(g["rendement_perf"], g["rendement_cv"], c=col, label=cl, alpha=0.7, s=30)
         plt.axvline(med_p, color="grey", ls="--", lw=0.8)
         plt.axhline(med_cv, color="grey", ls="--", lw=0.8)
-        plt.xlabel("Rendement (t/ha, BLUP)")
-        plt.ylabel("Instabilité — CV entre environnements (%)")
-        plt.title("Rendement : performance vs stabilité des variétés d'igname")
-        plt.legend(fontsize=8)
         plt.gca().invert_yaxis()  # haut = plus stable
-        plt.tight_layout()
-        plt.savefig(os.path.join(OUT, "stabilite_rendement.png"), dpi=120)
-        print("\nGraphique -> data/stabilite_rendement.png")
+        # Un PNG par langue : l'app affiche celui qui correspond au sélecteur.
+        import i18n
+        for lg, suffixe in (("fr", ""), ("en", "_en")):
+            plt.xlabel(i18n.t("stab_x", lg))
+            plt.ylabel(i18n.t("stab_y", lg))
+            plt.title(i18n.t("stab_titre", lg))
+            plt.legend([i18n.badge(cl, lg) for cl in colors], fontsize=8)
+            plt.tight_layout()
+            plt.savefig(os.path.join(OUT, f"stabilite_rendement{suffixe}.png"), dpi=120)
+            print(f"Graphique [{lg}] -> data/stabilite_rendement{suffixe}.png")
     except Exception as e:
         print(f"\n(graphique non généré : {e})")
 
