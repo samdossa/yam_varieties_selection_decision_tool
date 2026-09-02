@@ -224,6 +224,24 @@ def _leaf_local(code):
     return ""
 
 
+def _tuber_local(code):
+    """Photo de tubercule de complément : data/tubercules/CIRADn.jpg.
+
+    Issue du fonds PANDA2 (build_tubercules.py), elle n'existe QUE pour les
+    variétés sans photo dans YamHub : aucun risque de doublon. Même mécanique
+    que les feuilles — fichier local, sinon TUBER_URL sur yamhub.fr.
+    """
+    if not code or str(code) in ("nan", ""):
+        return ""
+    pth = os.path.join(os.path.dirname(__file__), "data", "tubercules", f"{code}.jpg")
+    if os.path.exists(pth):
+        return _img_uri(pth, 560, "JPEG")
+    url = os.environ.get("TUBER_URL")
+    if url:
+        return f"{url.rstrip('/')}/{str(code).upper()}.jpg"
+    return ""
+
+
 _PANDA2 = {}
 
 def _panda2(row, field):
@@ -383,7 +401,8 @@ def build_html(row, photos, all_df=None):
     leaf = (_leaf_local(row.get("code_plantation"))
             or _photo_url(photos, acc, "Feuille adaxiale")
             or _photo_url(photos, acc, "Feuille abaxiale"))
-    tuber = _photo_url(photos, acc, "Tubercule forme")
+    tuber = (_photo_url(photos, acc, "Tubercule forme")
+             or _tuber_local(row.get("code_plantation")))
     flesh = _photo_url(photos, acc, "Tubercule chair")
     chart = _chart_sites(row)
     calibre_pie = _chart_calibre(row)

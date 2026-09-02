@@ -169,15 +169,34 @@ def vname(r):
     return cp or (str(nm) if pd.notna(nm) else "?")
 
 
-def first_photo(nom_accession):
-    if pd.isna(nom_accession):
+def tuber_local(code):
+    """Photo de tubercule de complément : data/tubercules/CIRADn.jpg.
+
+    Issue du fonds PANDA2 (voir build_tubercules.py), elle n'existe que pour les
+    variétés absentes de varietes_photos.csv — jamais en doublon de YamHub.
+    Renvoie le chemin du fichier, ou None.
+    """
+    if not code or pd.isna(code):
         return None
-    sub = photos[photos["variete_name"] == nom_accession]
-    for d in ("Tubercule forme", "Tubercule chair", "Feuille adaxiale"):
-        m = sub[sub["description"] == d]
-        if len(m):
-            return UPLOADS_URL + str(m.iloc[0]["photo_bytea"])
-    return UPLOADS_URL + str(sub.iloc[0]["photo_bytea"]) if len(sub) else None
+    p = os.path.join(os.path.dirname(__file__), "data", "tubercules", f"{code}.jpg")
+    return p if os.path.exists(p) else None
+
+
+def first_photo(row):
+    """Vignette d'une variété : YamHub d'abord, fonds PANDA2 en complément."""
+    nom = row.get("nom_accession")
+    if pd.notna(nom):
+        sub = photos[photos["variete_name"] == nom]
+        for d in ("Tubercule forme", "Tubercule chair", "Feuille adaxiale"):
+            m = sub[sub["description"] == d]
+            if len(m):
+                return UPLOADS_URL + str(m.iloc[0]["photo_bytea"])
+        if len(sub):
+            return UPLOADS_URL + str(sub.iloc[0]["photo_bytea"])
+    # Pas de photo YamHub : on sert le fichier local en data-URI, Streamlit ne
+    # publiant pas les fichiers du disque.
+    loc = tuber_local(row.get("code_plantation"))
+    return fiche_html._img_uri(loc, 400, "JPEG") if loc else None
 
 
 def badge(row):
@@ -320,7 +339,7 @@ if not mode_detaille:
                 r = top.iloc[i + j]
                 with cols[j]:
                     with st.container(border=True):
-                        ph = first_photo(r.get("nom_accession"))
+                        ph = first_photo(r)
                         if ph:
                             st.markdown(
                                 f'<img src="{ph}" style="width:100%;height:auto;'
@@ -385,6 +404,9 @@ else:
                 with pcols[i]:
                     st.image(UPLOADS_URL + str(pr["photo_bytea"]),
                              caption=pr["description"], width="stretch")
+        elif tuber_local(row.get("code_plantation")):
+            st.image(tuber_local(row.get("code_plantation")),
+                     caption="Tubercule", width=320)
         fiche_btn(choix, "Télécharger la fiche variétale (format officiel)")
     else:
         st.info("Aucune variété ne correspond aux filtres.")

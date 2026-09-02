@@ -213,9 +213,10 @@ def publish_file(local_path, stage):
 def build_plan(only=None):
     """[(étiquette, dossier_local, dossier_distant)] pour ce qui existe en local."""
     plan = []
-    feuilles = os.path.join(DATA, "feuilles")
-    if os.path.isdir(feuilles):
-        plan.append(("feuilles", feuilles, f"{REMOTE_ROOT}/feuilles"))
+    for nom in ("feuilles", "tubercules"):
+        d = os.path.join(DATA, nom)
+        if os.path.isdir(d):
+            plan.append((nom, d, f"{REMOTE_ROOT}/{nom}"))
     for d in sorted(glob.glob(os.path.join(DATA, "recouvrement_*mois"))):
         stage = re.sub(r"^recouvrement_", "", os.path.basename(d))
         plan.append((stage, d, f"{REMOTE_ROOT}/recouvrement/{stage}"))
@@ -223,7 +224,7 @@ def build_plan(only=None):
         plan = [p for p in plan if p[0] == only]
         if not plan:
             sys.exit(f"Rien à synchroniser pour « {only} ». "
-                     f"Valeurs possibles : feuilles, 1mois, 3mois…")
+                     f"Valeurs possibles : feuilles, tubercules, 1mois, 3mois…")
     return plan
 
 

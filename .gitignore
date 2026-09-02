@@ -17,3 +17,6 @@ data/feuilles/
 
 # Identifiants FTP (publication des photos)
 ftp_credentials.txt
+
+# Photos de complement (volumineuses, publiees par sync_photos.py)
+data/tubercules/
