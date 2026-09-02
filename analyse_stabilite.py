@@ -78,18 +78,46 @@ def main():
             fw[r[KEY]] = round(float(np.polyfit(env_index[m], y[m], 1)[0]), 2)
     stab["rendement_pente_FW"] = stab[KEY].map(fw)
 
-    # --- Classement rendement : performance × stabilité ---
+    # --- Classement rendement : performance × variabilité ---
+    #
+    # L'ancienne version comparait le CV a sa mediane et appelait « stable »
+    # tout ce qui passait dessous. Trompeur : la mediane du CV vaut 48 % sur
+    # cette collection, si bien qu'une variete allant de 30 a 82 t/ha etait
+    # etiquetee « reguliere ». Trois corrections :
+    #
+    #  1. minimum de 3 environnements. Les varietes testees sur 2 essais
+    #     affichent un CV median de 17 % — artefact : avec deux points on ne
+    #     VOIT pas la variabilite. On ne conclut plus a partir de si peu.
+    #  2. le CV seul ne suffit pas. On lui adjoint l'ecart a 1 de la pente de
+    #     Finlay-Wilkinson : une pente eloignee de 1 signale une variete qui
+    #     reagit de facon atypique au milieu. CIRAD244 (CV 33 %, pente -2,4)
+    #     passe ainsi de « reguliere » a « forte variabilite ».
+    #  3. vocabulaire comparatif. On classe en variabilite faible/moyenne/forte
+    #     PAR RAPPORT A LA COLLECTION, sans jamais affirmer qu'une variete est
+    #     « stable » dans l'absolu — aucune ne l'est vraiment ici.
+    N_ENV_MIN = 3
     perf = stab["rendement_perf"]
-    cv = stab["rendement_cv"]
-    med_p, med_cv = perf.median(), cv.median()
+    med_p = perf.median()
+
+    ok = (stab["rendement_n_env"] >= N_ENV_MIN) & stab["rendement_cv"].notna() \
+        & stab["rendement_pente_FW"].notna()
+    ind = pd.Series(index=stab.index, dtype=float)
+    if ok.sum():
+        sub = stab[ok]
+        r_cv = sub["rendement_cv"].rank(pct=True)
+        r_pente = (sub["rendement_pente_FW"] - 1).abs().rank(pct=True)
+        ind[ok] = (r_cv + r_pente) / 2
+    stab["indice_variabilite"] = ind
+    t33, t66 = (ind.quantile([1 / 3, 2 / 3]) if ok.sum() else (0.33, 0.66))
 
     def classe(row):
-        p, c = row["rendement_perf"], row["rendement_cv"]
-        if pd.isna(p) or pd.isna(c):
+        p, i = row["rendement_perf"], row["indice_variabilite"]
+        if pd.isna(p) or pd.isna(i):
             return "données insuffisantes"
         haut = "performante" if p >= med_p else "modeste"
-        reg = "stable" if c <= med_cv else "spécialisée"
-        return f"{haut} & {reg}"
+        var = "variabilité faible" if i <= t33 else \
+              "variabilité moyenne" if i <= t66 else "variabilité forte"
+        return f"{haut} & {var}"
 
     stab["classe_rendement"] = stab.apply(classe, axis=1)
 
@@ -106,8 +134,8 @@ def main():
     print(f"Pente Finlay-Wilkinson calculée (>=3 env) : {stab['rendement_pente_FW'].notna().sum()} variétés")
     print("\nRépartition des profils (rendement) :")
     print(stab["classe_rendement"].value_counts().to_string())
-    print("\nTop 8 'performante & stable' (rendement élevé + régulier) :")
-    top = stab[stab["classe_rendement"] == "performante & stable"] \
+    print("\nTop 8 'performante & variabilité faible' (rendement élevé, le moins irrégulier) :")
+    top = stab[stab["classe_rendement"] == "performante & variabilité faible"] \
         .sort_values("rendement_perf", ascending=False)
     cols = [c for c in ["nom", "espece", "rendement_perf", "rendement_cv",
                         "rendement_n_env", "rendement_pente_FW"] if c in top.columns]
@@ -119,14 +147,19 @@ def main():
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
         d = stab.dropna(subset=["rendement_perf", "rendement_cv"])
-        colors = {"performante & stable": "#278a3c", "performante & spécialisée": "#e0a200",
-                  "modeste & stable": "#6fa8dc", "modeste & spécialisée": "#cc4125"}
+        # Vert -> rouge : plus la variabilité est forte, plus la couleur alerte.
+        colors = {"performante & variabilité faible": "#278a3c",
+                  "performante & variabilité moyenne": "#8bbf3d",
+                  "performante & variabilité forte": "#e0a200",
+                  "modeste & variabilité faible": "#6fa8dc",
+                  "modeste & variabilité moyenne": "#b07aa1",
+                  "modeste & variabilité forte": "#cc4125"}
         plt.figure(figsize=(8, 6))
         for cl, col in colors.items():
             g = d[d["classe_rendement"] == cl]
             plt.scatter(g["rendement_perf"], g["rendement_cv"], c=col, label=cl, alpha=0.7, s=30)
         plt.axvline(med_p, color="grey", ls="--", lw=0.8)
-        plt.axhline(med_cv, color="grey", ls="--", lw=0.8)
+        plt.axhline(d["rendement_cv"].median(), color="grey", ls="--", lw=0.8)
         plt.gca().invert_yaxis()  # haut = plus stable
         # Un PNG par langue : l'app affiche celui qui correspond au sélecteur.
         import i18n

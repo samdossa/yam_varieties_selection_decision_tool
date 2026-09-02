@@ -47,7 +47,10 @@ def main():
     stab = pd.read_csv(os.path.join(OUT, "stabilite.csv"))
     bridge = defidb_bridge()
 
+    # n_env et indice_variabilite doivent suivre : sans eux l'app ne peut pas
+    # dire sur combien d'essais repose le CV, ni justifier le classement.
     stab_cols = [KEY, "rendement_perf", "rendement_cv", "rendement_pente_FW",
+                 "rendement_n_env", "indice_variabilite",
                  "classe_rendement", "anthracnose_perf", "matiere_seche_perf",
                  "rendement_roujol", "rendement_godet"]
     stab_cols = [c for c in stab_cols if c in stab.columns]

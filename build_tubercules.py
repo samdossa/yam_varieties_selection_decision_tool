@@ -115,8 +115,18 @@ def main():
         ecrits += 1
         octets += os.path.getsize(dest)
 
+    # Index versionné : les JPEG sont exclus de git, mais l'app doit savoir
+    # QUELLES variétés ont une photo pour ne pas pointer vers une URL morte.
+    index = os.path.join(ICI, "data", "tubercules_index.txt")
+    with open(index, "w") as f:
+        f.write("\n".join(sorted(
+            (c for c in a_faire
+             if os.path.exists(os.path.join(args.out, f"{c}.jpg"))),
+            key=lambda c: int(c[5:]))) + "\n")
+
     print(f"\n{ecrits} photos écrites dans {os.path.relpath(args.out, ICI)} "
           f"({octets/1e6:.1f} Mo)")
+    print(f"Index -> data/tubercules_index.txt ({ecrits} codes)")
     print("Publication : python sync_photos.py --only tubercules")
 
 

@@ -55,7 +55,11 @@ st.set_page_config(page_title="YamHub — Choix variétal",
 
 @st.cache_data
 def load():
-    return pd.read_csv(DATA).drop_duplicates("code_plantation").reset_index(drop=True)
+    d = pd.read_csv(DATA).drop_duplicates("code_plantation").reset_index(drop=True)
+    # Position d'origine, conservée à travers les filtres et les reset_index :
+    # les rangs des critères sont calculés une fois sur la collection entière.
+    d["_idx"] = range(len(d))
+    return d
 
 
 @st.cache_data
@@ -148,11 +152,15 @@ CARTE_CRIT = {
 }
 
 # Profil GxE -> couleur du badge ; le libellé, lui, vient de i18n.badge().
+# Vert -> rouge selon la variabilité, bleu/violet pour les rendements modérés.
 BADGE_COULEUR = {
-    "performante & stable": "#278a3c",
-    "performante & spécialisée": "#e0a200",
-    "modeste & stable": "#6fa8dc",
-    "modeste & spécialisée": "#cc4125",
+    "performante & variabilité faible": "#278a3c",
+    "performante & variabilité moyenne": "#8bbf3d",
+    "performante & variabilité forte": "#e0a200",
+    "modeste & variabilité faible": "#6fa8dc",
+    "modeste & variabilité moyenne": "#b07aa1",
+    "modeste & variabilité forte": "#cc4125",
+    "données insuffisantes": "#8a8a8a",
 }
 
 
@@ -169,10 +177,39 @@ def score(r, weights):
     return round(100 * num / den, 1), round(den / sum(weights.values()), 2)
 
 
-def stars(x):
-    if x is None:
-        return "☆☆☆ (pas d'info)"
-    n = max(0, min(3, round(x * 3)))
+@st.cache_data
+def _rangs_criteres():
+    """Rang centile de chaque variété, pour chaque critère.
+
+    Les étoiles étaient calculées sur l'ÉTENDUE (min-max) : une seule variété à
+    62 t/ha écrasait l'échelle, si bien que 4 variétés sur 330 obtenaient trois
+    étoiles en récolte et 164 une seule. Sur les rangs, les trois niveaux se
+    remplissent par tiers et comparent réellement les variétés entre elles.
+    Les ex æquo (ex. les 180 variétés sans pourriture) partagent le même rang :
+    c'est voulu, la donnée ne les distingue pas.
+    """
+    out = {}
+    for nom, f in CRIT.items():
+        v = df.apply(f, axis=1)
+        # method="max" : les ex æquo prennent le rang le PLUS HAUT du groupe.
+        # Sans cela, les 173 variétés sans pourriture — le meilleur groupe —
+        # se retrouvaient au rang moyen, donc à deux étoiles.
+        out[nom] = v.rank(pct=True, method="max")
+    return out
+
+
+def stars(valeur, critere=None, idx=None):
+    """Trois niveaux par tiers de rang. Sans rang exploitable, on le dit."""
+    if critere is not None and idx is not None:
+        r = _rangs_criteres().get(critere)
+        p = r.iloc[idx] if r is not None and idx < len(r) else None
+        if p is None or pd.isna(p):
+            return "☆☆☆"
+        n = 1 if p <= 1 / 3 else 2 if p <= 2 / 3 else 3
+        return "★" * n + "☆" * (3 - n)
+    if valeur is None:
+        return "☆☆☆"
+    n = max(0, min(3, round(valeur * 3)))
     return "★" * n + "☆" * (3 - n)
 
 
@@ -185,17 +222,38 @@ def vname(r):
     return cp or (str(nm) if pd.notna(nm) else "?")
 
 
-def tuber_local(code):
-    """Photo de tubercule de complément : data/tubercules/CIRADn.jpg.
+@st.cache_data
+def _codes_tubercules():
+    """Codes ayant une photo PANDA2 (index versionné, cf. build_tubercules.py).
 
-    Issue du fonds PANDA2 (voir build_tubercules.py), elle n'existe que pour les
-    variétés absentes de varietes_photos.csv — jamais en doublon de YamHub.
-    Renvoie le chemin du fichier, ou None.
+    Les JPEG sont exclus de git : sans cet index, l'app en ligne pointerait vers
+    une URL inexistante pour les variétés dépourvues de photo.
+    """
+    p = os.path.join(os.path.dirname(__file__), "data", "tubercules_index.txt")
+    if not os.path.exists(p):
+        return set()
+    with open(p) as f:
+        return {l.strip() for l in f if l.strip()}
+
+
+def tuber_photo(code):
+    """Photo de tubercule de complément (fonds PANDA2, build_tubercules.py).
+
+    N'existe que pour les variétés absentes de varietes_photos.csv — jamais en
+    doublon de YamHub. Le fichier local sert en développement ; en ligne le
+    dossier data/tubercules/ est exclu de git, d'où le repli sur TUBER_URL,
+    la même variable que celle utilisée par fiche_html.
+    Renvoie un chemin local, une URL, ou None.
     """
     if not code or pd.isna(code):
         return None
     p = os.path.join(os.path.dirname(__file__), "data", "tubercules", f"{code}.jpg")
-    return p if os.path.exists(p) else None
+    if os.path.exists(p):
+        return p
+    url = os.environ.get("TUBER_URL")
+    if url and str(code) in _codes_tubercules():
+        return f"{url.rstrip('/')}/{str(code).upper()}.jpg"
+    return None
 
 
 def first_photo(row):
@@ -209,19 +267,34 @@ def first_photo(row):
                 return UPLOADS_URL + str(m.iloc[0]["photo_bytea"])
         if len(sub):
             return UPLOADS_URL + str(sub.iloc[0]["photo_bytea"])
-    # Pas de photo YamHub : on sert le fichier local en data-URI, Streamlit ne
-    # publiant pas les fichiers du disque.
-    loc = tuber_local(row.get("code_plantation"))
-    return fiche_html._img_uri(loc, 400, "JPEG") if loc else None
+    # Pas de photo YamHub : soit une URL directement utilisable, soit un
+    # fichier local converti en data-URI (Streamlit ne sert pas le disque).
+    p = tuber_photo(row.get("code_plantation"))
+    if not p:
+        return None
+    return p if p.startswith("http") else fiche_html._img_uri(p, 400, "JPEG")
 
 
 def badge(row):
+    """Badge de variabilité, suivi des chiffres qui le justifient.
+
+    Le badge seul induisait en erreur (« régulière » pour une variété allant de
+    30 à 82 t/ha) : on affiche donc systématiquement le CV et le nombre
+    d'essais, pour que le lecteur puisse juger par lui-même.
+    """
     cl = row.get("classe_rendement")
-    if pd.notna(cl) and cl in BADGE_COULEUR:
-        label, color = i18n.badge(cl, lang()), BADGE_COULEUR[cl]
-        st.markdown(f"<span style='background:{color};color:#fff;padding:2px 8px;"
-                    f"border-radius:10px;font-size:0.8em'>{label}</span>",
-                    unsafe_allow_html=True)
+    if pd.isna(cl) or cl not in BADGE_COULEUR:
+        return
+    lg = lang()
+    label, color = i18n.badge(cl, lg), BADGE_COULEUR[cl]
+    cv, n = row.get("rendement_cv"), row.get("rendement_n_env")
+    detail = ""
+    if pd.notna(cv) and pd.notna(n):
+        detail = (f" <span style='color:#666;font-size:0.78em'>"
+                  f"CV {cv:.0f} % · {int(n)} {i18n.t('essais', lg)}</span>")
+    st.markdown(f"<span style='background:{color};color:#fff;padding:2px 8px;"
+                f"border-radius:10px;font-size:0.8em'>{label}</span>{detail}",
+                unsafe_allow_html=True)
 
 
 def fiche_btn(code_plantation, label=None):
@@ -386,7 +459,8 @@ if not mode_detaille:
                                    (f" · {r['pays_origine']}" if pd.notna(r.get("pays_origine")) else ""))
                         badge(r)
                         for k in crit_cartes:
-                            st.write(f"{i18n.crit(k, LANG)} : {stars(CRIT[k](r))}")
+                            st.write(f"{i18n.crit(k, LANG)} : "
+                                     f"{stars(None, k, r['_idx'])}")
                         if st.button(i18n.t("voir_fiche", LANG), key=f"f_{i + j}",
                                      width="stretch"):
                             st.session_state["fiche_sel"] = r["code_plantation"]
@@ -445,8 +519,8 @@ else:
                 with pcols[i]:
                     st.image(UPLOADS_URL + str(pr["photo_bytea"]),
                              caption=pr["description"], width="stretch")
-        elif tuber_local(row.get("code_plantation")):
-            st.image(tuber_local(row.get("code_plantation")),
+        elif tuber_photo(row.get("code_plantation")):
+            st.image(tuber_photo(row.get("code_plantation")),
                      caption=i18n.t("tubercule", LANG), width=320)
         fiche_btn(choix, i18n.t("telecharger_fiche_off", LANG))
     else:

@@ -61,12 +61,19 @@ UI = {
                               "Download variety data sheet (official format)"),
     "erreur_fiche": ("Erreur génération de la fiche :",
                      "Data sheet generation failed:"),
-    "legende_etoiles": ("★ = plus il y a d'étoiles, mieux c'est. Le badge coloré "
-                        "indique la régularité de la variété d'un milieu/année à "
-                        "l'autre (analyse Roujol/Godet).",
-                        "★ = the more stars, the better. The coloured badge shows "
-                        "how consistent the variety is across sites and years "
-                        "(Roujol/Godet analysis)."),
+    "legende_etoiles": ("★ = plus il y a d'étoiles, mieux c'est. Le badge indique la "
+                        "variabilité du rendement d'un essai à l'autre, **comparée aux "
+                        "autres variétés** de la collection : sur igname, toutes varient "
+                        "beaucoup. Le détail (CV, nombre d'essais) est sur la fiche.",
+                        "★ = the more stars, the better. The badge shows yield variability "
+                        "across trials **relative to the other varieties** in the "
+                        "collection: on yam, all of them vary a lot. Details (CV, number "
+                        "of trials) are on the data sheet."),
+    "essais": ("essais", "trials"),
+    "cv_rendement": ("Variabilité du rendement (CV)", "Yield variability (CV)"),
+    "nb_essais": ("Nombre d'essais", "Number of trials"),
+    "eval_insuffisante": ("Moins de 3 essais : variabilité non conclue",
+                          "Fewer than 3 trials: variability not assessed"),
     "astuce_detaille": ("Pour l'analyse complète (tous les traits, tableau, graphe "
                         "de stabilité), utilise le **mode détaillé** en haut de page.",
                         "For the full analysis (all traits, table, stability plot), "
@@ -105,12 +112,24 @@ CRITERES = {
     "Conservation": ("Conservation", "Storability"),
 }
 
-# Badges GxE : libellé court affiché sous le nom de la variété.
+# Badges GxE. Le vocabulaire est volontairement COMPARATIF : sur cette
+# collection le CV médian atteint 48 %, aucune variété n'est « régulière » dans
+# l'absolu. Dire « variabilité faible » sous-entend « par rapport aux autres »,
+# ce que la légende explicite.
 BADGES = {
-    "performante & stable": ("Productive et régulière", "Productive and consistent"),
-    "performante & spécialisée": ("Productive mais variable", "Productive but variable"),
-    "modeste & stable": ("Régulière, rendement modéré", "Consistent, moderate yield"),
-    "modeste & spécialisée": ("Rendement modéré et variable", "Moderate, variable yield"),
+    "performante & variabilité faible":
+        ("Productive, variabilité faible", "Productive, low variability"),
+    "performante & variabilité moyenne":
+        ("Productive, variabilité moyenne", "Productive, moderate variability"),
+    "performante & variabilité forte":
+        ("Productive, variabilité forte", "Productive, high variability"),
+    "modeste & variabilité faible":
+        ("Rendement modéré, variabilité faible", "Moderate yield, low variability"),
+    "modeste & variabilité moyenne":
+        ("Rendement modéré, variabilité moyenne", "Moderate yield, moderate variability"),
+    "modeste & variabilité forte":
+        ("Rendement modéré, variabilité forte", "Moderate yield, high variability"),
+    "données insuffisantes": ("Évaluation insuffisante", "Insufficient evaluation"),
 }
 
 

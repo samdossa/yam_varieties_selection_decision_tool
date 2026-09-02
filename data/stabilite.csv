@@ -1,274 +1,274 @@
-code_plantation,nom,espece,rendement_n_env,rendement_moy,rendement_cv,rendement_perf,anthracnose_n_env,anthracnose_moy,anthracnose_cv,anthracnose_perf,matiere_seche_n_env,matiere_seche_moy,matiere_seche_cv,matiere_seche_perf,rendement_roujol,rendement_godet,rendement_pente_FW,classe_rendement
-CIRAD1,RIVE-LA,Dioscorea alata,5,34.45,82.1,29.96,4,39.19,109.8,36.03,3,0.26,5.5,0.27,11.94,49.46,2.76,performante & spécialisée
-CIRAD2,2848,Dioscorea alata,4,28.2,60.5,27.19,2,22.0,56.8,31.88,2,0.3,4.4,0.3,19.45,36.95,0.68,performante & spécialisée
-CIRAD3,2852,Dioscorea alata,5,19.1,64.0,21.32,4,36.0,111.0,34.52,3,0.24,14.9,0.25,13.23,23.02,1.2,modeste & spécialisée
-CIRAD4,3168,Dioscorea alata,3,23.07,20.0,26.37,2,38.58,42.5,33.21,3,0.27,3.4,0.28,19.89,29.44,0.51,performante & stable
-CIRAD5,NESTY,Dioscorea alata,6,18.57,68.3,19.69,3,6.33,141.4,24.78,2,0.25,11.5,0.26,7.3,24.21,0.78,modeste & spécialisée
-CIRAD6,3202,Dioscorea alata,3,29.79,46.3,25.72,3,13.33,71.0,24.68,2,0.23,13.3,0.26,22.21,33.58,1.25,modeste & stable
-CIRAD7,3210,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD8,3233,Dioscorea alata,7,23.19,67.9,23.97,4,11.0,128.3,22.7,2,0.18,5.2,0.22,13.66,30.33,1.74,modeste & spécialisée
-CIRAD9,3245,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD10,3255,Dioscorea alata,0,,,,1,38.0,,35.38,0,,,,,,,données insuffisantes
-CIRAD11,YORUBA,Dioscorea alata,5,29.09,36.4,27.45,3,48.0,72.6,38.62,3,0.29,14.9,0.29,27.98,30.76,0.54,performante & stable
-CIRAD12,3764,Dioscorea alata,4,13.42,32.1,17.32,3,69.17,70.8,47.13,2,0.29,6.1,0.29,9.24,17.6,0.44,modeste & stable
-CIRAD13,3920,Dioscorea alata,4,24.45,43.4,24.64,2,4.75,100.0,26.54,3,0.32,9.9,0.31,15.46,33.44,1.04,modeste & stable
-CIRAD14,4113,Dioscorea alata,3,11.31,72.2,16.42,2,41.75,31.7,34.19,2,0.25,10.8,0.27,5.78,22.38,0.82,modeste & spécialisée
-CIRAD15,K-DOS,Dioscorea alata,6,24.87,56.4,25.05,4,13.38,108.1,23.82,2,0.32,5.5,0.3,25.21,24.69,-0.3,modeste & spécialisée
-CIRAD16,4147,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD17,4676,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD18,4838,Dioscorea alata,5,22.54,48.7,24.06,3,12.67,141.4,24.03,3,0.26,15.9,0.27,19.12,24.82,0.59,modeste & spécialisée
-CIRAD19,FUTILE,Dioscorea alata,7,24.64,27.9,27.29,4,54.0,64.4,43.03,3,0.23,6.2,0.25,28.56,21.69,0.12,performante & stable
-CIRAD20,4948,Dioscorea alata,5,22.73,50.3,21.87,4,98.94,81.2,64.27,3,0.23,16.0,0.25,18.42,25.6,0.9,modeste & spécialisée
-CIRAD21,3915,Dioscorea alata,1,4.87,,22.53,2,33.25,100.0,31.56,1,0.22,,0.25,4.87,,,données insuffisantes
-CIRAD22,CONTINENT,Dioscorea alata,6,26.72,65.2,27.2,4,4.75,173.2,19.75,2,0.26,12.7,0.27,27.29,26.44,1.39,performante & spécialisée
-CIRAD23,4126,Dioscorea alata,5,19.04,48.4,21.0,3,15.44,71.6,25.53,3,0.27,18.3,0.28,14.7,25.56,0.47,modeste & spécialisée
-CIRAD24,2861,Dioscorea alata,5,19.41,48.0,20.36,3,102.33,61.4,60.47,2,0.26,5.7,0.26,14.71,26.47,0.74,modeste & spécialisée
-CIRAD25,2873,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD26,3128,D. rotundata,3,16.04,36.3,20.27,2,20.5,100.0,31.42,2,0.29,11.1,0.29,16.14,15.83,-0.19,modeste & stable
-CIRAD27,3135,Dioscorea alata,7,19.28,44.1,21.4,4,135.88,74.7,81.73,2,0.21,18.0,0.24,11.0,25.5,0.72,modeste & stable
-CIRAD28,3249,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD29,3916,Dioscorea alata,4,21.04,53.3,22.68,2,39.0,46.2,37.14,3,0.25,6.4,0.26,11.08,31.01,1.12,modeste & spécialisée
-CIRAD30,4046,Dioscorea alata,2,16.79,84.1,21.82,1,66.5,,40.6,0,,,,2.67,30.92,,modeste & spécialisée
-CIRAD31,4052,Dioscorea alata,0,,,,1,0.0,,28.42,0,,,,,,,données insuffisantes
-CIRAD32,FILO,Dioscorea alata,6,26.15,48.5,26.85,4,38.0,114.5,35.46,2,0.29,1.7,0.28,32.36,19.95,-0.38,performante & spécialisée
-CIRAD34,4639,Dioscorea alata,4,19.3,49.5,20.33,2,20.0,5.0,31.26,2,0.28,1.8,0.28,10.61,27.99,0.96,modeste & spécialisée
-CIRAD35,4956,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD36,DIRAC,Dioscorea alata,4,23.77,65.3,23.46,3,16.5,73.1,25.96,2,0.29,19.6,0.28,13.65,33.89,1.3,modeste & spécialisée
-CIRAD37,BENINE,Dioscorea alata,5,13.95,43.9,16.64,4,11.75,103.6,23.06,2,0.28,8.5,0.29,17.4,11.65,-0.52,modeste & stable
-CIRAD38,1221,Dioscorea alata,4,26.4,49.0,26.66,3,13.33,71.0,24.68,3,0.28,15.1,0.28,16.71,36.08,0.71,performante & spécialisée
-CIRAD39,1186,Dioscorea alata,4,2.95,25.6,11.92,3,59.67,45.1,43.31,1,0.24,,0.26,2.82,3.33,-0.01,modeste & stable
-CIRAD40,3132,Dioscorea alata,5,10.22,79.6,16.86,4,22.44,139.0,28.11,3,0.27,15.5,0.27,4.93,18.15,0.85,modeste & spécialisée
-CIRAD41,GALANTE,Dioscorea alata,6,19.11,83.4,20.16,4,25.0,105.6,29.32,2,0.24,21.3,0.26,14.86,21.23,-0.0,modeste & spécialisée
-CIRAD42,PAK-LA,Dioscorea alata,6,35.54,56.2,33.89,4,98.5,55.5,64.06,3,0.22,21.3,0.24,29.0,38.81,-0.52,performante & spécialisée
-CIRAD43,CIDERAD,Dioscorea alata,7,28.99,42.1,29.17,4,81.44,102.7,56.0,3,0.21,15.4,0.23,16.95,38.02,1.11,performante & stable
-CIRAD44,2868,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD45,4042,Dioscorea alata,6,29.54,60.3,29.01,3,55.5,25.7,44.55,2,0.44,38.5,0.39,15.08,36.77,1.86,performante & spécialisée
-CIRAD46,1278,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD47,1326,Dioscorea alata,7,16.68,100.9,20.01,4,2.38,173.2,18.62,2,0.19,0.2,0.23,9.03,22.41,1.56,modeste & spécialisée
-CIRAD48,1467,Dioscorea alata,7,33.21,67.2,32.38,4,2.38,173.2,18.62,3,0.28,9.9,0.28,30.68,35.1,1.32,performante & spécialisée
-CIRAD49,3150,Dioscorea alata,7,17.94,75.5,20.68,4,22.12,100.5,27.96,3,0.26,3.4,0.27,6.42,26.58,1.6,modeste & spécialisée
-CIRAD50,4678,Dioscorea alata,6,12.42,100.8,17.15,4,114.38,72.6,71.57,3,0.25,7.2,0.26,9.15,15.68,0.93,modeste & spécialisée
-CIRAD51,1414,Dioscorea alata,5,9.84,37.5,14.9,3,77.5,36.0,50.48,3,0.22,1.7,0.24,7.43,13.46,0.33,modeste & stable
-CIRAD52,1475,Dioscorea alata,1,4.66,,22.46,1,28.5,,33.64,1,0.32,,0.3,4.66,,,données insuffisantes
-CIRAD53,1247,Dioscorea alata,3,23.12,60.3,21.08,2,24.75,15.2,32.73,3,0.27,9.9,0.28,3.78,32.79,1.3,modeste & spécialisée
-CIRAD54,ORIGINAL,D. alata,7,32.88,63.5,32.13,4,64.62,164.8,48.05,2,0.27,14.5,0.28,26.19,37.89,1.99,performante & spécialisée
-CIRAD55,,,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD56,1185,Dioscorea alata,4,4.74,29.9,10.91,4,213.62,70.6,118.49,2,0.26,6.6,0.27,4.35,5.13,0.02,modeste & stable
-CIRAD57,1372,Dioscorea alata,1,37.31,,27.52,2,53.75,23.7,41.71,0,,,,,37.31,,données insuffisantes
-CIRAD58,LEVYLA,Dioscorea alata,6,37.92,49.8,34.73,4,2.38,173.2,18.62,3,0.25,6.4,0.26,39.57,37.1,1.31,performante & spécialisée
-CIRAD59,1371,Dioscorea alata,1,19.24,,27.58,1,9.5,,30.16,0,,,,19.24,,,données insuffisantes
-CIRAD60,CONSISTANT,Dioscorea alata,5,31.71,53.6,29.36,4,93.62,131.3,61.76,3,0.28,17.1,0.29,25.69,35.72,-0.37,performante & spécialisée
-CIRAD61,DIRCA,Dioscorea alata,7,15.37,62.8,18.72,4,36.62,99.4,34.81,3,0.24,3.9,0.25,11.11,18.57,0.79,modeste & spécialisée
-CIRAD62,PERSY,Dioscorea alata,5,29.95,31.9,28.68,4,40.0,88.5,36.41,3,0.27,17.1,0.28,25.31,33.04,0.91,performante & stable
-CIRAD63,3805,Dioscorea alata,5,40.03,86.3,36.17,4,7.12,173.2,20.87,3,0.29,11.5,0.29,29.76,46.87,2.37,performante & spécialisée
-CIRAD64,GODET,Dioscorea alata,5,49.69,66.8,43.55,3,28.0,80.9,30.58,2,0.25,11.6,0.26,25.66,85.73,3.02,performante & spécialisée
-CIRAD65,4878,Dioscorea alata,7,16.88,111.8,19.69,4,85.0,85.4,57.68,3,0.24,21.2,0.25,6.86,24.4,1.65,modeste & spécialisée
-CIRAD66,4950,Dioscorea alata,3,15.52,72.2,20.8,3,136.17,72.8,74.07,2,0.2,14.5,0.23,8.11,30.33,0.8,modeste & spécialisée
-CIRAD67,5140,Dioscorea alata,5,19.13,67.1,20.5,4,15.0,112.6,24.59,3,0.26,12.7,0.27,10.3,25.01,1.26,modeste & spécialisée
-CIRAD68,3121,Dioscorea alata,4,18.02,85.0,19.89,2,51.5,7.8,41.01,1,0.19,,0.25,5.57,30.47,1.29,modeste & spécialisée
-CIRAD69,4823,Dioscorea alata,7,19.53,42.0,21.46,4,90.29,120.5,60.18,3,0.23,9.9,0.25,14.37,23.41,0.37,modeste & stable
-CIRAD70,LONGTA,D. rotundata,5,22.42,69.5,22.69,4,2.38,173.2,18.62,2,0.3,3.1,0.3,10.83,30.16,1.23,modeste & spécialisée
-CIRAD71,2866,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD72,3836,Dioscorea alata,2,2.79,16.3,15.34,1,28.5,,33.64,0,,,,2.33,3.24,,modeste & stable
-CIRAD73,OCEAN,Dioscorea alata,7,17.92,63.9,21.83,4,76.75,146.0,53.78,3,0.23,18.3,0.25,14.31,20.62,0.64,modeste & spécialisée
-CIRAD74,TRANSITION,Dioscorea alata,7,29.47,37.2,31.73,4,5.54,173.2,20.12,3,0.26,8.6,0.27,25.84,32.18,0.27,performante & stable
-CIRAD75,AGREABLE,Dioscorea alata,5,30.1,81.3,29.27,4,4.75,173.2,19.75,3,0.23,15.8,0.24,11.34,42.6,2.46,performante & spécialisée
-CIRAD76,TICO,Dioscorea alata,7,26.63,74.6,26.68,4,5.54,173.2,20.12,3,0.21,9.9,0.23,15.45,35.01,2.07,performante & spécialisée
-CIRAD77,LYANNAG,Dioscorea rotundata,5,28.79,80.5,27.45,3,13.67,141.4,24.82,3,0.3,2.1,0.29,15.58,48.62,2.01,performante & spécialisée
-CIRAD78,AIA 445,Dioscorea alata,5,14.59,86.4,17.68,3,148.17,89.3,78.89,2,0.2,0.4,0.23,6.92,26.11,1.03,modeste & spécialisée
-CIRAD79,Nouméa,Dioscorea alata,1,7.47,,23.45,0,,,,0,,,,7.47,,,données insuffisantes
-CIRAD80,DA 26,Dioscorea alata,1,6.77,,15.7,1,0.0,,28.35,1,0.16,,0.24,,6.77,,données insuffisantes
-CIRAD81,Telemaque,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD82,De agua,Dioscorea alata,4,15.1,46.5,18.22,4,62.38,125.2,46.99,3,0.29,13.1,0.29,12.55,17.65,0.26,modeste & stable
-CIRAD83,AIA 443,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD84,Sweet yam,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD85,DA 27,Dioscorea alata,4,34.89,17.3,31.76,3,13.33,71.0,24.68,3,0.29,13.9,0.29,31.88,37.91,0.5,performante & stable
-CIRAD86,Bresil1,Dioscorea alata,4,24.62,51.5,24.31,3,14.67,99.2,25.22,3,0.25,7.2,0.26,15.0,34.23,1.19,modeste & spécialisée
-CIRAD87,Americano,Dioscorea alata,7,36.59,46.9,34.9,4,65.75,127.6,48.58,2,0.26,2.0,0.27,33.1,39.2,0.85,performante & stable
-CIRAD88,St Domingue,Dioscorea alata,5,23.91,71.7,24.89,4,17.38,103.2,25.72,3,0.3,18.7,0.3,9.08,33.79,1.94,modeste & spécialisée
-CIRAD90,Bacala 2,Dioscorea alata,3,8.84,65.1,16.32,3,171.33,73.6,88.21,2,0.23,10.3,0.25,4.78,16.97,0.54,modeste & spécialisée
-CIRAD91,St Vincent Violet,Dioscorea alata,5,27.75,59.4,26.94,4,89.38,130.3,59.75,2,0.25,0.8,0.26,20.07,32.86,1.54,performante & spécialisée
-CIRAD92,Buet,Dioscorea alata,7,35.47,87.5,33.52,4,36.62,99.4,34.81,3,0.27,7.9,0.27,21.62,45.86,3.19,performante & spécialisée
-CIRAD93,Bacala 1,Dioscorea alata,6,41.36,49.6,37.45,4,40.0,88.5,36.41,3,0.26,9.9,0.27,47.8,38.15,1.14,performante & spécialisée
-CIRAD94,Morado,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD95,Wénéféla bis,Dioscorea alata,5,18.25,76.0,20.78,4,108.62,135.4,68.85,2,0.24,13.6,0.26,6.11,26.35,1.44,modeste & spécialisée
-CIRAD96,Purple Lisbon,Dioscorea alata,5,21.66,44.6,23.09,4,124.38,76.4,76.3,3,0.23,13.8,0.25,14.66,26.33,0.98,modeste & stable
-CIRAD97,Renta Yam,Dioscorea alata,1,58.28,,34.52,0,,,,0,,,,,58.28,,données insuffisantes
-CIRAD98,Toro,Dioscorea alata,6,46.1,43.8,41.58,4,10.25,173.2,22.35,3,0.3,17.7,0.29,41.43,48.43,1.97,performante & stable
-CIRAD99,SEA 184,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD100,Caillade 1,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD101,SEA 144,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD102,Tahiti messien,Dioscorea alata,6,31.28,39.8,30.87,4,2.38,173.2,18.62,3,0.29,25.7,0.29,37.48,28.18,0.31,performante & stable
-CIRAD103,Ti Joseph 1,Dioscorea alata,5,20.95,74.2,21.3,4,7.12,173.2,20.87,3,0.32,31.0,0.31,9.46,28.61,1.48,modeste & spécialisée
-CIRAD104,St Martin,Dioscorea alata,6,23.81,37.5,24.79,4,6.5,119.4,20.57,3,0.29,13.5,0.29,23.26,24.09,0.6,modeste & stable
-CIRAD105,A 19,Dioscorea alata,4,11.55,109.2,17.96,3,9.5,141.4,23.14,2,0.28,10.4,0.28,4.39,33.05,1.33,modeste & spécialisée
-CIRAD106,Wabé,Dioscorea alata,6,22.78,54.4,23.8,4,2.38,173.2,18.62,3,0.28,10.8,0.28,10.62,28.86,1.23,modeste & spécialisée
-CIRAD107,Tana,Dioscorea alata,7,22.8,71.3,24.44,4,40.0,88.5,36.41,3,0.25,21.5,0.26,10.89,31.73,0.9,modeste & spécialisée
-CIRAD108,61F,Dioscorea alata,7,38.83,48.0,36.4,4,55.5,132.4,43.74,3,0.26,11.7,0.27,19.79,53.11,1.6,performante & spécialisée
-CIRAD109,MALALAGI (VU 639),Dioscorea alata,7,24.36,46.5,24.96,4,10.0,100.2,22.23,3,0.25,17.3,0.26,24.15,24.51,0.17,modeste & stable
-CIRAD110,H4X-200 (Rosette),Dioscorea alata,7,27.63,28.7,27.56,4,13.38,108.1,23.82,2,0.28,15.3,0.29,23.99,30.36,0.4,performante & stable
-CIRAD111,TiBou/7F,Dioscorea rotundata,6,16.41,60.5,19.1,4,4.75,173.2,19.75,2,0.28,4.1,0.29,16.66,16.28,-0.08,modeste & spécialisée
-CIRAD112,Pacala Tardif,Dioscorea alata,2,21.94,32.3,20.45,1,41.5,,35.95,1,0.25,,0.28,,21.94,,modeste & stable
-CIRAD113,Vino Purple forme,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD114,Monoique,Dioscorea rotundata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD115,Mono 25-2,Dioscorea rotundata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD116,LABOKO,Dioscorea rotundata,1,6.24,,16.01,0,,,,1,0.46,,0.37,,6.24,,données insuffisantes
-CIRAD117,Coco,Dioscorea rotundata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD118,Belo,Dioscorea rotundata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD119,TiClair,Dioscorea rotundata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD120,14M,Dioscorea alata,7,12.32,41.0,15.67,4,43.38,64.7,38.01,3,0.27,9.8,0.28,12.27,12.36,0.21,modeste & stable
-CIRAD121,74F,Dioscorea alata,7,34.68,56.7,32.09,3,7.92,141.4,25.42,3,0.28,19.7,0.28,19.43,46.12,1.77,performante & spécialisée
-CIRAD122,A 14,Dioscorea alata,6,28.67,54.0,27.14,4,1.19,173.2,18.06,3,0.22,20.6,0.24,30.51,27.75,1.36,performante & spécialisée
-CIRAD123,A 17,Dioscorea alata,7,21.99,43.1,22.47,4,11.19,100.4,22.79,3,0.27,9.4,0.27,11.92,29.55,0.99,modeste & stable
-CIRAD124,A 2,Dioscorea alata,6,34.52,52.1,31.12,4,74.56,115.4,52.75,3,0.22,25.5,0.24,19.66,41.96,-0.56,performante & spécialisée
-CIRAD125,A 21,Dioscorea alata,7,20.68,79.5,22.47,4,5.25,173.2,19.98,2,0.25,16.5,0.27,8.33,29.95,1.41,modeste & spécialisée
-CIRAD126,A 22,Dioscorea alata,7,31.65,39.6,30.94,4,61.88,124.9,46.75,2,0.26,20.9,0.28,28.5,34.01,0.83,performante & stable
-CIRAD127,A 24,Dioscorea alata,7,14.82,71.6,17.2,4,5.94,173.2,20.31,3,0.3,10.8,0.3,11.62,17.23,0.91,modeste & spécialisée
-CIRAD128,A 6,Dioscorea alata,6,41.1,23.6,38.5,4,2.38,173.2,18.62,3,0.25,6.2,0.26,46.08,38.6,0.0,performante & stable
-CIRAD129,A 9,Dioscorea alata,7,27.49,29.5,26.8,4,11.44,150.2,22.91,3,0.27,11.4,0.28,22.94,30.91,0.33,performante & stable
-CIRAD130,Belep,Dioscorea alata,6,14.55,42.5,16.07,4,5.94,173.2,20.31,3,0.31,15.2,0.3,12.01,15.83,0.67,modeste & stable
-CIRAD131,Bete Bete,Dioscorea alata,7,12.72,52.9,14.82,4,5.94,173.2,20.31,3,0.3,12.1,0.3,5.78,17.92,0.65,modeste & spécialisée
-CIRAD133,Boutou,Dioscorea alata,7,30.34,38.6,29.81,4,2.38,173.2,18.62,3,0.25,16.3,0.26,26.06,33.55,0.68,performante & stable
-CIRAD134,Caplaou,Dioscorea alata,7,15.58,60.4,16.28,4,49.56,103.5,40.93,3,0.28,10.7,0.29,15.52,15.62,0.52,modeste & spécialisée
-CIRAD135,Cinq,Dioscorea alata,7,23.86,33.6,25.11,4,13.17,104.0,23.73,3,0.26,11.3,0.27,16.43,29.44,0.44,modeste & stable
-CIRAD136,Divin,Dioscorea alata,6,35.34,32.4,32.54,4,11.0,128.3,22.7,3,0.25,17.7,0.26,34.88,35.58,0.39,performante & stable
-CIRAD137,Dou - H4x431,Dioscorea alata,7,24.41,38.4,24.71,3,0.0,,22.24,3,0.3,19.6,0.29,15.86,30.83,0.48,modeste & stable
-CIRAD138,Fénakué,Dioscorea alata,5,3.14,65.7,7.97,3,252.5,55.4,120.46,1,0.31,,0.29,4.48,2.25,-0.13,modeste & spécialisée
-CIRAD139,Florido,Dioscorea alata,6,19.79,38.0,20.34,4,35.81,125.5,34.43,2,0.28,10.6,0.27,12.63,23.36,0.59,modeste & stable
-CIRAD140,Goana,Dioscorea alata,7,34.71,45.8,32.25,4,16.19,106.9,25.15,3,0.3,9.5,0.29,32.91,36.06,0.96,performante & stable
-CIRAD141,Gordito,Dioscorea alata,7,25.53,35.8,25.84,4,5.54,173.2,20.12,3,0.27,14.6,0.28,19.73,29.88,1.07,modeste & stable
-CIRAD142,Grand Etang,Dioscorea alata,7,27.11,43.8,26.54,4,85.69,123.1,58.01,3,0.25,19.1,0.26,16.51,35.06,0.68,performante & stable
-CIRAD143,Grosse caille 3 mois,Dioscorea rotundata,6,23.51,43.5,23.73,4,0.0,,17.5,3,0.3,22.2,0.3,19.3,25.61,1.03,modeste & stable
-CIRAD144,"H4X131, Cirabel",Dioscorea alata,7,14.18,31.5,16.94,4,21.0,109.8,27.43,3,0.27,13.6,0.27,11.88,15.91,0.1,modeste & stable
-CIRAD145,"H4X172, KREOLINE",Dioscorea alata,6,24.2,37.0,26.34,4,28.25,95.9,30.86,3,0.29,15.5,0.29,24.41,23.99,0.34,performante & stable
-CIRAD146,"H4X274, Marchande",Dioscorea alata,7,26.27,81.0,25.68,4,3.56,173.2,19.19,3,0.27,3.2,0.27,10.87,37.82,2.49,modeste & spécialisée
-CIRAD147,HYB 30,Dioscorea alata,7,31.1,42.6,30.14,4,4.75,173.2,19.75,3,0.25,17.8,0.26,21.92,37.99,0.36,performante & stable
-CIRAD148,HYB 5,Dioscorea alata,7,35.14,40.8,34.26,4,37.62,96.7,35.29,3,0.25,13.1,0.26,39.73,31.7,0.43,performante & stable
-CIRAD149,HYB 6,Dioscorea alata,7,35.2,36.9,33.26,4,2.38,173.2,18.62,3,0.27,2.4,0.28,33.45,36.52,0.27,performante & stable
-CIRAD150,Igname Jaune,D. cayenensis,1,2.78,,15.38,4,2.38,173.2,18.62,1,0.39,,0.33,,2.78,,données insuffisantes
-CIRAD151,INRA X 154,Dioscorea alata,5,37.65,34.1,32.69,4,13.38,108.1,23.82,3,0.25,5.8,0.26,54.86,33.35,0.64,performante & stable
-CIRAD152,INRA15,Dioscorea alata,7,21.29,46.2,21.42,4,56.25,132.9,44.09,3,0.3,8.8,0.3,30.2,14.61,-0.48,modeste & stable
-CIRAD153,Kabusa,Dioscorea alata,6,6.47,45.9,12.11,4,104.56,141.5,66.93,2,0.31,8.0,0.3,5.41,7.53,0.02,modeste & stable
-CIRAD154,Kinabayo,Dioscorea alata,7,24.64,66.3,24.06,4,14.75,108.0,24.47,3,0.29,8.5,0.29,20.82,27.5,1.5,modeste & spécialisée
-CIRAD155,KL 21,Dioscorea alata,6,20.75,44.6,21.38,4,14.56,103.3,24.39,3,0.29,8.3,0.29,16.89,22.68,0.88,modeste & stable
-CIRAD156,Lac bleu 3,Dioscorea trifida,1,2.68,,19.85,1,0.0,,27.83,0,,,,,2.68,,données insuffisantes
-CIRAD157,Manlankon,Dioscorea alata,7,35.93,55.0,34.45,4,8.31,173.2,21.43,3,0.29,8.5,0.29,22.6,45.93,0.73,performante & spécialisée
-CIRAD158,MP1 16H56,Dioscorea alata,7,19.56,77.0,19.8,4,23.81,108.7,28.76,3,0.27,13.7,0.27,8.74,27.68,1.5,modeste & spécialisée
-CIRAD159,"Noulelcae, CT198",Dioscorea alata,6,33.22,38.6,31.35,4,22.62,112.9,28.2,3,0.32,6.5,0.31,23.17,38.25,1.0,performante & stable
-CIRAD160,"Nureangdan, CT202",Dioscorea alata,3,43.56,65.8,33.4,3,20.0,83.8,27.36,3,0.3,7.1,0.29,7.23,61.72,4.54,performante & spécialisée
-CIRAD161,Oriental,Dioscorea alata,7,27.22,69.2,26.71,4,13.81,121.2,24.03,3,0.25,7.8,0.26,23.86,29.75,1.56,performante & spécialisée
-CIRAD162,Pacala,Dioscorea alata,7,18.55,67.5,20.8,4,19.75,100.1,26.84,3,0.3,8.6,0.3,11.71,23.69,1.34,modeste & spécialisée
-CIRAD163,Pakutrany,Dioscorea alata,7,14.69,69.3,17.39,4,46.69,94.2,39.57,3,0.32,7.4,0.31,8.93,19.02,0.98,modeste & spécialisée
-CIRAD164,"Peter, CT177",Dioscorea alata,7,19.67,64.8,20.55,4,1.19,173.2,18.06,2,0.34,6.8,0.33,16.42,22.11,0.96,modeste & spécialisée
-CIRAD165,Plimbite,Dioscorea alata,5,14.79,34.1,19.56,3,7.92,141.4,22.12,2,0.26,6.9,0.26,12.2,18.67,-0.17,modeste & stable
-CIRAD166,"Ptris, CT133",Dioscorea alata,6,26.61,32.8,26.01,4,12.19,116.0,23.26,3,0.27,0.4,0.28,25.27,27.94,-0.15,performante & stable
-CIRAD167,Pyramide,Dioscorea alata,7,31.69,47.1,29.69,4,11.19,100.4,22.79,3,0.31,6.4,0.3,25.82,36.1,1.52,performante & stable
-CIRAD168,Roujol - H4x242,Dioscorea alata,6,34.42,32.2,30.57,4,7.62,113.3,21.11,3,0.34,4.1,0.33,32.02,35.62,1.3,performante & stable
-CIRAD169,Sea 190,Dioscorea alata,5,20.44,38.0,20.33,4,49.81,102.4,41.05,3,0.34,17.7,0.32,12.17,22.5,0.83,modeste & stable
-CIRAD170,Sinoua CT160,Dioscorea alata,7,14.14,54.9,17.17,4,71.12,141.2,51.12,3,0.29,7.2,0.29,7.7,18.97,0.76,modeste & spécialisée
-CIRAD171,St Vincent blanc,Dioscorea alata,6,42.75,26.7,37.34,4,18.12,100.2,26.07,3,0.29,7.6,0.29,33.5,47.37,1.77,performante & stable
-CIRAD172,TiViolet - H4x105,Dioscorea alata,7,32.28,32.4,30.52,4,0.0,,17.5,3,0.31,10.0,0.31,26.04,36.96,0.96,performante & stable
-CIRAD173,Toki (SEA 119),Dioscorea alata,5,40.47,88.2,35.17,4,3.56,173.2,19.19,3,0.3,1.2,0.29,15.69,56.99,3.35,performante & spécialisée
-CIRAD174,"Toufi Tetea, CT148",Dioscorea alata,6,55.3,38.0,48.35,3,16.25,87.1,28.77,3,0.3,7.4,0.3,28.75,68.57,1.18,performante & stable
-CIRAD175,Wassa,Dioscorea alata,5,2.2,93.6,9.67,4,111.56,124.9,70.24,1,0.38,,0.32,1.1,3.85,0.21,modeste & spécialisée
-CIRAD176,CIRAD-B235,Dioscorea alata,7,42.89,27.6,39.85,4,17.38,103.2,25.72,3,0.32,5.2,0.31,36.0,48.06,0.13,performante & stable
-CIRAD177,KARUKERA,Dioscorea alata,4,30.22,47.3,27.25,3,75.67,45.4,49.74,3,0.33,4.3,0.32,17.05,43.39,1.25,performante & spécialisée
-CIRAD178,DESIRABLE,Dioscorea alata,7,41.64,44.2,38.0,4,64.0,118.1,47.76,3,0.3,4.2,0.3,34.54,46.96,2.04,performante & stable
-CIRAD179,TROPICAL,Dioscorea alata,7,42.87,60.6,38.26,4,11.88,173.2,23.12,3,0.26,10.4,0.27,43.66,42.28,1.98,performante & spécialisée
-CIRAD180,REGIONAL,Dioscorea alata,7,49.83,50.8,45.55,4,18.12,100.2,26.07,3,0.28,3.4,0.28,31.54,63.55,1.58,performante & spécialisée
-CIRAD181,DEFI,Dioscorea alata,7,42.22,29.4,38.79,4,51.25,129.1,41.73,3,0.29,2.2,0.29,41.88,42.48,0.69,performante & stable
-CIRAD182,C5,Dioscorea alata,7,51.63,33.4,46.75,4,16.94,100.0,25.51,3,0.3,1.8,0.3,40.49,59.99,1.26,performante & stable
-CIRAD183,Evolution,Dioscorea alata,7,45.05,67.9,41.09,4,4.75,173.2,19.75,3,0.27,6.3,0.28,35.85,51.95,0.96,performante & spécialisée
-CIRAD184,CIR-B037,Dioscorea alata,5,12.34,71.3,16.29,4,4.75,173.2,19.75,1,0.43,,0.35,16.01,9.9,0.25,modeste & spécialisée
-CIRAD185,NERON,Dioscorea alata,7,46.51,44.0,42.97,4,4.75,173.2,19.75,3,0.33,11.0,0.32,28.89,59.72,1.35,performante & stable
-CIRAD186,CIR-B120,Dioscorea alata,2,7.44,57.0,17.82,1,19.0,,31.9,1,0.35,,0.31,11.69,3.2,,modeste & spécialisée
-CIRAD187,CIRAD187,Dioscorea alata,0,,,,1,57.0,,38.86,1,0.32,,0.29,,,,données insuffisantes
-CIRAD188,MARIUS,Dioscorea alata,6,24.47,48.3,25.21,4,4.75,173.2,19.75,3,0.29,6.1,0.29,9.07,32.16,0.98,modeste & spécialisée
-CIRAD189,ELISE,Dioscorea alata,6,21.67,53.3,22.44,4,17.88,144.2,25.95,3,0.31,8.9,0.3,21.79,21.62,0.19,modeste & spécialisée
-CIRAD190,RESTO,Dioscorea alata,7,34.6,55.7,32.73,4,29.75,124.2,31.57,3,0.26,9.2,0.27,31.11,37.22,1.14,performante & spécialisée
-CIRAD191,COLIN,Dioscorea alata,7,33.83,55.5,31.52,4,46.62,121.7,39.54,3,0.25,6.2,0.26,21.11,43.36,1.9,performante & spécialisée
-CIRAD192,CIR-C078,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD193,CIR-C077,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD194,CIR-C090,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD195,CIR-C092,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD196,CIR-C010,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD198,CIR-K025,Dioscorea alata,1,2.33,,21.64,0,,,,0,,,,2.33,,,données insuffisantes
-CIRAD199,CIR-C100,Dioscorea alata,1,17.17,,23.87,0,,,,0,,,,17.17,,,données insuffisantes
-CIRAD200,CIR-K024,Dioscorea alata,1,0.51,,21.01,0,,,,0,,,,0.51,,,données insuffisantes
-CIRAD201,4638,Dioscorea alata,1,21.73,,28.45,1,28.5,,33.64,0,,,,21.73,,,données insuffisantes
-CIRAD202,SELECTA,Dioscorea alata,4,34.07,110.8,30.28,3,83.42,62.6,52.86,3,0.3,3.6,0.29,10.41,57.74,2.17,performante & spécialisée
-CIRAD203,CIR-D050,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD204,Pas possible,Dioscorea esculenta,6,40.45,23.1,35.32,3,0.0,,18.89,2,0.45,16.5,0.4,44.37,38.49,0.63,performante & stable
-CIRAD205,3253,Dioscorea alata,3,9.5,42.0,16.4,2,249.75,44.9,98.51,3,0.27,11.5,0.27,6.87,14.76,0.28,modeste & stable
-CIRAD206,,,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD207,Chiyazi,Dioscorea alata,2,52.05,16.7,36.09,1,34.5,,34.67,2,0.3,1.8,0.3,,52.05,,performante & stable
-CIRAD208,CIR-B244,Dioscorea alata,4,11.38,39.9,14.48,2,14.25,100.0,29.48,2,0.3,5.4,0.3,7.43,15.34,0.44,modeste & stable
-CIRAD209,CIR-D030,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD210,Ruby,Dioscorea alata,6,43.68,38.9,38.17,3,0.0,,18.89,3,0.29,15.2,0.29,48.09,41.48,0.49,performante & stable
-CIRAD211,Ado,Disocorea bulbifera,2,13.25,19.9,19.75,1,0.0,,28.35,2,0.35,19.1,0.33,10.61,15.89,,modeste & stable
-CIRAD212,CIRADO,Dioscorea alata,6,74.96,42.9,61.53,3,16.0,141.4,25.32,3,0.33,11.8,0.32,99.91,62.48,-1.23,performante & stable
-CIRAD213,Elie,Dioscorea alata,6,45.24,51.8,39.77,3,7.0,141.4,21.7,3,0.31,2.6,0.31,49.48,43.11,-1.26,performante & spécialisée
-CIRAD214,Hana,Dioscorea alata,6,48.89,47.6,42.49,3,0.0,,18.89,3,0.4,26.7,0.37,31.88,57.39,2.99,performante & spécialisée
-CIRAD215,GWADIKERA,Dioscorea alata,6,46.45,56.3,43.06,3,0.0,,18.89,3,0.34,8.0,0.32,33.81,59.09,2.97,performante & spécialisée
-CIRAD216,CRB68-bis,Dioscorea alata,5,29.07,30.6,26.95,3,71.17,79.3,47.5,3,0.25,27.9,0.26,20.21,31.29,1.29,performante & stable
-CIRAD217,CIRAD217,Dioscorea alata,3,20.79,58.1,21.22,1,0.0,,28.35,1,0.34,,0.3,6.44,27.96,1.52,modeste & spécialisée
-CIRAD218,Autofecondation-74F-violet,Dioscorea alata,6,72.42,23.4,60.78,3,0.0,,18.89,2,0.31,14.8,0.31,95.56,60.84,-1.58,performante & stable
-CIRAD219,PAS POSSIBLE (nouveau),Dioscorea esculenta,3,40.31,42.0,31.61,2,10.5,100.0,24.46,2,0.43,18.6,0.39,43.38,38.77,-0.85,performante & stable
-CIRAD220,Patte à cheval,Dioscorea trifida,0,,,,0,,,,1,0.38,,0.34,,,,données insuffisantes
-CIRAD221,Luc GC,D. rotundata,2,32.3,11.8,27.15,2,0.0,,21.21,1,0.45,,0.37,36.11,28.49,,performante & stable
-CIRAD222,Mgs 5,D. cayenenesis rotundata,3,22.71,41.9,20.41,2,0.0,,21.21,2,0.36,6.3,0.34,11.06,28.53,1.48,modeste & stable
-CIRAD223,OP3,,5,23.43,69.2,23.46,3,7.0,141.4,21.7,1,0.27,,0.29,6.52,34.69,2.13,modeste & spécialisée
-CIRAD224,Adon-CRB,Disocorea bulbifera,3,1.46,23.4,11.64,1,0.0,,23.85,1,0.34,,0.32,1.22,1.92,0.04,modeste & stable
-CIRAD225,Reunion,Disocorea bulbifera,5,14.71,54.7,15.9,3,0.0,,18.89,2,0.26,5.5,0.28,12.96,15.87,0.79,modeste & spécialisée
-CIRAD226,Thuma,Disocorea bulbifera,4,3.52,35.0,8.1,2,0.0,,20.77,1,0.2,,0.26,2.34,4.7,0.17,modeste & stable
-CIRAD227,Name de papa,Dioscorea esculenta,4,16.99,62.4,12.7,2,0.0,,20.77,1,0.44,,0.36,25.76,8.22,-1.18,modeste & spécialisée
-CIRAD228,Assam,Dioscorea esculenta,2,31.92,0.1,30.5,3,0.0,,18.89,2,0.36,11.3,0.34,31.88,31.96,,performante & stable
-CIRAD229,Spindle,Dioscorea esculenta,3,24.69,37.3,24.17,2,0.0,,21.21,1,0.42,,0.36,20.87,32.34,0.59,modeste & stable
-CIRAD230,Pas possible IRAT,Dioscorea esculenta,4,22.99,21.5,24.77,3,0.0,,18.89,2,0.44,9.0,0.39,20.27,25.72,0.34,modeste & stable
-CIRAD231,SEA 273,Dioscorea esculenta,3,27.44,20.8,26.69,3,0.0,,18.89,2,0.49,15.0,0.42,24.64,28.83,1.04,performante & stable
-CIRAD232,ZAMEY,Dioscorea alata,5,68.51,30.7,55.33,3,11.5,141.4,23.51,2,0.29,10.9,0.29,51.61,72.74,-0.9,performante & stable
-CIRAD233,CI-GWA,Dioscorea alata,4,51.26,39.3,41.11,3,92.67,141.4,56.15,2,0.32,2.0,0.32,19.95,61.69,2.42,performante & stable
-CIRAD234,CITOYENNE,Dioscorea alata,6,29.35,59.1,27.3,3,62.0,118.3,43.82,2,0.29,3.3,0.3,20.52,33.77,0.76,performante & spécialisée
-CIRAD235,Autofecondation-74F-3,Dioscorea alata,3,50.37,13.4,37.13,2,31.5,9.5,34.82,1,0.28,,0.3,44.38,53.36,0.69,performante & stable
-CIRAD236,Autofecondation-Dou-1,Dioscorea alata,5,60.66,62.2,53.62,2,82.5,100.0,46.3,1,0.18,,0.23,37.71,75.96,0.49,performante & spécialisée
-CIRAD237,Autofecondation-Dou-2,Dioscorea alata,4,29.15,28.2,25.72,2,106.5,54.9,54.17,2,0.28,1.9,0.29,34.92,23.37,-0.65,modeste & stable
-CIRAD238,Autofecondation-Dou-3,Dioscorea alata,3,23.25,33.1,20.84,1,0.0,,28.35,1,0.34,,0.32,12.93,28.42,0.94,modeste & stable
-CIRAD239,Autofecondation-Dou-4,Dioscorea alata,5,37.08,55.1,33.08,3,0.0,,18.89,2,0.28,3.2,0.29,19.27,48.96,2.56,performante & spécialisée
-CIRAD240,Autofecondation-Dou-5,Dioscorea alata,3,21.03,22.5,20.14,2,17.25,100.0,26.54,0,,,,26.46,18.32,-0.7,modeste & stable
-CIRAD241,Autofecondation-61F-1,Dioscorea alata,6,38.53,73.8,34.29,3,25.17,141.4,29.01,2,0.27,12.1,0.28,57.59,29.0,0.15,performante & spécialisée
-CIRAD242,Autofecondation-61F-2,Dioscorea alata,3,59.01,22.9,44.21,2,0.0,,21.21,2,0.31,1.3,0.31,77.69,49.66,-2.06,performante & stable
-CIRAD243,Autofecondation-61F-3,Dioscorea alata,6,36.5,47.0,33.24,3,13.67,141.4,24.38,2,0.33,10.0,0.32,51.18,29.15,0.36,performante & stable
-CIRAD244,Autofecondation-61F-4,Dioscorea alata,6,60.23,33.4,50.24,3,18.5,141.4,26.33,2,0.32,10.0,0.32,63.6,58.55,-2.39,performante & stable
-CIRAD245,Autofecondation-61F-5,Dioscorea alata,6,47.22,24.0,40.34,3,0.0,,18.89,2,0.3,2.9,0.3,46.91,47.37,1.41,performante & stable
-CIRAD246,Autofecondation-KREOLINE-1,Dioscorea alata,6,54.14,20.1,45.85,3,7.0,141.4,21.7,2,0.3,1.1,0.3,52.69,54.87,0.15,performante & stable
-CIRAD247,Autofecondation-KREOLINE-3,Dioscorea alata,6,29.44,59.9,26.85,3,57.0,116.3,41.81,2,0.33,4.9,0.32,37.44,25.44,0.92,performante & spécialisée
-CIRAD248,Autofecondation-KREOLINE-4,Dioscorea alata,2,30.37,80.1,27.24,1,21.0,,32.2,1,0.33,,0.32,6.03,54.7,,performante & spécialisée
-CIRAD249,Autofecondation-KREOLINE-5,Dioscorea alata,3,41.05,17.1,31.83,2,0.0,,21.21,2,0.3,10.3,0.3,36.57,43.3,0.7,performante & stable
-CIRAD251,CIR-C103,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD252,CIR-L037,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD253,CIR-B079,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD254,CIR-B142,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD255,CIR-A071,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD257,CIR-K032,Dioscorea alata,1,41.48,,27.88,0,,,,1,0.32,,0.31,,41.48,,données insuffisantes
-CIRAD258,CIR-P006,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD261,CIR-A025,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD262,CIR-D036,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD263,CIR-C104,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD264,CIR-K050,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD265,3153,Dioscorea alata,2,28.14,23.9,21.87,1,48.0,,37.14,1,0.24,,0.28,,28.14,,modeste & stable
-CIRAD266,CIR-C101,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD267,CIR-K051,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD268,CIR-C052,Dioscorea alata,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD269,CIRAD269,Dioscorea alata,1,63.91,,36.27,1,41.0,,35.86,1,0.37,,0.34,,63.91,,données insuffisantes
-CIRAD271,61_emb_mut_006,Dioscorea alata,0,,,,0,,,,1,0.33,,0.32,,,,données insuffisantes
-CIRAD272,61_mut_025,Dioscorea alata,1,43.23,,29.59,1,0.0,,28.35,1,0.27,,0.29,,43.23,,données insuffisantes
-CIRAD273,61_mut_007,Dioscorea alata,2,71.67,7.5,43.91,1,0.0,,28.35,1,0.34,,0.32,,71.67,,performante & stable
-CIRAD274,61_mut_015,Dioscorea alata,1,48.52,,31.32,0,,,,0,,,,,48.52,,données insuffisantes
-CIRAD275,61 _emb__mut 022,Dioscorea alata,2,48.44,16.7,32.7,1,0.0,,28.35,1,0.37,,0.34,,48.44,,performante & stable
-CIRAD276,61_mut_003,Dioscorea alata,1,88.52,,43.98,1,0.0,,28.35,1,0.3,,0.3,,88.52,,données insuffisantes
-CIRAD277,61_mut_016,Dioscorea alata,2,58.84,3.6,37.84,1,0.0,,28.35,1,0.33,,0.32,,58.84,,performante & stable
-CIRAD278,Adon_nouveau,Disocorea bulbifera,0,,,,0,,,,0,,,,,,,données insuffisantes
-CIRAD279,Amoumbé 1,Dioscorea trifida,1,38.27,,34.6,1,0.0,,28.35,0,,,,38.27,,,données insuffisantes
-CIRAD280,grossecaille Jaune,Dioscorea rotundata,3,15.26,14.6,18.43,1,0.0,,28.35,1,0.32,,0.3,12.63,16.57,0.18,modeste & stable
-CIRAD300,CIRAD300,Dioscorea alata,1,76.39,,40.33,0,,,,1,0.24,,0.27,,76.39,,données insuffisantes
-CIRAD301,Igname jaune CIRAD,Dioscorea cayenensis,2,21.42,10.6,19.45,1,0.0,,28.35,1,0.38,,0.34,,21.42,,modeste & stable
+code_plantation,nom,espece,rendement_n_env,rendement_moy,rendement_cv,rendement_perf,anthracnose_n_env,anthracnose_moy,anthracnose_cv,anthracnose_perf,matiere_seche_n_env,matiere_seche_moy,matiere_seche_cv,matiere_seche_perf,rendement_roujol,rendement_godet,rendement_pente_FW,indice_variabilite,classe_rendement
+CIRAD1,RIVE-LA,Dioscorea alata,5,34.45,82.1,29.96,4,39.19,109.8,36.03,3,0.26,5.5,0.27,11.94,49.46,2.76,0.9304812834224598,performante & variabilité forte
+CIRAD2,2848,Dioscorea alata,4,28.2,60.5,27.19,2,22.0,56.8,31.88,2,0.3,4.4,0.3,19.45,36.95,0.68,0.517379679144385,performante & variabilité moyenne
+CIRAD3,2852,Dioscorea alata,5,19.1,64.0,21.32,4,36.0,111.0,34.52,3,0.24,14.9,0.25,13.23,23.02,1.2,0.46657754010695185,modeste & variabilité moyenne
+CIRAD4,3168,Dioscorea alata,3,23.07,20.0,26.37,2,38.58,42.5,33.21,3,0.27,3.4,0.28,19.89,29.44,0.51,0.24598930481283424,performante & variabilité faible
+CIRAD5,NESTY,Dioscorea alata,6,18.57,68.3,19.69,3,6.33,141.4,24.78,2,0.25,11.5,0.26,7.3,24.21,0.78,0.5133689839572193,modeste & variabilité moyenne
+CIRAD6,3202,Dioscorea alata,3,29.79,46.3,25.72,3,13.33,71.0,24.68,2,0.23,13.3,0.26,22.21,33.58,1.25,0.3462566844919786,modeste & variabilité faible
+CIRAD7,3210,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD8,3233,Dioscorea alata,7,23.19,67.9,23.97,4,11.0,128.3,22.7,2,0.18,5.2,0.22,13.66,30.33,1.74,0.7299465240641712,modeste & variabilité forte
+CIRAD9,3245,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD10,3255,Dioscorea alata,0,,,,1,38.0,,35.38,0,,,,,,,,données insuffisantes
+CIRAD11,YORUBA,Dioscorea alata,5,29.09,36.4,27.45,3,48.0,72.6,38.62,3,0.29,14.9,0.29,27.98,30.76,0.54,0.3355614973262032,performante & variabilité faible
+CIRAD12,3764,Dioscorea alata,4,13.42,32.1,17.32,3,69.17,70.8,47.13,2,0.29,6.1,0.29,9.24,17.6,0.44,0.34491978609625673,modeste & variabilité faible
+CIRAD13,3920,Dioscorea alata,4,24.45,43.4,24.64,2,4.75,100.0,26.54,3,0.32,9.9,0.31,15.46,33.44,1.04,0.22192513368983957,modeste & variabilité faible
+CIRAD14,4113,Dioscorea alata,3,11.31,72.2,16.42,2,41.75,31.7,34.19,2,0.25,10.8,0.27,5.78,22.38,0.82,0.5227272727272727,modeste & variabilité moyenne
+CIRAD15,K-DOS,Dioscorea alata,6,24.87,56.4,25.05,4,13.38,108.1,23.82,2,0.32,5.5,0.3,25.21,24.69,-0.3,0.7513368983957219,modeste & variabilité forte
+CIRAD16,4147,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD17,4676,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD18,4838,Dioscorea alata,5,22.54,48.7,24.06,3,12.67,141.4,24.03,3,0.26,15.9,0.27,19.12,24.82,0.59,0.4732620320855615,modeste & variabilité moyenne
+CIRAD19,FUTILE,Dioscorea alata,7,24.64,27.9,27.29,4,54.0,64.4,43.03,3,0.23,6.2,0.25,28.56,21.69,0.12,0.4144385026737968,performante & variabilité moyenne
+CIRAD20,4948,Dioscorea alata,5,22.73,50.3,21.87,4,98.94,81.2,64.27,3,0.23,16.0,0.25,18.42,25.6,0.9,0.33288770053475936,modeste & variabilité faible
+CIRAD21,3915,Dioscorea alata,1,4.87,,22.53,2,33.25,100.0,31.56,1,0.22,,0.25,4.87,,,,données insuffisantes
+CIRAD22,CONTINENT,Dioscorea alata,6,26.72,65.2,27.2,4,4.75,173.2,19.75,2,0.26,12.7,0.27,27.29,26.44,1.39,0.5775401069518717,performante & variabilité forte
+CIRAD23,4126,Dioscorea alata,5,19.04,48.4,21.0,3,15.44,71.6,25.53,3,0.27,18.3,0.28,14.7,25.56,0.47,0.5133689839572193,modeste & variabilité moyenne
+CIRAD24,2861,Dioscorea alata,5,19.41,48.0,20.36,3,102.33,61.4,60.47,2,0.26,5.7,0.26,14.71,26.47,0.74,0.37566844919786097,modeste & variabilité faible
+CIRAD25,2873,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD26,3128,D. rotundata,3,16.04,36.3,20.27,2,20.5,100.0,31.42,2,0.29,11.1,0.29,16.14,15.83,-0.19,0.5347593582887701,modeste & variabilité moyenne
+CIRAD27,3135,Dioscorea alata,7,19.28,44.1,21.4,4,135.88,74.7,81.73,2,0.21,18.0,0.24,11.0,25.5,0.72,0.34224598930481287,modeste & variabilité faible
+CIRAD28,3249,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD29,3916,Dioscorea alata,4,21.04,53.3,22.68,2,39.0,46.2,37.14,3,0.25,6.4,0.26,11.08,31.01,1.12,0.35962566844919786,modeste & variabilité faible
+CIRAD30,4046,Dioscorea alata,2,16.79,84.1,21.82,1,66.5,,40.6,0,,,,2.67,30.92,,,données insuffisantes
+CIRAD31,4052,Dioscorea alata,0,,,,1,0.0,,28.42,0,,,,,,,,données insuffisantes
+CIRAD32,FILO,Dioscorea alata,6,26.15,48.5,26.85,4,38.0,114.5,35.46,2,0.29,1.7,0.28,32.36,19.95,-0.38,0.6925133689839572,performante & variabilité forte
+CIRAD34,4639,Dioscorea alata,4,19.3,49.5,20.33,2,20.0,5.0,31.26,2,0.28,1.8,0.28,10.61,27.99,0.96,0.2967914438502674,modeste & variabilité faible
+CIRAD35,4956,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD36,DIRAC,Dioscorea alata,4,23.77,65.3,23.46,3,16.5,73.1,25.96,2,0.29,19.6,0.28,13.65,33.89,1.3,0.5307486631016043,modeste & variabilité moyenne
+CIRAD37,BENINE,Dioscorea alata,5,13.95,43.9,16.64,4,11.75,103.6,23.06,2,0.28,8.5,0.29,17.4,11.65,-0.52,0.6510695187165776,modeste & variabilité forte
+CIRAD38,1221,Dioscorea alata,4,26.4,49.0,26.66,3,13.33,71.0,24.68,3,0.28,15.1,0.28,16.71,36.08,0.71,0.4037433155080214,performante & variabilité faible
+CIRAD39,1186,Dioscorea alata,4,2.95,25.6,11.92,3,59.67,45.1,43.31,1,0.24,,0.26,2.82,3.33,-0.01,0.4411764705882353,modeste & variabilité moyenne
+CIRAD40,3132,Dioscorea alata,5,10.22,79.6,16.86,4,22.44,139.0,28.11,3,0.27,15.5,0.27,4.93,18.15,0.85,0.5334224598930482,modeste & variabilité moyenne
+CIRAD41,GALANTE,Dioscorea alata,6,19.11,83.4,20.16,4,25.0,105.6,29.32,2,0.24,21.3,0.26,14.86,21.23,-0.0,0.8622994652406417,modeste & variabilité forte
+CIRAD42,PAK-LA,Dioscorea alata,6,35.54,56.2,33.89,4,98.5,55.5,64.06,3,0.22,21.3,0.24,29.0,38.81,-0.52,0.768716577540107,performante & variabilité forte
+CIRAD43,CIDERAD,Dioscorea alata,7,28.99,42.1,29.17,4,81.44,102.7,56.0,3,0.21,15.4,0.23,16.95,38.02,1.11,0.24064171122994651,performante & variabilité faible
+CIRAD44,2868,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD45,4042,Dioscorea alata,6,29.54,60.3,29.01,3,55.5,25.7,44.55,2,0.44,38.5,0.39,15.08,36.77,1.86,0.7018716577540107,performante & variabilité forte
+CIRAD46,1278,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD47,1326,Dioscorea alata,7,16.68,100.9,20.01,4,2.38,173.2,18.62,2,0.19,0.2,0.23,9.03,22.41,1.56,0.7593582887700535,modeste & variabilité forte
+CIRAD48,1467,Dioscorea alata,7,33.21,67.2,32.38,4,2.38,173.2,18.62,3,0.28,9.9,0.28,30.68,35.1,1.32,0.56951871657754,performante & variabilité moyenne
+CIRAD49,3150,Dioscorea alata,7,17.94,75.5,20.68,4,22.12,100.5,27.96,3,0.26,3.4,0.27,6.42,26.58,1.6,0.731283422459893,modeste & variabilité forte
+CIRAD50,4678,Dioscorea alata,6,12.42,100.8,17.15,4,114.38,72.6,71.57,3,0.25,7.2,0.26,9.15,15.68,0.93,0.5320855614973262,modeste & variabilité moyenne
+CIRAD51,1414,Dioscorea alata,5,9.84,37.5,14.9,3,77.5,36.0,50.48,3,0.22,1.7,0.24,7.43,13.46,0.33,0.4385026737967914,modeste & variabilité moyenne
+CIRAD52,1475,Dioscorea alata,1,4.66,,22.46,1,28.5,,33.64,1,0.32,,0.3,4.66,,,,données insuffisantes
+CIRAD53,1247,Dioscorea alata,3,23.12,60.3,21.08,2,24.75,15.2,32.73,3,0.27,9.9,0.28,3.78,32.79,1.3,0.4919786096256684,modeste & variabilité moyenne
+CIRAD54,ORIGINAL,D. alata,7,32.88,63.5,32.13,4,64.62,164.8,48.05,2,0.27,14.5,0.28,26.19,37.89,1.99,0.7540106951871658,performante & variabilité forte
+CIRAD55,,,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD56,1185,Dioscorea alata,4,4.74,29.9,10.91,4,213.62,70.6,118.49,2,0.26,6.6,0.27,4.35,5.13,0.02,0.446524064171123,modeste & variabilité moyenne
+CIRAD57,1372,Dioscorea alata,1,37.31,,27.52,2,53.75,23.7,41.71,0,,,,,37.31,,,données insuffisantes
+CIRAD58,LEVYLA,Dioscorea alata,6,37.92,49.8,34.73,4,2.38,173.2,18.62,3,0.25,6.4,0.26,39.57,37.1,1.31,0.43048128342245984,performante & variabilité moyenne
+CIRAD59,1371,Dioscorea alata,1,19.24,,27.58,1,9.5,,30.16,0,,,,19.24,,,,données insuffisantes
+CIRAD60,CONSISTANT,Dioscorea alata,5,31.71,53.6,29.36,4,93.62,131.3,61.76,3,0.28,17.1,0.29,25.69,35.72,-0.37,0.7259358288770054,performante & variabilité forte
+CIRAD61,DIRCA,Dioscorea alata,7,15.37,62.8,18.72,4,36.62,99.4,34.81,3,0.24,3.9,0.25,11.11,18.57,0.79,0.46390374331550804,modeste & variabilité moyenne
+CIRAD62,PERSY,Dioscorea alata,5,29.95,31.9,28.68,4,40.0,88.5,36.41,3,0.27,17.1,0.28,25.31,33.04,0.91,0.1270053475935829,performante & variabilité faible
+CIRAD63,3805,Dioscorea alata,5,40.03,86.3,36.17,4,7.12,173.2,20.87,3,0.29,11.5,0.29,29.76,46.87,2.37,0.9050802139037433,performante & variabilité forte
+CIRAD64,GODET,Dioscorea alata,5,49.69,66.8,43.55,3,28.0,80.9,30.58,2,0.25,11.6,0.26,25.66,85.73,3.02,0.8689839572192514,performante & variabilité forte
+CIRAD65,4878,Dioscorea alata,7,16.88,111.8,19.69,4,85.0,85.4,57.68,3,0.24,21.2,0.25,6.86,24.4,1.65,0.7994652406417112,modeste & variabilité forte
+CIRAD66,4950,Dioscorea alata,3,15.52,72.2,20.8,3,136.17,72.8,74.07,2,0.2,14.5,0.23,8.11,30.33,0.8,0.5294117647058824,modeste & variabilité moyenne
+CIRAD67,5140,Dioscorea alata,5,19.13,67.1,20.5,4,15.0,112.6,24.59,3,0.26,12.7,0.27,10.3,25.01,1.26,0.5213903743315509,modeste & variabilité moyenne
+CIRAD68,3121,Dioscorea alata,4,18.02,85.0,19.89,2,51.5,7.8,41.01,1,0.19,,0.25,5.57,30.47,1.29,0.6122994652406417,modeste & variabilité forte
+CIRAD69,4823,Dioscorea alata,7,19.53,42.0,21.46,4,90.29,120.5,60.18,3,0.23,9.9,0.25,14.37,23.41,0.37,0.4652406417112299,modeste & variabilité moyenne
+CIRAD70,LONGTA,D. rotundata,5,22.42,69.5,22.69,4,2.38,173.2,18.62,2,0.3,3.1,0.3,10.83,30.16,1.23,0.5280748663101604,modeste & variabilité moyenne
+CIRAD71,2866,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD72,3836,Dioscorea alata,2,2.79,16.3,15.34,1,28.5,,33.64,0,,,,2.33,3.24,,,données insuffisantes
+CIRAD73,OCEAN,Dioscorea alata,7,17.92,63.9,21.83,4,76.75,146.0,53.78,3,0.23,18.3,0.25,14.31,20.62,0.64,0.5574866310160428,modeste & variabilité moyenne
+CIRAD74,TRANSITION,Dioscorea alata,7,29.47,37.2,31.73,4,5.54,173.2,20.12,3,0.26,8.6,0.27,25.84,32.18,0.27,0.4425133689839572,performante & variabilité moyenne
+CIRAD75,AGREABLE,Dioscorea alata,5,30.1,81.3,29.27,4,4.75,173.2,19.75,3,0.23,15.8,0.24,11.34,42.6,2.46,0.9037433155080214,performante & variabilité forte
+CIRAD76,TICO,Dioscorea alata,7,26.63,74.6,26.68,4,5.54,173.2,20.12,3,0.21,9.9,0.23,15.45,35.01,2.07,0.8475935828877006,performante & variabilité forte
+CIRAD77,LYANNAG,Dioscorea rotundata,5,28.79,80.5,27.45,3,13.67,141.4,24.82,3,0.3,2.1,0.29,15.58,48.62,2.01,0.8556149732620322,performante & variabilité forte
+CIRAD78,AIA 445,Dioscorea alata,5,14.59,86.4,17.68,3,148.17,89.3,78.89,2,0.2,0.4,0.23,6.92,26.11,1.03,0.49598930481283426,modeste & variabilité moyenne
+CIRAD79,Nouméa,Dioscorea alata,1,7.47,,23.45,0,,,,0,,,,7.47,,,,données insuffisantes
+CIRAD80,DA 26,Dioscorea alata,1,6.77,,15.7,1,0.0,,28.35,1,0.16,,0.24,,6.77,,,données insuffisantes
+CIRAD81,Telemaque,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD82,De agua,Dioscorea alata,4,15.1,46.5,18.22,4,62.38,125.2,46.99,3,0.29,13.1,0.29,12.55,17.65,0.26,0.5561497326203209,modeste & variabilité moyenne
+CIRAD83,AIA 443,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD84,Sweet yam,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD85,DA 27,Dioscorea alata,4,34.89,17.3,31.76,3,13.33,71.0,24.68,3,0.29,13.9,0.29,31.88,37.91,0.5,0.24866310160427807,performante & variabilité faible
+CIRAD86,Bresil1,Dioscorea alata,4,24.62,51.5,24.31,3,14.67,99.2,25.22,3,0.25,7.2,0.26,15.0,34.23,1.19,0.37165775401069523,modeste & variabilité faible
+CIRAD87,Americano,Dioscorea alata,7,36.59,46.9,34.9,4,65.75,127.6,48.58,2,0.26,2.0,0.27,33.1,39.2,0.85,0.3114973262032086,performante & variabilité faible
+CIRAD88,St Domingue,Dioscorea alata,5,23.91,71.7,24.89,4,17.38,103.2,25.72,3,0.3,18.7,0.3,9.08,33.79,1.94,0.8021390374331551,modeste & variabilité forte
+CIRAD90,Bacala 2,Dioscorea alata,3,8.84,65.1,16.32,3,171.33,73.6,88.21,2,0.23,10.3,0.25,4.78,16.97,0.54,0.5975935828877006,modeste & variabilité forte
+CIRAD91,St Vincent Violet,Dioscorea alata,5,27.75,59.4,26.94,4,89.38,130.3,59.75,2,0.25,0.8,0.26,20.07,32.86,1.54,0.5962566844919786,performante & variabilité forte
+CIRAD92,Buet,Dioscorea alata,7,35.47,87.5,33.52,4,36.62,99.4,34.81,3,0.27,7.9,0.27,21.62,45.86,3.19,0.9625668449197861,performante & variabilité forte
+CIRAD93,Bacala 1,Dioscorea alata,6,41.36,49.6,37.45,4,40.0,88.5,36.41,3,0.26,9.9,0.27,47.8,38.15,1.14,0.34090909090909094,performante & variabilité faible
+CIRAD94,Morado,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD95,Wénéféla bis,Dioscorea alata,5,18.25,76.0,20.78,4,108.62,135.4,68.85,2,0.24,13.6,0.26,6.11,26.35,1.44,0.6657754010695187,modeste & variabilité forte
+CIRAD96,Purple Lisbon,Dioscorea alata,5,21.66,44.6,23.09,4,124.38,76.4,76.3,3,0.23,13.8,0.25,14.66,26.33,0.98,0.22593582887700533,modeste & variabilité faible
+CIRAD97,Renta Yam,Dioscorea alata,1,58.28,,34.52,0,,,,0,,,,,58.28,,,données insuffisantes
+CIRAD98,Toro,Dioscorea alata,6,46.1,43.8,41.58,4,10.25,173.2,22.35,3,0.3,17.7,0.29,41.43,48.43,1.97,0.5762032085561497,performante & variabilité moyenne
+CIRAD99,SEA 184,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD100,Caillade 1,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD101,SEA 144,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD102,Tahiti messien,Dioscorea alata,6,31.28,39.8,30.87,4,2.38,173.2,18.62,3,0.29,25.7,0.29,37.48,28.18,0.31,0.47058823529411764,performante & variabilité moyenne
+CIRAD103,Ti Joseph 1,Dioscorea alata,5,20.95,74.2,21.3,4,7.12,173.2,20.87,3,0.32,31.0,0.31,9.46,28.61,1.48,0.6684491978609626,modeste & variabilité forte
+CIRAD104,St Martin,Dioscorea alata,6,23.81,37.5,24.79,4,6.5,119.4,20.57,3,0.29,13.5,0.29,23.26,24.09,0.6,0.3302139037433155,modeste & variabilité faible
+CIRAD105,A 19,Dioscorea alata,4,11.55,109.2,17.96,3,9.5,141.4,23.14,2,0.28,10.4,0.28,4.39,33.05,1.33,0.6711229946524064,modeste & variabilité forte
+CIRAD106,Wabé,Dioscorea alata,6,22.78,54.4,23.8,4,2.38,173.2,18.62,3,0.28,10.8,0.28,10.62,28.86,1.23,0.410427807486631,modeste & variabilité moyenne
+CIRAD107,Tana,Dioscorea alata,7,22.8,71.3,24.44,4,40.0,88.5,36.41,3,0.25,21.5,0.26,10.89,31.73,0.9,0.48128342245989303,modeste & variabilité moyenne
+CIRAD108,61F,Dioscorea alata,7,38.83,48.0,36.4,4,55.5,132.4,43.74,3,0.26,11.7,0.27,19.79,53.11,1.6,0.53475935828877,performante & variabilité moyenne
+CIRAD109,MALALAGI (VU 639),Dioscorea alata,7,24.36,46.5,24.96,4,10.0,100.2,22.23,3,0.25,17.3,0.26,24.15,24.51,0.17,0.5802139037433155,modeste & variabilité forte
+CIRAD110,H4X-200 (Rosette),Dioscorea alata,7,27.63,28.7,27.56,4,13.38,108.1,23.82,2,0.28,15.3,0.29,23.99,30.36,0.4,0.33689839572192515,performante & variabilité faible
+CIRAD111,TiBou/7F,Dioscorea rotundata,6,16.41,60.5,19.1,4,4.75,173.2,19.75,2,0.28,4.1,0.29,16.66,16.28,-0.08,0.7580213903743316,modeste & variabilité forte
+CIRAD112,Pacala Tardif,Dioscorea alata,2,21.94,32.3,20.45,1,41.5,,35.95,1,0.25,,0.28,,21.94,,,données insuffisantes
+CIRAD113,Vino Purple forme,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD114,Monoique,Dioscorea rotundata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD115,Mono 25-2,Dioscorea rotundata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD116,LABOKO,Dioscorea rotundata,1,6.24,,16.01,0,,,,1,0.46,,0.37,,6.24,,,données insuffisantes
+CIRAD117,Coco,Dioscorea rotundata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD118,Belo,Dioscorea rotundata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD119,TiClair,Dioscorea rotundata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD120,14M,Dioscorea alata,7,12.32,41.0,15.67,4,43.38,64.7,38.01,3,0.27,9.8,0.28,12.27,12.36,0.21,0.5040106951871658,modeste & variabilité moyenne
+CIRAD121,74F,Dioscorea alata,7,34.68,56.7,32.09,3,7.92,141.4,25.42,3,0.28,19.7,0.28,19.43,46.12,1.77,0.6617647058823529,performante & variabilité forte
+CIRAD122,A 14,Dioscorea alata,6,28.67,54.0,27.14,4,1.19,173.2,18.06,3,0.22,20.6,0.24,30.51,27.75,1.36,0.4919786096256684,performante & variabilité moyenne
+CIRAD123,A 17,Dioscorea alata,7,21.99,43.1,22.47,4,11.19,100.4,22.79,3,0.27,9.4,0.27,11.92,29.55,0.99,0.19518716577540107,modeste & variabilité faible
+CIRAD124,A 2,Dioscorea alata,6,34.52,52.1,31.12,4,74.56,115.4,52.75,3,0.22,25.5,0.24,19.66,41.96,-0.56,0.7393048128342246,performante & variabilité forte
+CIRAD125,A 21,Dioscorea alata,7,20.68,79.5,22.47,4,5.25,173.2,19.98,2,0.25,16.5,0.27,8.33,29.95,1.41,0.6590909090909091,modeste & variabilité forte
+CIRAD126,A 22,Dioscorea alata,7,31.65,39.6,30.94,4,61.88,124.9,46.75,2,0.26,20.9,0.28,28.5,34.01,0.83,0.23663101604278075,performante & variabilité faible
+CIRAD127,A 24,Dioscorea alata,7,14.82,71.6,17.2,4,5.94,173.2,20.31,3,0.3,10.8,0.3,11.62,17.23,0.91,0.4799465240641711,modeste & variabilité moyenne
+CIRAD128,A 6,Dioscorea alata,6,41.1,23.6,38.5,4,2.38,173.2,18.62,3,0.25,6.2,0.26,46.08,38.6,0.0,0.42914438502673796,performante & variabilité moyenne
+CIRAD129,A 9,Dioscorea alata,7,27.49,29.5,26.8,4,11.44,150.2,22.91,3,0.27,11.4,0.28,22.94,30.91,0.33,0.3703208556149733,performante & variabilité faible
+CIRAD130,Belep,Dioscorea alata,6,14.55,42.5,16.07,4,5.94,173.2,20.31,3,0.31,15.2,0.3,12.01,15.83,0.67,0.35561497326203206,modeste & variabilité faible
+CIRAD131,Bete Bete,Dioscorea alata,7,12.72,52.9,14.82,4,5.94,173.2,20.31,3,0.3,12.1,0.3,5.78,17.92,0.65,0.47058823529411764,modeste & variabilité moyenne
+CIRAD133,Boutou,Dioscorea alata,7,30.34,38.6,29.81,4,2.38,173.2,18.62,3,0.25,16.3,0.26,26.06,33.55,0.68,0.3114973262032086,performante & variabilité faible
+CIRAD134,Caplaou,Dioscorea alata,7,15.58,60.4,16.28,4,49.56,103.5,40.93,3,0.28,10.7,0.29,15.52,15.62,0.52,0.5748663101604278,modeste & variabilité moyenne
+CIRAD135,Cinq,Dioscorea alata,7,23.86,33.6,25.11,4,13.17,104.0,23.73,3,0.26,11.3,0.27,16.43,29.44,0.44,0.3663101604278075,modeste & variabilité faible
+CIRAD136,Divin,Dioscorea alata,6,35.34,32.4,32.54,4,11.0,128.3,22.7,3,0.25,17.7,0.26,34.88,35.58,0.39,0.3729946524064171,performante & variabilité faible
+CIRAD137,Dou - H4x431,Dioscorea alata,7,24.41,38.4,24.71,3,0.0,,22.24,3,0.3,19.6,0.29,15.86,30.83,0.48,0.393048128342246,modeste & variabilité faible
+CIRAD138,Fénakué,Dioscorea alata,5,3.14,65.7,7.97,3,252.5,55.4,120.46,1,0.31,,0.29,4.48,2.25,-0.13,0.7954545454545454,modeste & variabilité forte
+CIRAD139,Florido,Dioscorea alata,6,19.79,38.0,20.34,4,35.81,125.5,34.43,2,0.28,10.6,0.27,12.63,23.36,0.59,0.34759358288770054,modeste & variabilité faible
+CIRAD140,Goana,Dioscorea alata,7,34.71,45.8,32.25,4,16.19,106.9,25.15,3,0.3,9.5,0.29,32.91,36.06,0.96,0.24866310160427807,performante & variabilité faible
+CIRAD141,Gordito,Dioscorea alata,7,25.53,35.8,25.84,4,5.54,173.2,20.12,3,0.27,14.6,0.28,19.73,29.88,1.07,0.15508021390374332,modeste & variabilité faible
+CIRAD142,Grand Etang,Dioscorea alata,7,27.11,43.8,26.54,4,85.69,123.1,58.01,3,0.25,19.1,0.26,16.51,35.06,0.68,0.3649732620320856,performante & variabilité faible
+CIRAD143,Grosse caille 3 mois,Dioscorea rotundata,6,23.51,43.5,23.73,4,0.0,,17.5,3,0.3,22.2,0.3,19.3,25.61,1.03,0.2125668449197861,modeste & variabilité faible
+CIRAD144,"H4X131, Cirabel",Dioscorea alata,7,14.18,31.5,16.94,4,21.0,109.8,27.43,3,0.27,13.6,0.27,11.88,15.91,0.1,0.4411764705882353,modeste & variabilité moyenne
+CIRAD145,"H4X172, KREOLINE",Dioscorea alata,6,24.2,37.0,26.34,4,28.25,95.9,30.86,3,0.29,15.5,0.29,24.41,23.99,0.34,0.42379679144385024,performante & variabilité moyenne
+CIRAD146,"H4X274, Marchande",Dioscorea alata,7,26.27,81.0,25.68,4,3.56,173.2,19.19,3,0.27,3.2,0.27,10.87,37.82,2.49,0.9064171122994653,modeste & variabilité forte
+CIRAD147,HYB 30,Dioscorea alata,7,31.1,42.6,30.14,4,4.75,173.2,19.75,3,0.25,17.8,0.26,21.92,37.99,0.36,0.47994652406417115,performante & variabilité moyenne
+CIRAD148,HYB 5,Dioscorea alata,7,35.14,40.8,34.26,4,37.62,96.7,35.29,3,0.25,13.1,0.26,39.73,31.7,0.43,0.4385026737967914,performante & variabilité moyenne
+CIRAD149,HYB 6,Dioscorea alata,7,35.2,36.9,33.26,4,2.38,173.2,18.62,3,0.27,2.4,0.28,33.45,36.52,0.27,0.4371657754010695,performante & variabilité moyenne
+CIRAD150,Igname Jaune,D. cayenensis,1,2.78,,15.38,4,2.38,173.2,18.62,1,0.39,,0.33,,2.78,,,données insuffisantes
+CIRAD151,INRA X 154,Dioscorea alata,5,37.65,34.1,32.69,4,13.38,108.1,23.82,3,0.25,5.8,0.26,54.86,33.35,0.64,0.2914438502673797,performante & variabilité faible
+CIRAD152,INRA15,Dioscorea alata,7,21.29,46.2,21.42,4,56.25,132.9,44.09,3,0.3,8.8,0.3,30.2,14.61,-0.48,0.6657754010695187,modeste & variabilité forte
+CIRAD153,Kabusa,Dioscorea alata,6,6.47,45.9,12.11,4,104.56,141.5,66.93,2,0.31,8.0,0.3,5.41,7.53,0.02,0.6042780748663101,modeste & variabilité forte
+CIRAD154,Kinabayo,Dioscorea alata,7,24.64,66.3,24.06,4,14.75,108.0,24.47,3,0.29,8.5,0.29,20.82,27.5,1.5,0.6283422459893049,modeste & variabilité forte
+CIRAD155,KL 21,Dioscorea alata,6,20.75,44.6,21.38,4,14.56,103.3,24.39,3,0.29,8.3,0.29,16.89,22.68,0.88,0.27941176470588236,modeste & variabilité faible
+CIRAD156,Lac bleu 3,Dioscorea trifida,1,2.68,,19.85,1,0.0,,27.83,0,,,,,2.68,,,données insuffisantes
+CIRAD157,Manlankon,Dioscorea alata,7,35.93,55.0,34.45,4,8.31,173.2,21.43,3,0.29,8.5,0.29,22.6,45.93,0.73,0.4411764705882353,performante & variabilité moyenne
+CIRAD158,MP1 16H56,Dioscorea alata,7,19.56,77.0,19.8,4,23.81,108.7,28.76,3,0.27,13.7,0.27,8.74,27.68,1.5,0.6898395721925134,modeste & variabilité forte
+CIRAD159,"Noulelcae, CT198",Dioscorea alata,6,33.22,38.6,31.35,4,22.62,112.9,28.2,3,0.32,6.5,0.31,23.17,38.25,1.0,0.1483957219251337,performante & variabilité faible
+CIRAD160,"Nureangdan, CT202",Dioscorea alata,3,43.56,65.8,33.4,3,20.0,83.8,27.36,3,0.3,7.1,0.29,7.23,61.72,4.54,0.8877005347593583,performante & variabilité forte
+CIRAD161,Oriental,Dioscorea alata,7,27.22,69.2,26.71,4,13.81,121.2,24.03,3,0.25,7.8,0.26,23.86,29.75,1.56,0.6804812834224598,performante & variabilité forte
+CIRAD162,Pacala,Dioscorea alata,7,18.55,67.5,20.8,4,19.75,100.1,26.84,3,0.3,8.6,0.3,11.71,23.69,1.34,0.5802139037433155,modeste & variabilité forte
+CIRAD163,Pakutrany,Dioscorea alata,7,14.69,69.3,17.39,4,46.69,94.2,39.57,3,0.32,7.4,0.31,8.93,19.02,0.98,0.42780748663101603,modeste & variabilité moyenne
+CIRAD164,"Peter, CT177",Dioscorea alata,7,19.67,64.8,20.55,4,1.19,173.2,18.06,2,0.34,6.8,0.33,16.42,22.11,0.96,0.4037433155080214,modeste & variabilité faible
+CIRAD165,Plimbite,Dioscorea alata,5,14.79,34.1,19.56,3,7.92,141.4,22.12,2,0.26,6.9,0.26,12.2,18.67,-0.17,0.5213903743315508,modeste & variabilité moyenne
+CIRAD166,"Ptris, CT133",Dioscorea alata,6,26.61,32.8,26.01,4,12.19,116.0,23.26,3,0.27,0.4,0.28,25.27,27.94,-0.15,0.5026737967914439,performante & variabilité moyenne
+CIRAD167,Pyramide,Dioscorea alata,7,31.69,47.1,29.69,4,11.19,100.4,22.79,3,0.31,6.4,0.3,25.82,36.1,1.52,0.4919786096256684,performante & variabilité moyenne
+CIRAD168,Roujol - H4x242,Dioscorea alata,6,34.42,32.2,30.57,4,7.62,113.3,21.11,3,0.34,4.1,0.33,32.02,35.62,1.3,0.22860962566844922,performante & variabilité faible
+CIRAD169,Sea 190,Dioscorea alata,5,20.44,38.0,20.33,4,49.81,102.4,41.05,3,0.34,17.7,0.32,12.17,22.5,0.83,0.21791443850267378,modeste & variabilité faible
+CIRAD170,Sinoua CT160,Dioscorea alata,7,14.14,54.9,17.17,4,71.12,141.2,51.12,3,0.29,7.2,0.29,7.7,18.97,0.76,0.42112299465240643,modeste & variabilité moyenne
+CIRAD171,St Vincent blanc,Dioscorea alata,6,42.75,26.7,37.34,4,18.12,100.2,26.07,3,0.29,7.6,0.29,33.5,47.37,1.77,0.3783422459893048,performante & variabilité faible
+CIRAD172,TiViolet - H4x105,Dioscorea alata,7,32.28,32.4,30.52,4,0.0,,17.5,3,0.31,10.0,0.31,26.04,36.96,0.96,0.11363636363636365,performante & variabilité faible
+CIRAD173,Toki (SEA 119),Dioscorea alata,5,40.47,88.2,35.17,4,3.56,173.2,19.19,3,0.3,1.2,0.29,15.69,56.99,3.35,0.9732620320855615,performante & variabilité forte
+CIRAD174,"Toufi Tetea, CT148",Dioscorea alata,6,55.3,38.0,48.35,3,16.25,87.1,28.77,3,0.3,7.4,0.3,28.75,68.57,1.18,0.22192513368983957,performante & variabilité faible
+CIRAD175,Wassa,Dioscorea alata,5,2.2,93.6,9.67,4,111.56,124.9,70.24,1,0.38,,0.32,1.1,3.85,0.21,0.8248663101604279,modeste & variabilité forte
+CIRAD176,CIRAD-B235,Dioscorea alata,7,42.89,27.6,39.85,4,17.38,103.2,25.72,3,0.32,5.2,0.31,36.0,48.06,0.13,0.40909090909090906,performante & variabilité moyenne
+CIRAD177,KARUKERA,Dioscorea alata,4,30.22,47.3,27.25,3,75.67,45.4,49.74,3,0.33,4.3,0.32,17.05,43.39,1.25,0.3622994652406417,performante & variabilité faible
+CIRAD178,DESIRABLE,Dioscorea alata,7,41.64,44.2,38.0,4,64.0,118.1,47.76,3,0.3,4.2,0.3,34.54,46.96,2.04,0.6122994652406417,performante & variabilité forte
+CIRAD179,TROPICAL,Dioscorea alata,7,42.87,60.6,38.26,4,11.88,173.2,23.12,3,0.26,10.4,0.27,43.66,42.28,1.98,0.7379679144385026,performante & variabilité forte
+CIRAD180,REGIONAL,Dioscorea alata,7,49.83,50.8,45.55,4,18.12,100.2,26.07,3,0.28,3.4,0.28,31.54,63.55,1.58,0.5561497326203209,performante & variabilité moyenne
+CIRAD181,DEFI,Dioscorea alata,7,42.22,29.4,38.79,4,51.25,129.1,41.73,3,0.29,2.2,0.29,41.88,42.48,0.69,0.21657754010695185,performante & variabilité faible
+CIRAD182,C5,Dioscorea alata,7,51.63,33.4,46.75,4,16.94,100.0,25.51,3,0.3,1.8,0.3,40.49,59.99,1.26,0.22058823529411764,performante & variabilité faible
+CIRAD183,Evolution,Dioscorea alata,7,45.05,67.9,41.09,4,4.75,173.2,19.75,3,0.27,6.3,0.28,35.85,51.95,0.96,0.4344919786096257,performante & variabilité moyenne
+CIRAD184,CIR-B037,Dioscorea alata,5,12.34,71.3,16.29,4,4.75,173.2,19.75,1,0.43,,0.35,16.01,9.9,0.25,0.7526737967914439,modeste & variabilité forte
+CIRAD185,NERON,Dioscorea alata,7,46.51,44.0,42.97,4,4.75,173.2,19.75,3,0.33,11.0,0.32,28.89,59.72,1.35,0.39037433155080214,performante & variabilité faible
+CIRAD186,CIR-B120,Dioscorea alata,2,7.44,57.0,17.82,1,19.0,,31.9,1,0.35,,0.31,11.69,3.2,,,données insuffisantes
+CIRAD187,CIRAD187,Dioscorea alata,0,,,,1,57.0,,38.86,1,0.32,,0.29,,,,,données insuffisantes
+CIRAD188,MARIUS,Dioscorea alata,6,24.47,48.3,25.21,4,4.75,173.2,19.75,3,0.29,6.1,0.29,9.07,32.16,0.98,0.2647058823529412,modeste & variabilité faible
+CIRAD189,ELISE,Dioscorea alata,6,21.67,53.3,22.44,4,17.88,144.2,25.95,3,0.31,8.9,0.3,21.79,21.62,0.19,0.6350267379679144,modeste & variabilité forte
+CIRAD190,RESTO,Dioscorea alata,7,34.6,55.7,32.73,4,29.75,124.2,31.57,3,0.26,9.2,0.27,31.11,37.22,1.14,0.3890374331550802,performante & variabilité faible
+CIRAD191,COLIN,Dioscorea alata,7,33.83,55.5,31.52,4,46.62,121.7,39.54,3,0.25,6.2,0.26,21.11,43.36,1.9,0.6818181818181819,performante & variabilité forte
+CIRAD192,CIR-C078,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD193,CIR-C077,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD194,CIR-C090,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD195,CIR-C092,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD196,CIR-C010,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD198,CIR-K025,Dioscorea alata,1,2.33,,21.64,0,,,,0,,,,2.33,,,,données insuffisantes
+CIRAD199,CIR-C100,Dioscorea alata,1,17.17,,23.87,0,,,,0,,,,17.17,,,,données insuffisantes
+CIRAD200,CIR-K024,Dioscorea alata,1,0.51,,21.01,0,,,,0,,,,0.51,,,,données insuffisantes
+CIRAD201,4638,Dioscorea alata,1,21.73,,28.45,1,28.5,,33.64,0,,,,21.73,,,,données insuffisantes
+CIRAD202,SELECTA,Dioscorea alata,4,34.07,110.8,30.28,3,83.42,62.6,52.86,3,0.3,3.6,0.29,10.41,57.74,2.17,0.9157754010695187,performante & variabilité forte
+CIRAD203,CIR-D050,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD204,Pas possible,Dioscorea esculenta,6,40.45,23.1,35.32,3,0.0,,18.89,2,0.45,16.5,0.4,44.37,38.49,0.63,0.22459893048128343,performante & variabilité faible
+CIRAD205,3253,Dioscorea alata,3,9.5,42.0,16.4,2,249.75,44.9,98.51,3,0.27,11.5,0.27,6.87,14.76,0.28,0.48930481283422456,modeste & variabilité moyenne
+CIRAD206,,,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD207,Chiyazi,Dioscorea alata,2,52.05,16.7,36.09,1,34.5,,34.67,2,0.3,1.8,0.3,,52.05,,,données insuffisantes
+CIRAD208,CIR-B244,Dioscorea alata,4,11.38,39.9,14.48,2,14.25,100.0,29.48,2,0.3,5.4,0.3,7.43,15.34,0.44,0.4278074866310161,modeste & variabilité moyenne
+CIRAD209,CIR-D030,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD210,Ruby,Dioscorea alata,6,43.68,38.9,38.17,3,0.0,,18.89,3,0.29,15.2,0.29,48.09,41.48,0.49,0.39438502673796794,performante & variabilité faible
+CIRAD211,Ado,Disocorea bulbifera,2,13.25,19.9,19.75,1,0.0,,28.35,2,0.35,19.1,0.33,10.61,15.89,,,données insuffisantes
+CIRAD212,CIRADO,Dioscorea alata,6,74.96,42.9,61.53,3,16.0,141.4,25.32,3,0.33,11.8,0.32,99.91,62.48,-1.23,0.6711229946524064,performante & variabilité forte
+CIRAD213,Elie,Dioscorea alata,6,45.24,51.8,39.77,3,7.0,141.4,21.7,3,0.31,2.6,0.31,49.48,43.11,-1.26,0.7700534759358288,performante & variabilité forte
+CIRAD214,Hana,Dioscorea alata,6,48.89,47.6,42.49,3,0.0,,18.89,3,0.4,26.7,0.37,31.88,57.39,2.99,0.7192513368983957,performante & variabilité forte
+CIRAD215,GWADIKERA,Dioscorea alata,6,46.45,56.3,43.06,3,0.0,,18.89,3,0.34,8.0,0.32,33.81,59.09,2.97,0.7941176470588236,performante & variabilité forte
+CIRAD216,CRB68-bis,Dioscorea alata,5,29.07,30.6,26.95,3,71.17,79.3,47.5,3,0.25,27.9,0.26,20.21,31.29,1.29,0.20588235294117646,performante & variabilité faible
+CIRAD217,CIRAD217,Dioscorea alata,3,20.79,58.1,21.22,1,0.0,,28.35,1,0.34,,0.3,6.44,27.96,1.52,0.5828877005347594,modeste & variabilité forte
+CIRAD218,Autofecondation-74F-violet,Dioscorea alata,6,72.42,23.4,60.78,3,0.0,,18.89,2,0.31,14.8,0.31,95.56,60.84,-1.58,0.5254010695187166,performante & variabilité moyenne
+CIRAD219,PAS POSSIBLE (nouveau),Dioscorea esculenta,3,40.31,42.0,31.61,2,10.5,100.0,24.46,2,0.43,18.6,0.39,43.38,38.77,-0.85,0.6390374331550802,performante & variabilité forte
+CIRAD220,Patte à cheval,Dioscorea trifida,0,,,,0,,,,1,0.38,,0.34,,,,,données insuffisantes
+CIRAD221,Luc GC,D. rotundata,2,32.3,11.8,27.15,2,0.0,,21.21,1,0.45,,0.37,36.11,28.49,,,données insuffisantes
+CIRAD222,Mgs 5,D. cayenenesis rotundata,3,22.71,41.9,20.41,2,0.0,,21.21,2,0.36,6.3,0.34,11.06,28.53,1.48,0.39572192513368987,modeste & variabilité faible
+CIRAD223,OP3,,5,23.43,69.2,23.46,3,7.0,141.4,21.7,1,0.27,,0.29,6.52,34.69,2.13,0.8235294117647058,modeste & variabilité forte
+CIRAD224,Adon-CRB,Disocorea bulbifera,3,1.46,23.4,11.64,1,0.0,,23.85,1,0.34,,0.32,1.22,1.92,0.04,0.4077540106951872,modeste & variabilité moyenne
+CIRAD225,Reunion,Disocorea bulbifera,5,14.71,54.7,15.9,3,0.0,,18.89,2,0.26,5.5,0.28,12.96,15.87,0.79,0.4050802139037433,modeste & variabilité faible
+CIRAD226,Thuma,Disocorea bulbifera,4,3.52,35.0,8.1,2,0.0,,20.77,1,0.2,,0.26,2.34,4.7,0.17,0.45588235294117646,modeste & variabilité moyenne
+CIRAD227,Name de papa,Dioscorea esculenta,4,16.99,62.4,12.7,2,0.0,,20.77,1,0.44,,0.36,25.76,8.22,-1.18,0.839572192513369,modeste & variabilité forte
+CIRAD228,Assam,Dioscorea esculenta,2,31.92,0.1,30.5,3,0.0,,18.89,2,0.36,11.3,0.34,31.88,31.96,,,données insuffisantes
+CIRAD229,Spindle,Dioscorea esculenta,3,24.69,37.3,24.17,2,0.0,,21.21,1,0.42,,0.36,20.87,32.34,0.59,0.33689839572192515,modeste & variabilité faible
+CIRAD230,Pas possible IRAT,Dioscorea esculenta,4,22.99,21.5,24.77,3,0.0,,18.89,2,0.44,9.0,0.39,20.27,25.72,0.34,0.3248663101604278,modeste & variabilité faible
+CIRAD231,SEA 273,Dioscorea esculenta,3,27.44,20.8,26.69,3,0.0,,18.89,2,0.49,15.0,0.42,24.64,28.83,1.04,0.0481283422459893,performante & variabilité faible
+CIRAD232,ZAMEY,Dioscorea alata,5,68.51,30.7,55.33,3,11.5,141.4,23.51,2,0.29,10.9,0.29,51.61,72.74,-0.9,0.5374331550802138,performante & variabilité moyenne
+CIRAD233,CI-GWA,Dioscorea alata,4,51.26,39.3,41.11,3,92.67,141.4,56.15,2,0.32,2.0,0.32,19.95,61.69,2.42,0.5882352941176471,performante & variabilité forte
+CIRAD234,CITOYENNE,Dioscorea alata,6,29.35,59.1,27.3,3,62.0,118.3,43.82,2,0.29,3.3,0.3,20.52,33.77,0.76,0.44786096256684493,performante & variabilité moyenne
+CIRAD235,Autofecondation-74F-3,Dioscorea alata,3,50.37,13.4,37.13,2,31.5,9.5,34.82,1,0.28,,0.3,44.38,53.36,0.69,0.16042780748663102,performante & variabilité faible
+CIRAD236,Autofecondation-Dou-1,Dioscorea alata,5,60.66,62.2,53.62,2,82.5,100.0,46.3,1,0.18,,0.23,37.71,75.96,0.49,0.6029411764705882,performante & variabilité forte
+CIRAD237,Autofecondation-Dou-2,Dioscorea alata,4,29.15,28.2,25.72,2,106.5,54.9,54.17,2,0.28,1.9,0.29,34.92,23.37,-0.65,0.5106951871657754,modeste & variabilité moyenne
+CIRAD238,Autofecondation-Dou-3,Dioscorea alata,3,23.25,33.1,20.84,1,0.0,,28.35,1,0.34,,0.32,12.93,28.42,0.94,0.13101604278074866,modeste & variabilité faible
+CIRAD239,Autofecondation-Dou-4,Dioscorea alata,5,37.08,55.1,33.08,3,0.0,,18.89,2,0.28,3.2,0.29,19.27,48.96,2.56,0.766042780748663,performante & variabilité forte
+CIRAD240,Autofecondation-Dou-5,Dioscorea alata,3,21.03,22.5,20.14,2,17.25,100.0,26.54,0,,,,26.46,18.32,-0.7,0.4839572192513369,modeste & variabilité moyenne
+CIRAD241,Autofecondation-61F-1,Dioscorea alata,6,38.53,73.8,34.29,3,25.17,141.4,29.01,2,0.27,12.1,0.28,57.59,29.0,0.15,0.7927807486631016,performante & variabilité forte
+CIRAD242,Autofecondation-61F-2,Dioscorea alata,3,59.01,22.9,44.21,2,0.0,,21.21,2,0.31,1.3,0.31,77.69,49.66,-2.06,0.5213903743315508,performante & variabilité moyenne
+CIRAD243,Autofecondation-61F-3,Dioscorea alata,6,36.5,47.0,33.24,3,13.67,141.4,24.38,2,0.33,10.0,0.32,51.18,29.15,0.36,0.5334224598930482,performante & variabilité moyenne
+CIRAD244,Autofecondation-61F-4,Dioscorea alata,6,60.23,33.4,50.24,3,18.5,141.4,26.33,2,0.32,10.0,0.32,63.6,58.55,-2.39,0.5922459893048129,performante & variabilité forte
+CIRAD245,Autofecondation-61F-5,Dioscorea alata,6,47.22,24.0,40.34,3,0.0,,18.89,2,0.3,2.9,0.3,46.91,47.37,1.41,0.2446524064171123,performante & variabilité faible
+CIRAD246,Autofecondation-KREOLINE-1,Dioscorea alata,6,54.14,20.1,45.85,3,7.0,141.4,21.7,2,0.3,1.1,0.3,52.69,54.87,0.15,0.37032085561497324,performante & variabilité faible
+CIRAD247,Autofecondation-KREOLINE-3,Dioscorea alata,6,29.44,59.9,26.85,3,57.0,116.3,41.81,2,0.33,4.9,0.32,37.44,25.44,0.92,0.3877005347593583,performante & variabilité faible
+CIRAD248,Autofecondation-KREOLINE-4,Dioscorea alata,2,30.37,80.1,27.24,1,21.0,,32.2,1,0.33,,0.32,6.03,54.7,,,données insuffisantes
+CIRAD249,Autofecondation-KREOLINE-5,Dioscorea alata,3,41.05,17.1,31.83,2,0.0,,21.21,2,0.3,10.3,0.3,36.57,43.3,0.7,0.15641711229946526,performante & variabilité faible
+CIRAD251,CIR-C103,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD252,CIR-L037,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD253,CIR-B079,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD254,CIR-B142,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD255,CIR-A071,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD257,CIR-K032,Dioscorea alata,1,41.48,,27.88,0,,,,1,0.32,,0.31,,41.48,,,données insuffisantes
+CIRAD258,CIR-P006,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD261,CIR-A025,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD262,CIR-D036,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD263,CIR-C104,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD264,CIR-K050,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD265,3153,Dioscorea alata,2,28.14,23.9,21.87,1,48.0,,37.14,1,0.24,,0.28,,28.14,,,données insuffisantes
+CIRAD266,CIR-C101,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD267,CIR-K051,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD268,CIR-C052,Dioscorea alata,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD269,CIRAD269,Dioscorea alata,1,63.91,,36.27,1,41.0,,35.86,1,0.37,,0.34,,63.91,,,données insuffisantes
+CIRAD271,61_emb_mut_006,Dioscorea alata,0,,,,0,,,,1,0.33,,0.32,,,,,données insuffisantes
+CIRAD272,61_mut_025,Dioscorea alata,1,43.23,,29.59,1,0.0,,28.35,1,0.27,,0.29,,43.23,,,données insuffisantes
+CIRAD273,61_mut_007,Dioscorea alata,2,71.67,7.5,43.91,1,0.0,,28.35,1,0.34,,0.32,,71.67,,,données insuffisantes
+CIRAD274,61_mut_015,Dioscorea alata,1,48.52,,31.32,0,,,,0,,,,,48.52,,,données insuffisantes
+CIRAD275,61 _emb__mut 022,Dioscorea alata,2,48.44,16.7,32.7,1,0.0,,28.35,1,0.37,,0.34,,48.44,,,données insuffisantes
+CIRAD276,61_mut_003,Dioscorea alata,1,88.52,,43.98,1,0.0,,28.35,1,0.3,,0.3,,88.52,,,données insuffisantes
+CIRAD277,61_mut_016,Dioscorea alata,2,58.84,3.6,37.84,1,0.0,,28.35,1,0.33,,0.32,,58.84,,,données insuffisantes
+CIRAD278,Adon_nouveau,Disocorea bulbifera,0,,,,0,,,,0,,,,,,,,données insuffisantes
+CIRAD279,Amoumbé 1,Dioscorea trifida,1,38.27,,34.6,1,0.0,,28.35,0,,,,38.27,,,,données insuffisantes
+CIRAD280,grossecaille Jaune,Dioscorea rotundata,3,15.26,14.6,18.43,1,0.0,,28.35,1,0.32,,0.3,12.63,16.57,0.18,0.3502673796791444,modeste & variabilité faible
+CIRAD300,CIRAD300,Dioscorea alata,1,76.39,,40.33,0,,,,1,0.24,,0.27,,76.39,,,données insuffisantes
+CIRAD301,Igname jaune CIRAD,Dioscorea cayenensis,2,21.42,10.6,19.45,1,0.0,,28.35,1,0.38,,0.34,,21.42,,,données insuffisantes
