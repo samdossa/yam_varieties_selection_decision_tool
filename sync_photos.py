@@ -32,6 +32,7 @@ import ftplib
 import glob
 import os
 import re
+import socket
 import ssl
 import sys
 
@@ -39,8 +40,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data")
 CRED_FILE = os.path.join(HERE, "ftp_credentials.txt")
 
-# Racine distante, relative au dossier de connexion FTP (souvent public_html/).
-REMOTE_ROOT = os.environ.get("YAMHUB_FTP_ROOT", "public_html/photos")
+# Racine distante, relative au dossier où atterrit le compte FTP. Chez
+# Hostinger, ce compte ouvre sur / et non sur public_html : le site vit donc
+# sous domains/<domaine>/public_html. Surchargeable par ROOT= dans
+# ftp_credentials.txt, ou par YAMHUB_FTP_ROOT.
+REMOTE_ROOT = os.environ.get("YAMHUB_FTP_ROOT",
+                             "domains/yamhub.fr/public_html/photos")
 
 
 # --------------------------------------------------------------------------
@@ -59,6 +64,8 @@ def load_credentials():
                 cred[k.strip().upper()] = v.strip().strip('"').strip("'")
     for k in ("HOST", "USER", "PASS"):
         cred.setdefault(k, os.environ.get(f"YAMHUB_FTP_{k}", ""))
+    if cred.get("ROOT"):                   # ROOT= dans le fichier a le dernier mot
+        globals()["REMOTE_ROOT"] = cred["ROOT"].rstrip("/")
     missing = [k for k in ("HOST", "USER", "PASS") if not cred[k]]
     if missing:
         sys.exit(
@@ -70,17 +77,58 @@ def load_credentials():
     return cred
 
 
+def _ouvrir(cred, contexte):
+    """Ouvre une session FTPS avec le contexte TLS donné. Lève telle quelle."""
+    ftp = ftplib.FTP_TLS(context=contexte)
+    ftp.connect(cred["HOST"], int(cred.get("PORT") or 21), timeout=30)
+    ftp.login(cred["USER"], cred["PASS"])
+    ftp.prot_p()                           # chiffre aussi le canal de données
+    return ftp
+
+
 def connect(cred):
-    """Connexion FTPS explicite (les identifiants ne circulent pas en clair)."""
+    """Connexion FTPS explicite : le mot de passe ne circule jamais en clair.
+
+    Le FTP simple transmet les identifiants en clair — inacceptable sur un
+    réseau partagé. On reste donc en FTPS et on diagnostique précisément les
+    trois échecs courants plutôt que de tout renvoyer sous « connexion
+    impossible ».
+    """
+    hote = cred["HOST"]
     try:
-        ftp = ftplib.FTP_TLS(context=ssl.create_default_context())
-        ftp.connect(cred["HOST"], int(cred.get("PORT") or 21), timeout=30)
-        ftp.login(cred["USER"], cred["PASS"])
-        ftp.prot_p()                       # chiffre aussi le canal de données
-    except (ftplib.error_perm, ssl.SSLError, OSError) as e:
-        sys.exit(f"Connexion FTPS impossible ({e}).\n"
-                 f"Vérifie l'hôte et les identifiants dans "
-                 f"{os.path.basename(CRED_FILE)}.")
+        ftp = _ouvrir(cred, ssl.create_default_context())
+    except socket.gaierror:
+        sys.exit(f"Hôte introuvable : « {hote} ».\n"
+                 f"Ce n'est pas un problème de mot de passe : le nom ne se "
+                 f"résout pas.\nVérifie la ligne HOST de "
+                 f"{os.path.basename(CRED_FILE)} — un « @ » ou un « ftp:// » "
+                 f"collé devant l'adresse suffit à provoquer cette erreur.")
+    except ssl.SSLCertVerificationError:
+        # Cas Hostinger : le certificat est un wildcard mutualisé, valide pour
+        # *.hstgr.io / *.main-hosting.eu mais PAS pour une adresse IP. On garde
+        # le chiffrement (le mot de passe reste protégé) en renonçant à vérifier
+        # l'identité du serveur, et on le dit franchement à chaque exécution.
+        print(f"⚠  Le certificat TLS ne couvre pas « {hote} » (normal avec une "
+              f"adresse IP chez Hostinger).\n"
+              f"   La connexion reste chiffrée, mais l'identité du serveur "
+              f"n'est pas vérifiée.\n"
+              f"   Pour l'éviter, mets dans HOST le nom d'hôte FTP indiqué par "
+              f"hPanel (Fichiers → Comptes FTP)\n"
+              f"   plutôt que son adresse IP.\n")
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        try:
+            ftp = _ouvrir(cred, ctx)
+        except ftplib.error_perm as e:
+            sys.exit(f"Identifiants refusés par le serveur ({e}).\n"
+                     f"Vérifie USER et PASS dans {os.path.basename(CRED_FILE)}.")
+    except ftplib.error_perm as e:
+        sys.exit(f"Identifiants refusés par le serveur ({e}).\n"
+                 f"Vérifie USER et PASS dans {os.path.basename(CRED_FILE)}.")
+    except (ssl.SSLError, OSError) as e:
+        sys.exit(f"Connexion à {hote} impossible ({e}).\n"
+                 f"Serveur injoignable, port 21 fermé, ou FTPS non supporté.")
     ftp.set_pasv(True)
     ftp.voidcmd("TYPE I")                  # binaire : requis pour SIZE
     return ftp
@@ -108,6 +156,8 @@ def remote_sizes(ftp, path):
             if facts.get("type") == "file":
                 sizes[name] = int(facts.get("size", -1))
         return sizes
+    except ftplib.error_temp:
+        return {}                           # dossier absent : il sera créé
     except (ftplib.error_perm, ftplib.error_proto):
         pass                                # serveur sans MLSD : repli ci-dessous
     try:
@@ -115,9 +165,9 @@ def remote_sizes(ftp, path):
             name = entry.rsplit("/", 1)[-1]
             try:
                 sizes[name] = ftp.size(f"{path}/{name}") or -1
-            except ftplib.error_perm:
+            except ftplib.all_errors:
                 sizes[name] = -1
-    except ftplib.error_perm:
+    except (ftplib.error_perm, ftplib.error_temp):
         return {}                           # dossier absent
     return sizes
 
