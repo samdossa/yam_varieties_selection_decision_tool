@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.git/
+.streamlit/secrets.toml
+ftp_credentials.txt
+mapbox_token.txt
+.env
+data/fiches/
+data/recouvrement_*mois/
+data/feuilles/
+data/tubercules/
+data/sources/

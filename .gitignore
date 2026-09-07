@@ -20,3 +20,9 @@ ftp_credentials.txt
 
 # Photos de complement (volumineuses, publiees par sync_photos.py)
 data/tubercules/
+
+# Fiches PDF pre-generees (volumineuses, publiees par sync_photos.py)
+data/fiches/*/
+
+# Variables d environnement du conteneur
+.env

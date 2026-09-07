@@ -267,14 +267,23 @@ def build_plan(only=None):
         d = os.path.join(DATA, nom)
         if os.path.isdir(d):
             plan.append((nom, d, f"{REMOTE_ROOT}/{nom}"))
+    # Fiches PDF pré-générées : un sous-dossier par langue.
+    fiches = os.path.join(DATA, "fiches")
+    if os.path.isdir(fiches):
+        for lg in sorted(os.listdir(fiches)):
+            sous = os.path.join(fiches, lg)
+            if os.path.isdir(sous):
+                plan.append((f"fiches:{lg}", sous, f"{REMOTE_ROOT}/fiches/{lg}"))
     for d in sorted(glob.glob(os.path.join(DATA, "recouvrement_*mois"))):
         stage = re.sub(r"^recouvrement_", "", os.path.basename(d))
         plan.append((stage, d, f"{REMOTE_ROOT}/recouvrement/{stage}"))
     if only:
-        plan = [p for p in plan if p[0] == only]
+        # « --only fiches » prend les deux langues d'un coup.
+        plan = [p for p in plan if p[0] == only or p[0].startswith(only + ":")]
         if not plan:
             sys.exit(f"Rien à synchroniser pour « {only} ». "
-                     f"Valeurs possibles : feuilles, tubercules, 1mois, 3mois…")
+                     f"Valeurs possibles : feuilles, tubercules, fiches:fr, "
+                     f"fiches:en, 1mois, 3mois…")
     return plan
 
 

@@ -87,3 +87,56 @@ Sans ce fichier, les photos restent sur le serveur et partent plus tard avec :
 ```bash
 .venv/bin/python sync_photos.py
 ```
+
+---
+
+# Déploiement Docker (decision-tool)
+
+Le conteneur redémarre seul après un plantage **et** après un redémarrage de la
+machine : c'est ce qui remplace la mise en veille subie sur Streamlit Community
+Cloud.
+
+## Mise en route
+
+```bash
+git clone https://github.com/ALX-18/decision-tool.git
+cd decision-tool
+cp .env.example .env        # puis remplir MAPBOX_TOKEN
+docker compose up -d --build
+```
+
+L'outil répond sur `http://<serveur>:8501`.
+
+## Exploitation
+
+```bash
+docker compose logs -f                 # journaux en direct
+docker compose ps                      # etat et sante du conteneur
+docker compose restart                 # apres modification d'un CSV de data/
+docker compose up -d --build           # apres un git pull (code modifie)
+docker compose down                    # arreter
+```
+
+Le `data/` est **monté** et non copié : mettre à jour un jeu de données ne
+demande qu'un `restart`, pas une reconstruction d'image.
+
+Le `HEALTHCHECK` interroge `/_stcore/health`. Docker distingue ainsi un
+conteneur démarré d'une app réellement prête, et `docker compose ps` affiche
+`healthy` plutôt qu'un simple `running`.
+
+## Ce que le conteneur embarque
+
+Les bibliothèques système de WeasyPrint (pango, cairo) sont installées dans
+l'image : sans elles la génération de fiches échoue **au rendu et non à
+l'import**, l'erreur n'apparaîtrait donc qu'au premier téléchargement.
+
+Les identifiants ne sont jamais dans l'image — `.dockerignore` exclut `.env`,
+`ftp_credentials.txt` et `mapbox_token.txt`.
+
+## Accès depuis yamhub.fr
+
+Si le serveur n'est joignable que sur le réseau interne, l'iframe de
+`aide-decision.php` ne pourra pas l'afficher pour un visiteur extérieur. Les
+**fiches PDF pré-générées restent accessibles**, elles, puisqu'elles sont
+servies par yamhub.fr lui-même. Pour que l'outil interactif reste public, il
+faut soit exposer le serveur, soit conserver un déploiement public en parallèle.

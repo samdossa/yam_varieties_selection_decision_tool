@@ -1,0 +1,30 @@
+# Déploiement de l'outil d'aide au choix variétal YamHub.
+#
+#   docker compose up -d --build      démarrer (ou redémarrer après un git pull)
+#   docker compose logs -f            suivre les journaux
+#   docker compose down               arrêter
+#
+# Les identifiants ne sont pas ici : ils vivent dans un fichier .env à côté de
+# ce compose, non versionné. Modèle : .env.example
+services:
+  decision-tool:
+    build: .
+    container_name: yamhub-decision-tool
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    # LE point de ce déploiement : le conteneur repart tout seul après un
+    # plantage ET après un redémarrage de la machine. C'est ce qui remplace la
+    # mise en veille subie sur Streamlit Community Cloud.
+    restart: unless-stopped
+    volumes:
+      # Les données en lecture seule, montées plutôt que copiées : mettre à
+      # jour un CSV ne demande alors qu'un « docker compose restart », pas une
+      # reconstruction de l'image.
+      - ./data:/app/data:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"      # sans cela les journaux grossissent sans fin
+        max-file: "3"
