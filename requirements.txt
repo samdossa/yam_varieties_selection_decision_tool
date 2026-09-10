@@ -1,13 +1,23 @@
-streamlit>=1.43
-pandas>=2.0
-fpdf2>=2.7
-plotly>=5.18
-Pillow>=10.0
-requests>=2.31
-openpyxl>=3.1
-matplotlib>=3.7
-numpy>=1.24
-weasyprint>=60
-pdf2image>=1.17
-pydeck>=0.9
-streamlit-cropper
+# Versions EPINGLEES, relevees d'un environnement qui fonctionne.
+#
+# Pourquoi == et non >= : le crop-tool deploye en conteneur a plante en
+# production sur « ButtonMixin.button() got an unexpected keyword argument
+# 'width' », parce que l'image avait recupere une version de Streamlit
+# differente de celle du poste de developpement. Avec des bornes ouvertes,
+# chaque reconstruction d'image est un pari.
+#
+# Pour monter de version : modifier ici, tester en local, puis reconstruire.
+# Jamais l'inverse.
+
+streamlit==1.50.0
+streamlit-cropper==0.2.2
+pandas==2.3.3
+numpy==2.0.2
+plotly==6.9.0
+matplotlib==3.9.4
+Pillow==11.3.0
+requests==2.32.5
+weasyprint==66.0
+
+# Retires car jamais importes : openpyxl, pdf2image (tirait poppler en
+# systeme), pydeck. fpdf2 ne servait qu'a fiche_pdf.py, code mort supprime.

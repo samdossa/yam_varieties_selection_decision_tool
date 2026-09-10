@@ -167,7 +167,7 @@ def dossier_picker(label, cle, defaut):
     st.sidebar.caption(cur.replace(HOME, "~"))
 
     if _dialogue_possible():
-        if st.sidebar.button("📁 Parcourir…", key=f"{cle}_browse", width="stretch"):
+        if st.sidebar.button("📁 Parcourir…", key=f"{cle}_browse", use_container_width=True):
             choisi = _dialogue_dossier(label, cur if os.path.isdir(cur) else HOME)
             if choisi:
                 st.session_state[cle] = choisi
@@ -313,7 +313,7 @@ prev = disp.crop((max(0, bx), max(0, by), bx + bw2, by + bh2))
 prev.thumbnail((400, 700))
 with colR:
     st.image(prev, caption="Aperçu du recadrage")
-    if st.button("💾 Enregistrer", type="primary", width="stretch"):
+    if st.button("💾 Enregistrer", type="primary", use_container_width=True):
         # plein résolution : on pivote l'original du même angle, puis on mappe la boîte
         full_r = full if rot == 0 else full.rotate(rot, resample=Image.BICUBIC,
                                                     expand=True, fillcolor=FILL)

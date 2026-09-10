@@ -11,3 +11,6 @@ data/recouvrement_*mois/
 data/feuilles/
 data/tubercules/
 data/sources/
+
+# Images de reference non utilisees par l app
+data/ref_IMG_*.jpg

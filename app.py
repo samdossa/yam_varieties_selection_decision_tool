@@ -464,7 +464,7 @@ if not mode_detaille:
                             st.write(f"{i18n.crit(k, LANG)} : "
                                      f"{stars(None, k, r['_idx'])}")
                         if st.button(i18n.t("voir_fiche", LANG), key=f"f_{i + j}",
-                                     width="stretch"):
+                                     use_container_width=True):
                             st.session_state["fiche_sel"] = r["code_plantation"]
                         if st.session_state.get("fiche_sel") == r["code_plantation"]:
                             fiche_btn(r["code_plantation"],
@@ -616,7 +616,7 @@ else:
                                default=dispo[:10])
     if cols_show:
         st.dataframe(res[cols_show].reset_index(drop=True),
-                     width="stretch", height=340)
+                     use_container_width=True, height=340)
         st.download_button(i18n.t("exporter_csv", LANG),
                            data=res[cols_show].to_csv(index=False).encode("utf-8"),
                            file_name="varietes_selection.csv", mime="text/csv")
@@ -661,7 +661,7 @@ else:
                 with pcols[i]:
                     st.image(UPLOADS_URL + str(pr["photo_bytea"]),
                              caption=i18n.val(pr["description"], LANG),
-                             width="stretch")
+                             use_container_width=True)
         elif tuber_photo(row.get("code_plantation")):
             st.image(tuber_photo(row.get("code_plantation")),
                      caption=i18n.t("tubercule", LANG), width=320)
