@@ -51,16 +51,25 @@ ICI = os.path.dirname(os.path.abspath(__file__))
 # Dossier de départ du sélecteur. En conteneur, les photos drone sont
 # montées sur /photos-drone : sans ce repli, le sélecteur s'ouvrirait sur un
 # ~/Downloads inexistant, d'où une navigation par liste vide et sans issue.
-DEF_SRC = os.environ.get("DRONE_SRC") or (
-    "/photos-drone" if os.path.isdir("/photos-drone")
-    else os.path.join(HOME, "Downloads", "recouvrement_1mois"))
+# CROP_SRC_DIR est le nom deja utilise par le compose du serveur CIRAD : on
+# l'accepte tel quel pour ne pas avoir a editer deux endroits.
+DEF_SRC = (os.environ.get("DRONE_SRC") or os.environ.get("CROP_SRC_DIR") or
+           ("/photos-drone" if os.path.isdir("/photos-drone")
+            else os.path.join(HOME, "Downloads", "recouvrement_1mois")))
 OUT_SIZE = 2048
 STADES = ["1mois", "3mois"]
 
 
 def defaut_sortie(stade):
-    """Dossier de sortie attendu pour un stade — celui que lit sync_photos.py."""
-    return os.path.join(ICI, "data", f"recouvrement_{stade}")
+    """Dossier de sortie attendu pour un stade — celui que lit sync_photos.py.
+
+    CROP_OUT_DIR permet de sortir ailleurs que dans data/, ce qu'exige un
+    conteneur dont data/ n'est pas le volume inscriptible. Le sous-dossier par
+    stade est conserve dans les deux cas : c'est lui que sync_photos.py repere
+    pour un rattrapage groupe.
+    """
+    racine = os.environ.get("CROP_OUT_DIR") or os.path.join(ICI, "data")
+    return os.path.join(racine, f"recouvrement_{stade}")
 
 
 def code_of(fn):
