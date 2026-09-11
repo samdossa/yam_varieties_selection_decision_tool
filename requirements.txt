@@ -1,23 +1,34 @@
-# Versions EPINGLEES, relevees d'un environnement qui fonctionne.
+# Versions EPINGLEES.
 #
 # Pourquoi == et non >= : le crop-tool deploye en conteneur a plante en
 # production sur « ButtonMixin.button() got an unexpected keyword argument
-# 'width' », parce que l'image avait recupere une version de Streamlit
-# differente de celle du poste de developpement. Avec des bornes ouvertes,
-# chaque reconstruction d'image est un pari.
+# 'width' », l'image ayant recupere une version de Streamlit differente de
+# celle du poste de developpement. Avec des bornes ouvertes, chaque
+# reconstruction est un pari.
+#
+# Pourquoi des marqueurs sur numpy et matplotlib : le projet vit sur TROIS
+# Python. 3.9 dans le venv local, 3.11 dans l'image Docker, 3.14 sur Streamlit
+# Cloud. numpy 2.0.2 et matplotlib 3.9.4 n'ont pas de roue pour 3.14 ; pip
+# tente alors de compiler, echoue, et ABANDONNE toute l'installation, si bien
+# que plotly manquait et que l'app tombait sur ModuleNotFoundError. Les
+# versions recentes, elles, ne descendent pas sous 3.11. Un marqueur par
+# tranche resout les deux cas sans rien laisser flotter.
 #
 # Pour monter de version : modifier ici, tester en local, puis reconstruire.
-# Jamais l'inverse.
 
 streamlit==1.50.0
 streamlit-cropper==0.2.2
 pandas==2.3.3
-numpy==2.0.2
 plotly==6.9.0
-matplotlib==3.9.4
 Pillow==11.3.0
 requests==2.32.5
 weasyprint==66.0
+
+numpy==2.3.3 ; python_version >= "3.11"
+numpy==2.0.2 ; python_version < "3.11"
+
+matplotlib==3.10.5 ; python_version >= "3.11"
+matplotlib==3.9.4  ; python_version < "3.11"
 
 # Retires car jamais importes : openpyxl, pdf2image (tirait poppler en
 # systeme), pydeck. fpdf2 ne servait qu'a fiche_pdf.py, code mort supprime.
