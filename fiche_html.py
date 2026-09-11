@@ -315,19 +315,16 @@ def _url_existe(url):
 
 
 def _cases_regularite(niveau, lang=i18n.DEFAUT):
-    """Cases à cocher du profil de régularité.
+    """Profil de régularité : le seul niveau mesuré, pas la liste des trois.
 
-    Moins de trois essais : la variabilité n'est pas conclue, et cocher l'une
-    des trois cases laisserait croire à une mesure. On affiche alors la raison.
+    Afficher les trois avec une seule cochée obligeait le lecteur à chercher
+    la croix. Moins de trois essais : la variabilité n'est pas conclue, et
+    cocher quoi que ce soit laisserait croire à une mesure, d'où le message.
     """
     if niveau is None:
         return f'<span style="color:{GREY}">{i18n.t("eval_insuffisante", lang)}</span>'
-    parts = []
-    for n in ("faible", "moyenne", "forte"):
-        marque = "X" if n == niveau else "&nbsp;"
-        parts.append(f'<span style="border:1px solid #333;padding:0 5px">{marque}</span> '
-                     f'{i18n.t("var_" + n, lang)}')
-    return "&nbsp; ".join(parts)
+    return (f'<span style="border:1px solid #333;padding:0 5px">X</span> '
+            f'{i18n.t("var_" + niveau, lang)}')
 
 
 def _recouv_tag(code, stage, h=150):
