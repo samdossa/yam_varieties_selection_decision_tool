@@ -411,8 +411,22 @@ code = view[st.session_state.idx]
 st.subheader(f"{code}  —  {st.session_state.idx + 1}/{len(view)}   {'✅ déjà enregistrée' if is_done(code) else ''}")
 st.caption("Ajuste la boîte : serrée sur le billon central, sans variété voisine. Puis « Enregistrer ».")
 
-full = ImageOps.exif_transpose(Image.open(sources[code])).convert("RGB")
 FILL = (245, 245, 245)
+
+
+@st.cache_data(show_spinner=False, max_entries=24)
+def _apercu(fp, largeur):
+    """Version d'affichage d'une photo, décodée une seule fois.
+
+    Chaque interaction relance le script — le simple déplacement du curseur de
+    redressement suffit. Redécoder à chaque fois un JPEG de 7 Mo lu sur un
+    disque externe rendait l'outil poussif. Le plein format n'est chargé qu'au
+    moment d'enregistrer, où il est réellement nécessaire.
+    """
+    im = Image.open(fp)
+    im.draft("RGB", (largeur, largeur))    # décodage réduit dès la lecture
+    im = ImageOps.exif_transpose(im).convert("RGB")
+    return im.resize((largeur, round(im.size[1] * largeur / im.size[0])))
 
 # Curseur de redressement (billon en biais)
 rot = st.slider("Redresser l'image (°)", -20.0, 20.0, 0.0, 0.5,
@@ -420,7 +434,7 @@ rot = st.slider("Redresser l'image (°)", -20.0, 20.0, 0.0, 0.5,
 
 # Image d'affichage (petite = rapide), pivotée pour l'aperçu et le recadrage
 DISP_W = 900
-disp0 = full.resize((DISP_W, round(full.size[1] * DISP_W / full.size[0])))
+disp0 = _apercu(sources[code], DISP_W)
 disp = disp0 if rot == 0 else disp0.rotate(rot, resample=Image.BICUBIC,
                                            expand=True, fillcolor=FILL)
 
@@ -447,7 +461,9 @@ prev.thumbnail((400, 700))
 with colR:
     st.image(prev, caption="Aperçu du recadrage")
     if st.button("💾 Enregistrer", type="primary", use_container_width=True):
-        # plein résolution : on pivote l'original du même angle, puis on mappe la boîte
+        # plein résolution : chargé ici seulement, puis pivoté du même angle
+        # avant de mapper la boîte tracée sur l'aperçu.
+        full = ImageOps.exif_transpose(Image.open(sources[code])).convert("RGB")
         full_r = full if rot == 0 else full.rotate(rot, resample=Image.BICUBIC,
                                                     expand=True, fillcolor=FILL)
         r = full_r.size[0] / disp.size[0]

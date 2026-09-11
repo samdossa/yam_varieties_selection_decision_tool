@@ -314,6 +314,22 @@ def _url_existe(url):
         return True                        # panne reseau : on ne conclut pas
 
 
+def _cases_regularite(niveau, lang=i18n.DEFAUT):
+    """Cases à cocher du profil de régularité.
+
+    Moins de trois essais : la variabilité n'est pas conclue, et cocher l'une
+    des trois cases laisserait croire à une mesure. On affiche alors la raison.
+    """
+    if niveau is None:
+        return f'<span style="color:{GREY}">{i18n.t("eval_insuffisante", lang)}</span>'
+    parts = []
+    for n in ("faible", "moyenne", "forte"):
+        marque = "X" if n == niveau else "&nbsp;"
+        parts.append(f'<span style="border:1px solid #333;padding:0 5px">{marque}</span> '
+                     f'{i18n.t("var_" + n, lang)}')
+    return "&nbsp; ".join(parts)
+
+
 def _recouv_tag(code, stage, h=150):
     """Image de recouvrement pour une variété à un stade (1mois, 3mois...).
     Cherche data/recouvrement_<stage>/CIRADn_<stage>.jpg en local, sinon RECOUV_URL."""
@@ -486,10 +502,14 @@ def build_html(row, photos, all_df=None, lang=i18n.DEFAUT):
     conserv = (i18n.val({"Absent": "Absente", "Faible": "Faible",
                          "Fort": "Forte"}.get(pts, ND), lang)
                if pd.notna(pts) else ND)
-    # Profil de régularité -> cases Stable / Non stable
+    # Profil de régularité -> cases de variabilité.
+    # Les classes disaient autrefois « stable » / « spécialisée » ; la refonte
+    # de la stabilité (CV + pente de Finlay-Wilkinson) les a remplacées par
+    # trois niveaux de variabilité. Les anciens tests ne trouvaient donc plus
+    # jamais leur mot-clé et AUCUNE case n'était cochée, sur aucune fiche.
     _clr = str(row.get("classe_rendement")).lower() if pd.notna(row.get("classe_rendement")) else ""
-    stable_oui = "stable" in _clr
-    nonstable_oui = ("spécialis" in _clr) or ("specialis" in _clr)
+    niveau_var = next((n for n in ("faible", "moyenne", "forte")
+                       if f"variabilité {n}" in _clr), None)
     bq = row.get("BOILED_Q")  # qualité bouillie -> français
     qbouillie = i18n.val(bq, lang) if pd.notna(bq) else ND
     de = row.get("DE_BLUP")   # durée d'émergence -> jours (arrondi au supérieur)
@@ -724,8 +744,7 @@ def build_html(row, photos, all_df=None, lang=i18n.DEFAUT):
           <tr><td class="attr">{T("rendement_potentiel")}</td><td class="val">{cell(_v(row,'rendement_perf',' t/ha',lang=lang))}</td></tr>
           <tr><td class="attr">{T("nb_tubercules")}</td><td class="val">{cell(_v(row,'NTMP_BLUP',lang=lang))}</td></tr>
           <tr><td class="attr">{T("profil_regularite")}</td><td class="val">
-            <span style="border:1px solid #333;padding:0 5px">{'X' if stable_oui else '&nbsp;'}</span> {T("stable")}
-            &nbsp; <span style="border:1px solid #333;padding:0 5px">{'X' if nonstable_oui else '&nbsp;'}</span> {T("non_stable")}
+            {_cases_regularite(niveau_var, lang)}
           </td></tr>
         </table>
       </div>

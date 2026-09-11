@@ -307,6 +307,11 @@ FICHE = {
     "nb_tubercules": ("Nb moyen de tubercules/plant", "Mean tubers per plant"),
     "regularite": ("Régularité", "Consistency"),
     "profil_regularite": ("Profil de régularité", "Consistency profile"),
+    # Trois niveaux, comme la classification du rendement : deux cases
+    # Stable/Non stable ne pouvaient pas rendre compte du cas moyen.
+    "var_faible": ("Variabilité faible", "Low variability"),
+    "var_moyenne": ("Variabilité moyenne", "Moderate variability"),
+    "var_forte": ("Variabilité forte", "High variability"),
     "points_forts": ("Points forts de la variété :", "Variety strengths:"),
     "sites_guadeloupe": ("Sites d'évaluation en Guadeloupe",
                          "Evaluation sites in Guadeloupe"),
