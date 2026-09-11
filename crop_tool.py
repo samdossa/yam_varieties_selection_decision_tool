@@ -48,7 +48,12 @@ HOME = os.path.expanduser("~")
 # abspath : lancé via « streamlit run crop_tool.py », dirname(__file__) est vide.
 # Un chemin relatif casserait la navigation vers le dossier parent.
 ICI = os.path.dirname(os.path.abspath(__file__))
-DEF_SRC = os.path.join(HOME, "Downloads", "recouvrement_1mois")
+# Dossier de départ du sélecteur. En conteneur, les photos drone sont
+# montées sur /photos-drone : sans ce repli, le sélecteur s'ouvrirait sur un
+# ~/Downloads inexistant, d'où une navigation par liste vide et sans issue.
+DEF_SRC = os.environ.get("DRONE_SRC") or (
+    "/photos-drone" if os.path.isdir("/photos-drone")
+    else os.path.join(HOME, "Downloads", "recouvrement_1mois"))
 OUT_SIZE = 2048
 STADES = ["1mois", "3mois"]
 

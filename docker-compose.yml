@@ -28,3 +28,39 @@ services:
       options:
         max-size: "10m"      # sans cela les journaux grossissent sans fin
         max-file: "3"
+
+  # Outil de recadrage des photos drone. Même image que ci-dessus, autre
+  # commande : il n'y a qu'un seul jeu de dépendances à construire.
+  crop-tool:
+    build: .
+    container_name: yamhub-crop-tool
+    command:
+      - streamlit
+      - run
+      - crop_tool.py
+      - --server.port=8501
+      - --server.address=0.0.0.0
+      - --server.headless=true
+      - --browser.gatherUsageStats=false
+    ports:
+      - "8502:8501"
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      # Photos drone brutes, en lecture seule : l'outil ne fait que les lire.
+      # DRONE_DIR se règle dans .env — le chemin varie d'une campagne à l'autre.
+      - ${DRONE_DIR:-./data/sources/drone}:/photos-drone:ro
+      # Sortie EN ÉCRITURE. Sans ce volume, deux choses cassent : le montage
+      # :ro du service voisin ferait échouer l'enregistrement, et ce qui serait
+      # écrit dans la couche du conteneur disparaîtrait au redémarrage — donc
+      # aussi le suivi « déjà faites ».
+      - crop-out:/app/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  crop-out:
