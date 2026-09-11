@@ -287,9 +287,22 @@ def build_plan(only=None):
             sous = os.path.join(fiches, lg)
             if os.path.isdir(sous):
                 plan.append((f"fiches:{lg}", sous, f"{REMOTE_ROOT}/fiches/{lg}"))
-    for d in sorted(glob.glob(os.path.join(DATA, "recouvrement_*mois"))):
-        stage = re.sub(r"^recouvrement_", "", os.path.basename(d))
-        plan.append((stage, d, f"{REMOTE_ROOT}/recouvrement/{stage}"))
+    # Les recadrages peuvent sortir ailleurs que dans data/ : en conteneur,
+    # CROP_OUT_DIR designe le seul volume inscriptible. Sans ce second dossier,
+    # le rattrapage groupe ne verrait rien et annoncerait « 0 envoyees » alors
+    # que les photos sont bien la.
+    racines = [DATA]
+    autre = os.environ.get("CROP_OUT_DIR")
+    if autre and os.path.abspath(autre) != os.path.abspath(DATA):
+        racines.append(autre)
+    vus = set()
+    for racine in racines:
+        for d in sorted(glob.glob(os.path.join(racine, "recouvrement_*mois"))):
+            stage = re.sub(r"^recouvrement_", "", os.path.basename(d))
+            if stage in vus:
+                continue                    # data/ a la priorite
+            vus.add(stage)
+            plan.append((stage, d, f"{REMOTE_ROOT}/recouvrement/{stage}"))
     if only:
         # « --only fiches » prend les deux langues d'un coup.
         plan = [p for p in plan if p[0] == only or p[0].startswith(only + ":")]
