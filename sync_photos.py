@@ -65,7 +65,10 @@ def load_credentials():
                     continue
                 k, v = line.split("=", 1)
                 cred[k.strip().upper()] = v.strip().strip('"').strip("'")
-    for k in ("HOST", "USER", "PASS"):
+    # PORT est facultatif (21 par defaut) mais doit suivre le meme chemin que
+    # les autres : sans lui ici, une configuration 100 % variables
+    # d'environnement ne pourrait pas changer de port.
+    for k in ("HOST", "USER", "PASS", "PORT"):
         cred.setdefault(k, os.environ.get(f"YAMHUB_FTP_{k}", ""))
     if cred.get("ROOT"):                   # ROOT= dans le fichier a le dernier mot
         globals()["REMOTE_ROOT"] = cred["ROOT"].rstrip("/")
