@@ -140,3 +140,51 @@ Si le serveur n'est joignable que sur le réseau interne, l'iframe de
 **fiches PDF pré-générées restent accessibles**, elles, puisqu'elles sont
 servies par yamhub.fr lui-même. Pour que l'outil interactif reste public, il
 faut soit exposer le serveur, soit conserver un déploiement public en parallèle.
+
+## Mettre un mot de passe (déploiement Docker)
+
+Tant que l'outil ne faisait que recadrer, l'exposer sans filtre était sans
+conséquence. Depuis qu'un enregistrement publie sur yamhub.fr, la page écrit
+sur le site : qui atteint le port peut y déposer des photos. Et `0.0.0.0`
+signifie l'internet entier, pas le seul réseau CIRAD.
+
+Caddy s'interpose. L'outil cesse de publier un port et n'est plus joignable
+que par lui.
+
+1. Produire l'empreinte du mot de passe :
+
+```bash
+docker run --rm caddy:2-alpine caddy hash-password --plaintext 'le-mot-de-passe'
+```
+
+2. Dans `.env`, à côté du compose — guillemets simples obligatoires, le hash
+   contient des `$` que Compose prendrait pour des variables :
+
+```
+CROP_USER=cirad-equipe
+CROP_HASH='$2a$14$...'
+```
+
+3. Dans `docker-compose.yml`, retirer la section `ports:` du service
+   `crop-tool` (il n'a plus à être joignable directement) et ajouter :
+
+```yaml
+  crop-auth:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8502:8502"
+    volumes:
+      - ./decision-tool/deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+```
+
+L'adresse ne change pas pour les utilisateurs : toujours le port 8502, avec
+une demande de mot de passe en plus.
+
+Sur une version de Caddy antérieure à 2.7, la directive s'écrit `basicauth`
+en un mot. `docker compose logs crop-auth` le dit sans ambiguïté.
+
+Le mot de passe doit différer de `PGPASSWORD`, de `WEBAPP_PASSWORD` et du mot
+de passe SSH : trois portes, trois clés.

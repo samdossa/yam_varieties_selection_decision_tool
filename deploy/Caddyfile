@@ -1,0 +1,19 @@
+# Mot de passe devant l'outil de recadrage.
+#
+# Depuis que l'enregistrement publie sur yamhub.fr, cette page n'est plus un
+# simple visualiseur : elle ecrit sur le site. Or le conteneur ecoute sur
+# 0.0.0.0, donc sur l'internet entier et pas seulement sur le reseau CIRAD.
+# Caddy s'interpose : lui seul publie un port, l'outil redevient interne.
+#
+# Le mot de passe n'est pas ici, seulement son empreinte bcrypt. La produire :
+#   docker run --rm caddy:2-alpine caddy hash-password --plaintext 'le-mot-de-passe'
+# puis la coller dans .env sous CROP_HASH (entourer de guillemets simples : le
+# hash contient des $ que Compose interpreterait sinon comme des variables).
+:8502 {
+	basic_auth {
+		{$CROP_USER} {$CROP_HASH}
+	}
+
+	# Streamlit tient sur une WebSocket ; reverse_proxy la relaie sans reglage.
+	reverse_proxy crop-tool:8501
+}
