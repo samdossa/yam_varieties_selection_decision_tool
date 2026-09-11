@@ -332,7 +332,40 @@ if not _can_publish:
 if not os.path.isdir(src):
     st.error(f"Dossier introuvable : {src}")
     st.stop()
-os.makedirs(out, exist_ok=True)
+
+
+def _probleme_ecriture(dossier):
+    """Message expliquant pourquoi ce dossier refuse l'ecriture, sinon None.
+
+    Verifie AVANT le recadrage. L'echec ne se manifestait qu'au moment
+    d'enregistrer, donc apres le travail d'ajustement : la photo etait perdue
+    et l'utilisateur recevait une trace Python.
+    """
+    try:
+        os.makedirs(dossier, exist_ok=True)
+        temoin = os.path.join(dossier, ".ecriture_test")
+        with open(temoin, "w") as f:
+            f.write("")
+        os.remove(temoin)
+        return None
+    except PermissionError:
+        pass
+    except OSError as e:
+        return f"Ecriture impossible dans {dossier} : {e}"
+    # Un dossier cree par un conteneur tournant en root reste inaccessible a
+    # l'utilisateur non privilegie de cette image : c'est le cas courant.
+    return (
+        f"**Ecriture refusee dans `{dossier}`.**\n\n"
+        f"Ce dossier appartient a un autre utilisateur que celui de l'app "
+        f"(uid {os.getuid()}). Sur le serveur :\n\n"
+        f"```\nsudo chown -R {os.getuid()}:{os.getgid()} ~/cirad-db/crop_sorties\n```"
+    )
+
+
+_souci = _probleme_ecriture(out)
+if _souci:
+    st.error(_souci)
+    st.stop()
 
 sources = scan_sources(src)
 codes = list(sources.keys())
@@ -427,7 +460,11 @@ with colR:
             s = OUT_SIZE / long
             oc = oc.resize((round(oc.size[0] * s), round(oc.size[1] * s)))
         dest = os.path.join(out, f"{code}_{stage}.jpg")
-        oc.save(dest, quality=90)
+        try:
+            oc.save(dest, quality=90)
+        except OSError as e:
+            st.error(f"Enregistrement impossible : {e}")
+            st.stop()
         st.success(f"Enregistré : {code}_{stage}.jpg")
         if publish:
             with st.spinner("Publication sur yamhub.fr…"):
