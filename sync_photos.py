@@ -40,6 +40,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data")
 CRED_FILE = os.path.join(HERE, "ftp_credentials.txt")
 
+# Extensions publiables : photos de terrain et fiches variétales.
+EXTENSIONS = (".jpg", ".jpeg", ".png", ".pdf")
+
 # Racine distante, relative au dossier où atterrit le compte FTP. Chez
 # Hostinger, ce compte ouvre sur / et non sur public_html : le site vit donc
 # sous domains/<domaine>/public_html. Surchargeable par ROOT= dans
@@ -173,13 +176,20 @@ def remote_sizes(ftp, path):
 
 
 def sync_dir(ftp, local_dir, remote_dir, force=False, dry_run=False):
-    """Envoie les .jpg de local_dir vers remote_dir. Retourne (envoyés, ignorés)."""
+    """Envoie les fichiers publiables de local_dir vers remote_dir.
+
+    Les extensions couvrent les photos ET les fiches PDF : le filtre ne
+    retenait que les .jpg, si bien que l'ajout des fiches au plan ne servait
+    à rien, sync_dir les ignorait sans le dire.
+
+    Retourne (envoyés, ignorés).
+    """
     files = sorted(
         f for f in os.listdir(local_dir)
-        if f.lower().endswith((".jpg", ".jpeg")) and not f.startswith(".")
+        if f.lower().endswith(EXTENSIONS) and not f.startswith(".")
     )
     if not files:
-        print(f"  (aucune photo dans {os.path.relpath(local_dir, HERE)})")
+        print(f"  (aucun fichier publiable dans {os.path.relpath(local_dir, HERE)})")
         return 0, 0
 
     existing = {} if force else remote_sizes(ftp, remote_dir)
