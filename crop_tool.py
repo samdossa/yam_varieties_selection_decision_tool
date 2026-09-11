@@ -471,8 +471,14 @@ with colR:
                 ok, info = sync_photos.publish_file(dest, stage)
             # Un échec d'envoi ne fait pas perdre le recadrage : le fichier est
             # déjà sur le disque, sync_photos.py le rattrapera.
-            st.success(f"En ligne : {info}") if ok else st.warning(
-                f"{info}\nLa photo reste en local ; relance `python sync_photos.py`.")
+            # if/else et non une expression conditionnelle : une expression nue
+            # est captée par le « magic write » de Streamlit, qui relit la ligne
+            # source pour la nommer — et echoue sur une ligne coupee.
+            if ok:
+                st.success(f"En ligne : {info}")
+            else:
+                st.warning(f"{info}\nLa photo reste en local ; "
+                           f"relance `python sync_photos.py`.")
         if st.session_state.idx < len(view) - 1:
             st.session_state.idx += 1
         st.rerun()
