@@ -299,15 +299,52 @@ def badge(row):
                 unsafe_allow_html=True)
 
 
+FICHES_URL = "https://yamhub.fr/photos/fiches"
+
+
+@st.cache_data
+def _codes_fiches():
+    """Codes ayant une fiche PDF pré-générée, par langue.
+
+    Même index que celui utilisé par le site (build_fiches.py le produit).
+    Sert de repli quand WeasyPrint n'est pas opérationnel.
+    """
+    p = os.path.join(os.path.dirname(__file__), "data", "fiches", "index.csv")
+    par_langue = {}
+    if os.path.exists(p):
+        import csv
+        with open(p, newline="") as f:
+            for r in csv.DictReader(f):
+                par_langue.setdefault(r["langue"], set()).add(r["code"])
+    return par_langue
+
+
 def fiche_btn(code_plantation, label=None):
+    """Bouton de fiche variétale, avec repli sur la version publiée.
+
+    La génération à la volée dépend de WeasyPrint, donc de bibliothèques
+    système (pango, glib) absentes de certains environnements — c'est ce qui
+    a produit « cannot load library libgobject-2.0-0 » sur Streamlit Cloud.
+    Les 444 fiches étant désormais publiées sur yamhub.fr, on bascule dessus
+    plutôt que d'afficher une erreur technique à l'utilisateur. C'est aussi
+    plus rapide, le PDF est déjà prêt.
+    """
     lg = lang()
+    titre = label or i18n.t("telecharger_fiche", lg)
     try:
-        st.download_button(label or i18n.t("telecharger_fiche", lg),
-                           data=make_fiche(code_plantation, lg),
+        st.download_button(titre, data=make_fiche(code_plantation, lg),
                            file_name=f"fiche_{code_plantation}_{lg}.pdf",
                            mime="application/pdf", key=f"dl_{code_plantation}")
+        return
     except Exception as e:
-        st.error(f'{i18n.t("erreur_fiche", lg)} {e}')
+        erreur = e
+
+    if str(code_plantation) in _codes_fiches().get(lg, set()):
+        st.link_button(titre, f"{FICHES_URL}/{lg}/{code_plantation}.pdf")
+        return
+
+    # Ni génération possible, ni fiche publiée : là seulement on le dit.
+    st.error(f'{i18n.t("erreur_fiche", lg)} {erreur}')
 
 
 # =========================================================================== #

@@ -7,15 +7,16 @@ FROM python:3.11-slim
 
 # WeasyPrint génère les fiches PDF : sans ces bibliothèques il échoue au
 # rendu, pas à l'import — l'erreur n'apparaîtrait qu'au premier téléchargement.
-# La liste reprend packages.txt, utilisé par Streamlit Cloud.
+# libglib2.0-0 fournit libgobject-2.0, dont l'absence a produit « cannot load
+# library 'libgobject-2.0-0' » en production. Cairo et gdk-pixbuf ont été
+# retirés : WeasyPrint ne s'en sert plus depuis la version 53, et chaque nom
+# superflu est une occasion de faire échouer tout l'apt-get install.
+# Même liste que packages.txt, lu par Streamlit Cloud.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libpango-1.0-0 \
-        libpangocairo-1.0-0 \
         libpangoft2-1.0-0 \
-        libgdk-pixbuf-2.0-0 \
-        libcairo2 \
-        libffi-dev \
-        libjpeg-dev \
+        libglib2.0-0 \
+        libharfbuzz0b \
         shared-mime-info \
         curl \
     && rm -rf /var/lib/apt/lists/*
