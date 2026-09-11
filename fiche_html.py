@@ -9,6 +9,7 @@ Champs indisponibles en base -> "n.d." (et listés dans "Données manquantes").
 """
 
 import base64
+import functools
 import io
 import math
 import os
@@ -288,6 +289,31 @@ def _doi_of(row):
     return None
 
 
+@functools.lru_cache(maxsize=4096)
+def _url_existe(url):
+    """La photo distante existe-t-elle ?
+
+    Sans cette verification, toute variete affichait un emplacement « 3 mois »
+    des que RECOUV_URL etait defini, photo ou pas : le bloc listait les stades
+    configures au lieu des stades disponibles, et la fiche sortait avec une
+    image cassee au lieu du message « a venir ».
+
+    En cas de panne reseau on repond True : mieux vaut une image manquante
+    qu'une fiche qui nierait des photos bel et bien publiees. Le cache evite
+    de redemander le meme fichier a chaque variete d'un lot.
+    """
+    import urllib.error
+    import urllib.request
+    req = urllib.request.Request(url, method="HEAD")
+    try:
+        with urllib.request.urlopen(req, timeout=4) as r:
+            return r.status < 400
+    except urllib.error.HTTPError:
+        return False                       # reponse claire du serveur : absente
+    except Exception:
+        return True                        # panne reseau : on ne conclut pas
+
+
 def _recouv_tag(code, stage, h=150):
     """Image de recouvrement pour une variété à un stade (1mois, 3mois...).
     Cherche data/recouvrement_<stage>/CIRADn_<stage>.jpg en local, sinon RECOUV_URL."""
@@ -299,7 +325,7 @@ def _recouv_tag(code, stage, h=150):
     if os.path.exists(local):
         return f'<img src="{_img_uri(local, 620, "JPEG")}" style="{style}">'
     url = os.environ.get("RECOUV_URL")
-    if url:
+    if url and _url_existe(f"{url.rstrip('/')}/{stage}/{fn}"):
         return f'<img src="{url.rstrip("/")}/{stage}/{fn}" style="{style}">'
     return ""
 

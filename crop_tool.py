@@ -8,9 +8,10 @@ Le résultat est écrit CIRAD{n}_<stade>.jpg dans le dossier de sortie, prêt po
 la fiche variétale.
 
 """
+import hashlib
+import json
 import os
 import re
-import glob
 import subprocess
 import sys
 
@@ -80,34 +81,119 @@ def code_of(fn):
     return f"CIRAD{int(m.group(1))}" if m else None
 
 
-@st.cache_data(show_spinner="Lecture des photos…")
-def scan_sources(src):
-    """code CIRAD -> meilleure photo source (vert le plus central)."""
-    import numpy as np
-    files = glob.glob(os.path.join(src, "**", "*.jpg"), recursive=True) \
-        + glob.glob(os.path.join(src, "**", "*.JPG"), recursive=True)
-    cand = {}
-    for fp in files:
-        c = code_of(os.path.basename(fp))
-        if not c:
-            continue
+SCAN_EXT = (".jpg", ".jpeg")
+
+
+def _lister_photos(src):
+    """[(code, chemin)] des photos numérotées — métadonnées seulement.
+
+    Un seul parcours, extension testée en minuscules : l'ancienne version
+    faisait deux `glob` récursifs (*.jpg puis *.JPG), donc deux traversées
+    complètes du disque, et ratait quand même les .jpeg.
+    """
+    trouves = []
+    for racine, _, noms in os.walk(src):
+        for n in noms:
+            if n.lower().endswith(SCAN_EXT):
+                c = code_of(n)
+                if c:
+                    trouves.append((c, os.path.join(racine, n)))
+    return sorted(trouves)
+
+
+def _signature(chemins):
+    """Empreinte taille+date des fichiers à départager, clé du cache disque."""
+    h = hashlib.sha1()
+    for fp in sorted(chemins):
         try:
-            im = Image.open(fp)
-            im.draft("RGB", (200, 150))
-            a = np.asarray(ImageOps.exif_transpose(im).convert("RGB").resize((200, 150)), float)
-            R, G, B = a[..., 0], a[..., 1], a[..., 2]
-            mask = (G > R + 8) & (G > B + 6) & (G > 50)
-            area = mask.sum()
-            dx = 0.0
-            if area:
-                cols = mask.sum(axis=0).astype(float)
-                dx = ((np.arange(200) * cols).sum() / cols.sum() - 100) / 100
-            score = area * (1 - 0.5 * abs(dx))
-        except Exception:
-            score = -1
-        if c not in cand or score > cand[c][0]:
-            cand[c] = (score, fp)
-    return {c: fp for c, (s, fp) in sorted(cand.items(), key=lambda kv: int(kv[0].replace("CIRAD", "")))}
+            m = os.stat(fp)
+            h.update(f"{fp}|{m.st_size}|{int(m.st_mtime)}\n".encode())
+        except OSError:
+            h.update(f"{fp}|absent\n".encode())
+    return h.hexdigest()
+
+
+def _cache_scan():
+    """Fichier de cache, dans le dossier inscriptible — pas dans l'image."""
+    racine = os.environ.get("CROP_OUT_DIR") or os.path.join(ICI, "data")
+    return os.path.join(racine, ".scan_cache.json")
+
+
+def _score_vert(fp):
+    """Surface de végétation, pondérée par son centrage horizontal.
+
+    Sert uniquement à départager plusieurs clichés d'une même variété.
+    """
+    import numpy as np
+    try:
+        im = Image.open(fp)
+        im.draft("RGB", (200, 150))        # décodage 1/8e : lecture bien plus courte
+        a = np.asarray(ImageOps.exif_transpose(im).convert("RGB").resize((200, 150)), float)
+        R, G, B = a[..., 0], a[..., 1], a[..., 2]
+        mask = (G > R + 8) & (G > B + 6) & (G > 50)
+        area = int(mask.sum())
+        if not area:
+            return 0.0
+        cols = mask.sum(axis=0).astype(float)
+        dx = ((np.arange(200) * cols).sum() / cols.sum() - 100) / 100
+        return float(area * (1 - 0.5 * abs(dx)))
+    except Exception:
+        return -1.0
+
+
+@st.cache_data(show_spinner=False)
+def scan_sources(src):
+    """code CIRAD -> meilleure photo source (vert le plus central).
+
+    Le décodage des images est le poste coûteux : sur un disque externe, tout
+    décoder faisait rester la page vide plusieurs minutes sans rien afficher.
+    Deux mesures. D'abord ne décoder que les variétés ayant PLUSIEURS clichés,
+    puisqu'un cliché unique n'a personne à battre. Ensuite conserver le
+    résultat sur disque, pour que seul le premier utilisateur paie l'attente.
+    """
+    items = _lister_photos(src)
+    if not items:
+        return {}
+
+    par_code = {}
+    for c, fp in items:
+        par_code.setdefault(c, []).append(fp)
+
+    choix = {c: v[0] for c, v in par_code.items() if len(v) == 1}
+    a_departager = {c: v for c, v in par_code.items() if len(v) > 1}
+
+    scores, sig = {}, ""
+    if a_departager:
+        plats = [fp for v in a_departager.values() for fp in v]
+        sig = _signature(plats)
+        try:
+            with open(_cache_scan()) as f:
+                garde = json.load(f)
+            if garde.get("signature") == sig:
+                scores = garde.get("scores", {})
+        except (OSError, ValueError):
+            scores = {}
+
+        manquants = [fp for fp in plats if fp not in scores]
+        if manquants:
+            barre = st.progress(0.0, text=f"Analyse de {len(manquants)} photos…")
+            for i, fp in enumerate(manquants, 1):
+                scores[fp] = _score_vert(fp)
+                if i % 5 == 0 or i == len(manquants):
+                    barre.progress(i / len(manquants),
+                                   text=f"Analyse des photos… {i}/{len(manquants)}")
+            barre.empty()
+            try:
+                os.makedirs(os.path.dirname(_cache_scan()), exist_ok=True)
+                with open(_cache_scan(), "w") as f:
+                    json.dump({"signature": sig, "scores": scores}, f)
+            except OSError:
+                pass                        # cache indisponible : on recalculera
+
+        for c, v in a_departager.items():
+            choix[c] = max(v, key=lambda fp: scores.get(fp, -1.0))
+
+    return {c: choix[c] for c in sorted(choix, key=lambda c: int(c.replace("CIRAD", "")))}
 
 
 def _dialogue_possible():
