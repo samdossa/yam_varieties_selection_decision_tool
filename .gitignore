@@ -26,3 +26,4 @@ data/fiches/*/
 
 # Variables d environnement du conteneur
 .env
+.streamlit/secrets.toml
